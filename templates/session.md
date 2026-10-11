@@ -17,7 +17,7 @@
 <!-- Optional. What we did and how far I got. -->
 
 ## Body
-<!-- Optional. Soreness or pain, factual. Claude may add common causes, never a diagnosis. -->
+<!-- Optional. Soreness or pain, factual. Pi Liang may add common causes, never a diagnosis. -->
 
 ## My notes
 <!-- Optional. My own observations and thoughts. Leave out if I didn't send any. -->
