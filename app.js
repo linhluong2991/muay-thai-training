@@ -1328,9 +1328,10 @@
       });
     };
     const onScroll = () => {
-      bar.classList.toggle('is-stuck', bar.getBoundingClientRect().top <= 0.5);
+      const stickTop = parseFloat(getComputedStyle(bar).top) || 0;
+      bar.classList.toggle('is-stuck', bar.getBoundingClientRect().top <= stickTop + 0.5);
       let current = sections[0] ? sections[0].id : '';
-      for (const sec of sections) if (sec.getBoundingClientRect().top <= 120) current = sec.id;
+      for (const sec of sections) if (sec.getBoundingClientRect().top <= stickTop + 120) current = sec.id;
       if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4 && sections.length) current = sections[sections.length - 1].id;
       if (current !== bar.dataset.active) { bar.dataset.active = current; setActive(current); }
     };
@@ -1416,7 +1417,9 @@
     } else if (a === 'scroll-to') {
       const target = document.getElementById(el.dataset.target);
       if (target) {
-        const top = target.getBoundingClientRect().top + window.scrollY - 72;
+        const bar = view.querySelector('.chipbar');
+        const offset = bar ? bar.offsetHeight + parseFloat(getComputedStyle(bar).top) + 8 : 72;
+        const top = target.getBoundingClientRect().top + window.scrollY - offset;
         window.scrollTo({ top, behavior: reduceMotion.matches ? 'auto' : 'smooth' });
         const h = target.querySelector('h2');
         if (h) { h.setAttribute('tabindex', '-1'); h.focus({ preventScroll: true }); }

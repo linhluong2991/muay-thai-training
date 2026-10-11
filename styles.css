@@ -75,7 +75,7 @@ html {
   overflow-x: clip;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
-  scroll-padding-top: 76px;
+  scroll-padding-top: calc(76px + env(safe-area-inset-top));
 }
 
 body {
@@ -880,9 +880,10 @@ a.cal-cell:active .cal-day { transform: scale(0.92); }
 .punch span { min-width: 0; overflow-wrap: anywhere; }
 
 /* Sticky chip bar */
-.chipbar {
+.chipbar,
+.screen > .chipbar {
   position: sticky;
-  top: 0;
+  top: env(safe-area-inset-top);
   z-index: 5 !important;
   margin: var(--s5) calc(var(--pad) * -1) 0;
   padding: 10px 0;
@@ -893,6 +894,17 @@ a.cal-cell:active .cal-day { transform: scale(0.92); }
 }
 
 .chipbar.is-stuck { box-shadow: 0 1px 0 var(--line); }
+
+/* Covers the notch area above the stuck bar in home-screen mode (zero height in Safari) */
+.chipbar::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 100%;
+  height: env(safe-area-inset-top);
+  background: var(--bg);
+}
 
 .chipbar-scroll {
   display: flex;
@@ -941,7 +953,7 @@ a.cal-cell:active .cal-day { transform: scale(0.92); }
 .chip.is-active .chip-count,
 .chip[aria-pressed="true"] .chip-count { color: var(--lavender-ink); }
 
-.dsec { margin-top: var(--s7); scroll-margin-top: 76px; }
+.dsec { margin-top: var(--s7); scroll-margin-top: calc(76px + env(safe-area-inset-top)); }
 
 .dsec-head {
   display: flex;
@@ -1738,7 +1750,7 @@ mark {
   position: fixed;
   z-index: 20;
   left: 50%;
-  bottom: max(16px, env(safe-area-inset-bottom));
+  bottom: max(16px, calc(env(safe-area-inset-bottom) + 8px));
   transform: translateX(-50%);
   width: min(400px, calc(100% - 32px));
   display: flex;
