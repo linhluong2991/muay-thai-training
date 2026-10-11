@@ -54,12 +54,16 @@ All text must meet WCAG AA contrast (4.5:1). If white on `--lavender` fails, dar
 ### Shape and space
 - Radius: cards 24px, inner panels 16px, chips and buttons fully round.
 - Spacing scale 4/8/12/16/20/24/32. Page side padding 20px.
-- Shadow: none by default. Floating nav only: `0 8px 24px rgba(18,18,22,0.18)`.
+- Shadow: none by default. Floating nav only: `inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 30px rgba(18,18,22,0.28)`.
 - Icons: Lucide-style 1.75px stroke, inline SVG.
 - Motion: 200ms ease-out on taps and accordions. Respect `prefers-reduced-motion`.
 
 ## Navigation
-Floating near-black pill at the bottom with 4 tabs. The active tab is a lavender circle with a white icon and label.
+Floating near-black pill at the bottom with 4 tabs. The active tab is a lavender pill (`--lavender-strong`) with a white icon and label; inactive tabs are icons only in `rgba(255,255,255,0.78)`.
+
+- **Position:** like Apple's apps (Fitness, Contacts), the bar sits over the home-indicator area: `bottom: max(16px, calc(env(safe-area-inset-bottom) - 13px))` = 21pt from the screen bottom on an iPhone with a 34pt home indicator; 16px in Safari and on desktop. Centred, `width: min(400px, 100% - 32px)`.
+- **Size:** bar 64px tall; tabs 48px tall; the pill sits 8px from the bar's outer edge (7px padding + 1px border).
+- **Glass (15%):** `background: rgba(18,18,22,0.86)`, `backdrop-filter: blur(18px) saturate(160%)` (plus `-webkit-`), `border: 1px solid rgba(255,255,255,0.12)`, shadow `inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 30px rgba(18,18,22,0.28)`. Content scrolling underneath shows as a soft blur. Where `backdrop-filter` isn't supported, the bar is solid `--ink`.
 
 | Tab | Route |
 |---|---|
