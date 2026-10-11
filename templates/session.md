@@ -23,9 +23,9 @@
 <!-- Optional. My own observations and thoughts. Leave out if I didn't send any. -->
 
 ## New words
-<!-- Optional. My phrasing -> standard term. -->
-| What I said | Standard term | Note |
-|---|---|---|
+<!-- Optional. My phrasing -> standard term, with one example sentence. -->
+| What I said | Standard term | Note | Example |
+|---|---|---|---|
 
 ## Next time
 <!-- Optional. What to focus on or ask the coach. -->

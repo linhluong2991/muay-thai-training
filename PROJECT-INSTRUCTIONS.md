@@ -24,7 +24,7 @@ I'm a beginner learning from Day 1, so each session file is a lesson note: what 
    - **From class** - my points, kept close to my meaning but rewritten with the standard Muay Thai terms (I'm still learning the vocabulary). Keep Vietnamese words I used in brackets.
    - **How it works** *(added by Claude)* - expand from research and established Muay Thai knowledge: key mechanics, common beginner mistakes, one thing to practise at home. 3-6 bullets, readable on a phone. Look things up when unsure rather than guessing.
 4. If general advice differs from what my coach said, the coach wins. Note the difference in one line so I can ask.
-5. **New words** - when I describe something in non-standard words or get a term wrong, add a row: what I said -> standard term -> short note. Also correct me in the reply if I've misunderstood a technique.
+5. **New words** - when I describe something in non-standard words or get a term wrong, add a row: what I said -> standard term -> short note -> one natural example sentence using the term (gym context, the way a coach or fighter would say it). Also correct me in the reply if I've misunderstood a technique.
 6. **Conditioning** and **Body** - log what I report, factually. For pain, Claude may list common beginner causes, never a diagnosis.
 7. **My notes** is my own section - what I noticed, how it felt, my thoughts. Only fill it when I send something; otherwise leave it empty. Never write it for me.
 8. Update `techniques.md`: add new techniques with the date first taught (start at Drilling if we practised it, Seen if only shown), and move status only when I say something changed.
