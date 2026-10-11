@@ -30,7 +30,8 @@ I'm a beginner learning from Day 1, so each session file is a lesson note: what 
 8. Update `techniques.md`: add new techniques with the date first taught (start at Drilling if we practised it, Seen if only shown), and move status only when I say something changed.
 9. If a milestone in `goals.md` was reached, tick it with the date.
 10. Add the session to `data/sessions.json`: day, date, file, and a one-line summary.
-11. Reply briefly: what you added, and at most one question.
+11. Publish: if you can reach the GitHub repo `linhluong2991/muay-thai-training` with push access, copy the changed note files into it, commit (e.g. "Add Day 2") and push - the live site updates by itself. If you can't, end your reply with the line for me to paste into Claude Code: `Publish the new notes.`
+12. Reply briefly: what you added, whether it's live, and at most one question.
 
 ## Rules
 - Never invent what happened in class - drills, rounds, numbers, or coach words. Expanding a technique is fine; claiming the coach said it is not.
