@@ -94,7 +94,7 @@ Session detail: `#/session/2026-10-09`.
   - "Ask the coach" lines (marked with "-> **Ask the coach**" or "-> **Check with the coach**") get a small lime "Ask coach" tag.
 - **Conditioning** and **Body**: simple white cards. The Claude-added sub-part uses the same lavender panel.
 - **My notes**: `--lime-soft` card with a quote mark. It's my own voice, so it should feel personal.
-- **New words**: rows of "what I said -> **standard term**", with the note in small grey text below.
+- **New words**: rows of "what I said -> **standard term**", with the note in small grey text below, then the **Example** line: a small "Example" label and the sentence in italics, with a lavender left rule (quote style). The standard term is bold with a lime highlighter where it appears in the sentence (case-insensitive; for "load / load up" style terms either part matches). Rows without an example just leave the line out.
 - **Next time**: checklist-style rows.
 
 ### 4. Techniques
@@ -107,8 +107,9 @@ Status labels: Seen · Drilling · Clean on pads · Usable in sparring (same as 
 
 ### 5. Words
 - Search field ("Search words...").
-- All New words rows from every session, deduplicated by standard term, sorted A-Z. Each row: standard term (bold), what I said, note, and the "Day N" where it first appeared.
-- Toggle "Flashcards": one card at a time. The front shows what I said, tap to reveal the standard term.
+- All New words rows from every session, deduplicated by standard term, sorted A-Z. Each row: standard term (bold), what I said, note, the Example line (same style as Session detail), and the "Day N" where it first appeared.
+- Search matches what I said, the standard term, the note and the example.
+- Toggle "Flashcards": one card at a time. The front shows what I said, tap to reveal the standard term, its note and the example sentence.
 
 ## Data (no build step)
 - The markdown files are the source of truth. The site fetches and parses them in the browser.

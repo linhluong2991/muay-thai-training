@@ -310,6 +310,7 @@
     let iSaid = colIndex(head, /said|mine|my word/);
     let iTerm = colIndex(head, /standard|term/);
     let iNote = colIndex(head, /note/);
+    const iEx = colIndex(head, /example|sentence/);
     if (iSaid < 0) iSaid = 0;
     if (iTerm < 0) iTerm = 1;
     return rows
@@ -318,7 +319,14 @@
         const bold = term.match(/\*\*(.+?)\*\*/);
         const main = bold ? bold[1].trim() : stripMd(term);
         const extra = bold ? term.replace(bold[0], '').trim() : '';
-        return { said: r[iSaid] || '', term, main: stripMd(main), extra, note: iNote >= 0 ? r[iNote] || '' : '' };
+        return {
+          said: r[iSaid] || '',
+          term,
+          main: stripMd(main),
+          extra,
+          note: iNote >= 0 ? r[iNote] || '' : '',
+          example: iEx >= 0 ? (r[iEx] || '').trim() : '',
+        };
       })
       .filter((w) => w.main || w.said);
   }
@@ -941,6 +949,7 @@
             (w) => `<li>
               <p class="nw-line"><span class="nw-said">${mdInline(w.said)}</span><span class="nw-arrow" aria-label="becomes">→</span><span class="nw-term">${mdInline(w.term)}</span></p>
               ${w.note ? `<p class="nw-note">${mdInline(w.note)}</p>` : ''}
+              ${exampleLine(w.example, w.main)}
             </li>`
           )
           .join('')}</ul></div>
@@ -1120,6 +1129,59 @@
       ${thaiCard()}`;
   }
 
+  // Pattern for the standard term inside an example sentence. "load / load up" matches
+  // either part (longest first); "the" also matches "your", and plurals are allowed,
+  // so "roll the shoulder" finds "Roll your shoulder".
+  const FILLER = /^(the|your|my|a|an)$/i;
+  const IRREGULAR = { foot: 'f(?:oo|ee)t' };
+  const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  function termPattern(main) {
+    const alts = String(main || '')
+      .split(/\s*\/\s*/)
+      .map((x) => x.trim())
+      .filter(Boolean)
+      .sort((a, b) => b.length - a.length)
+      .map((part) =>
+        part
+          .split(/\s+/)
+          .map((w) => (FILLER.test(w) ? '(?:the|your|my|his|her|their|a|an)' : IRREGULAR[w.toLowerCase()] || `${escRe(w)}(?:e?s)?`))
+          .join('\\s+')
+      );
+    return alts.length ? new RegExp(`\\b(?:${alts.join('|')})\\b`, 'gi') : null;
+  }
+
+  // "Example" line under a word: the standard term in bold, search hits marked.
+  // Spans only, so it can sit inside the flashcard button.
+  function exampleLine(example, main, q = '') {
+    const text = String(example || '').trim();
+    if (!text) return '';
+    let body = '';
+    if (/[*_`]/.test(text)) {
+      body = mdInline(text); // already formatted by hand in the notes
+    } else {
+      const n = text.length;
+      const term = new Uint8Array(n);
+      const hit = new Uint8Array(n);
+      const re = termPattern(main);
+      if (re) for (const m of text.matchAll(re)) term.fill(1, m.index, m.index + m[0].length);
+      const f = fold(text);
+      if (q && f.length === n) {
+        for (let i = f.indexOf(q); i >= 0; i = f.indexOf(q, i + q.length)) hit.fill(1, i, i + q.length);
+      }
+      for (let i = 0; i < n; ) {
+        let j = i;
+        while (j < n && term[j] === term[i] && hit[j] === hit[i]) j++;
+        let seg = esc(text.slice(i, j));
+        if (hit[i]) seg = `<mark>${seg}</mark>`;
+        if (term[i]) seg = `<strong>${seg}</strong>`;
+        body += seg;
+        i = j;
+      }
+    }
+    return `<span class="example"><span class="ex-label">Example</span><span class="ex-text">${body}</span></span>`;
+  }
+
   function highlight(text, q) {
     const safe = esc(text);
     if (!q) return safe;
@@ -1131,7 +1193,7 @@
 
   function wordResults(words) {
     const q = fold(state.wordsQuery.trim());
-    const list = q ? words.filter((w) => fold(`${stripMd(w.said)} ${stripMd(w.term)} ${stripMd(w.note)}`).includes(q)) : words;
+    const list = q ? words.filter((w) => fold(`${stripMd(w.said)} ${stripMd(w.term)} ${stripMd(w.note)} ${stripMd(w.example)}`).includes(q)) : words;
     if (!list.length) {
       return `<div class="card words-card">${emptyState('No matches', `Nothing matches “${state.wordsQuery.trim()}”. Try a shorter word.`, 'search', 'inline')}</div>`;
     }
@@ -1145,6 +1207,7 @@
             </div>
             ${w.said ? `<p class="word-said"><span class="lbl">I said</span>${highlight(stripMd(w.said), q)}</p>` : ''}
             ${w.note ? `<p class="word-note">${mdInline(w.note)}</p>` : ''}
+            ${exampleLine(w.example, w.main, q)}
           </li>`
         )
         .join('')}</ul></div>`;
@@ -1182,6 +1245,7 @@
           <span class="flash-text">${esc(w.main)}</span>
           ${w.extra ? `<span class="flash-extra">${mdInline(w.extra)}</span>` : ''}
           ${w.note ? `<span class="flash-note">${mdInline(w.note)}</span>` : ''}
+          ${exampleLine(w.example, w.main)}
         </span>
       </button>
       <div class="flash-controls">

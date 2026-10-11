@@ -1514,6 +1514,48 @@ a.cal-cell:active .cal-day { transform: scale(0.92); }
   color: var(--ink-2);
 }
 
+/* Example sentence under a word (Words list, session New words, flashcard back) */
+.example {
+  display: block;
+  margin-top: 10px;
+  padding: 2px 0 2px 12px;
+  border-left: 3px solid var(--lavender);
+}
+
+.ex-label {
+  display: block;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  color: var(--ink-2);
+}
+
+.ex-text {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+.ex-text strong {
+  font-weight: 700;
+  color: var(--ink);
+  background: linear-gradient(transparent 60%, var(--lime) 60%);
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
+.flash-back .example { margin-top: var(--s4); border-left-color: rgba(255, 255, 255, 0.55); }
+.flash-back .ex-label,
+.flash-back .ex-text { color: #fff; }
+.flash-back .ex-text strong {
+  color: #fff;
+  background: none;
+  text-decoration: underline 2px var(--lime);
+  text-underline-offset: 3px;
+}
+
 mark {
   background: var(--lime);
   color: inherit;
