@@ -1,0 +1,6 @@
+.DS_Store
+
+# Private working files - kept off the public site (see CLAUDE.md)
+CLAUDE.md
+agent-report/
+task-input/
