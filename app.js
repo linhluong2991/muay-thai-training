@@ -625,7 +625,7 @@
           <span class="eyebrow"><span class="dot"></span>Muay Thai</span>
           <span class="hero-date">${esc(fmtShort(t))}</span>
         </div>
-        <h1 class="hero-title">Day <span class="num">${dayN}</span></h1>
+        <h1 class="hero-title${dayN >= 100 ? ' is-long' : ''}"><span class="num">${dayN}</span> ${dayN === 1 ? 'day' : 'days'} in</h1>
         <p class="hero-sub"><strong>Session ${sessions.length}</strong><span class="sep"></span><span>Started ${esc(fmtShort(start))}</span></p>
       </header>
 

@@ -73,7 +73,8 @@ Session detail: `#/session/2026-10-09`.
 ## Screens
 
 ### 1. Home
-- Glow header. Small label "Muay Thai" and big title **"Day N"**, counted from `startDate` to today. Subtitle: "Session X".
+- Glow header. Small label "Muay Thai" and big title **"N days in"** ("1 day in" on the start date), counting calendar days from `startDate` to today with the start day as day 1. Subtitle: "Session X · Started <date>".
+- "Day N" is reserved for session numbers (session cards, session detail, Words). Don't use it for the calendar-day count.
 - **Stats row**, 3 big numerals: Sessions · This week · Techniques learned.
 - **Week strip**: Mon-Sun chips for the current week. Trained days are filled lavender, today has a lime ring.
 - **Latest session**: white card with Day badge, date, summary, technique chips, ↗ button. Opens the session.

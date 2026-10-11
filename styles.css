@@ -230,6 +230,11 @@ img, svg { display: block; }
   letter-spacing: -0.045em;
 }
 
+/* "100 days in" and up: keep the title on one line at 360px */
+.hero-title.is-long {
+  font-size: 46px;
+}
+
 .hero-title.is-text {
   font-size: 40px;
   letter-spacing: -0.035em;
