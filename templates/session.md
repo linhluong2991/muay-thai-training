@@ -8,7 +8,7 @@
 **From class**
 - My main points, rewritten with the standard terms
 
-**How it works** *(added by Claude)*
+**How it works** *(added by Pi Liang)*
 - Key mechanics
 - Common beginner mistakes
 - One thing to practise at home

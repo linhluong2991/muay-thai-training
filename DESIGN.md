@@ -26,7 +26,7 @@ Light mode only. No dark mode.
 | `--ink-2` | `#6B6A75` | Secondary text, labels |
 | `--line` | `#ECEBF2` | Hairline borders, dividers |
 | `--lavender` | `#7B6CF6` | Primary accent: active states, trained days, links |
-| `--lavender-soft` | `#ECE8FF` | "Claude added" panels, selected chips |
+| `--lavender-soft` | `#ECE8FF` | "Added by Pi Liang" panels, selected chips |
 | `--lime` | `#D6F36B` | Second accent: highlights, today, "My notes" card |
 | `--lime-soft` | `#F3FBD2` | Soft lime backgrounds |
 
@@ -90,9 +90,9 @@ Session detail: `#/session/2026-10-09`.
 - Sticky chip bar that scrolls to each section: Lesson · Conditioning · Body · My notes · New words · Next time. Only show chips for sections that have content.
 - **Lesson**: one accordion card per technique, tinted by category. Collapsed: number badge for punches (1-6) + name. Expanded:
   - **From class**: white inner panel - the coach's points.
-  - **How it works**: `--lavender-soft` panel with a small "Added by Claude" tag. The coach/Claude difference must be obvious at a glance.
+  - **How it works**: `--lavender-soft` panel with a small "Added by Pi Liang" tag. The coach/Pi Liang difference must be obvious at a glance. (Pi Liang is the Project Claude that writes the notes; the site never says "Claude". Notes mark these parts `*(added by Pi Liang)*`; older notes with `*(added by Claude)*` still work.)
   - "Ask the coach" lines (marked with "-> **Ask the coach**" or "-> **Check with the coach**") get a small lime "Ask coach" tag.
-- **Conditioning** and **Body**: simple white cards. The Claude-added sub-part uses the same lavender panel.
+- **Conditioning** and **Body**: simple white cards. Pi Liang's sub-part uses the same lavender panel.
 - **My notes**: `--lime-soft` card with a quote mark. It's my own voice, so it should feel personal.
 - **New words**: rows of "what I said -> **standard term**", with the note in small grey text below, then the **Example** line: a small "Example" label and the sentence in italics, with a lavender left rule (quote style). The standard term is bold with a lime highlighter where it appears in the sentence (case-insensitive; for "load / load up" style terms either part matches). Rows without an example just leave the line out.
 - **Next time**: checklist-style rows.
@@ -113,7 +113,7 @@ Status labels: Seen · Drilling · Clean on pads · Usable in sparring (same as 
 
 ## Data (no build step)
 - The markdown files are the source of truth. The site fetches and parses them in the browser.
-- `data/sessions.json` lists sessions (GitHub Pages can't list folders). Claude adds a row each time a session is logged.
+- `data/sessions.json` lists sessions (GitHub Pages can't list folders). Pi Liang adds a row each time a session is logged.
 - Parse `sessions/*.md` by headings: `##` = section, `###` = technique, `**From class**` / `**How it works**` = the two parts, markdown tables for New words.
 - Parse `techniques.md` tables (category = `##` heading) and `goals.md` checkboxes.
 - Render markdown with a pinned CDN version of `marked`. Escape everything else.

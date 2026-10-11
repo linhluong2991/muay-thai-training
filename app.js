@@ -180,11 +180,13 @@
 
   // ---------- Markdown structure parsing ----------
 
+  const ADDED_BY_RE = /added by (?:pi liang|claude)/i;
   const MARKER_RE = /^\s*\*\*([^*]+?)\*\*\s*(?:\*\(([^)]*)\)\*|_\(([^)]*)\)_)?\s*$/;
   const isBlank = (lines) => !lines.some((l) => l.trim());
 
   // Split a block into parts at lines that are only a bold label, e.g.
-  // **From class** or **How it works** *(added by Claude)*.
+  // **From class** or **How it works** *(added by Pi Liang)*.
+  // Older notes say "added by Claude" - both mark Pi Liang's part.
   function splitParts(lines) {
     const parts = [];
     let cur = { label: '', note: '', kind: 'plain', lines: [] };
@@ -195,8 +197,8 @@
         push();
         const label = m[1].trim().replace(/:$/, '');
         const note = (m[2] || m[3] || '').trim();
-        const kind = /added by claude/i.test(note) ? 'claude' : /from class/i.test(label) ? 'coach' : 'plain';
-        const extra = note.replace(/added by claude/i, '').replace(/^[\s\-–—,:;]+/, '').trim();
+        const kind = ADDED_BY_RE.test(note) ? 'pi' : /from class/i.test(label) ? 'coach' : 'plain';
+        const extra = note.replace(ADDED_BY_RE, '').replace(/^[\s\-–—,:;]+/, '').trim();
         cur = { label, note, extra, kind, lines: [] };
       } else {
         cur.lines.push(line);
@@ -883,9 +885,9 @@
 
   function renderPart(p) {
     const body = `<div class="prose">${md(p.lines.join('\n'))}</div>`;
-    if (p.kind === 'claude') {
-      return `<div class="panel panel-claude">
-        <div class="panel-head"><span class="panel-label">${esc(p.label)}</span><span class="tag-claude">${icon('sparkles', 12, 2)}Added by Claude</span></div>
+    if (p.kind === 'pi') {
+      return `<div class="panel panel-pi">
+        <div class="panel-head"><span class="panel-label">${esc(p.label)}</span><span class="tag-pi">${icon('sparkles', 12, 2)}Added by Pi Liang</span></div>
         ${p.extra ? `<p class="panel-note">${esc(p.extra.charAt(0).toUpperCase() + p.extra.slice(1))}</p>` : ''}
         ${body}
       </div>`;
@@ -964,11 +966,11 @@
       </section>`;
     }
 
-    // Conditioning, Body and anything else: white card; Claude-added parts get the lavender panel.
+    // Conditioning, Body and anything else: white card; Pi Liang's parts get the lavender panel.
     return `<section class="dsec" id="${id}" ${labelled}>
       ${secHead(x)}
       <div class="card white-card-parts">${x.parts
-        .map((p) => (p.kind === 'claude' ? renderPart(p) : `${p.label ? `<p class="panel-label">${esc(p.label)}</p>` : ''}<div class="prose">${md(p.lines.join('\n'))}</div>`))
+        .map((p) => (p.kind === 'pi' ? renderPart(p) : `${p.label ? `<p class="panel-label">${esc(p.label)}</p>` : ''}<div class="prose">${md(p.lines.join('\n'))}</div>`))
         .join('')}</div>
     </section>`;
   }

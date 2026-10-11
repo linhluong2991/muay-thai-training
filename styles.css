@@ -1060,7 +1060,7 @@ a.cal-cell:active .cal-day { transform: scale(0.92); }
 }
 
 .panel-coach { background: var(--surface); }
-.panel-claude { background: var(--lavender-soft); }
+.panel-pi { background: var(--lavender-soft); }
 .panel-plain { background: rgba(255, 255, 255, 0.6); }
 
 .panel-head {
@@ -1091,9 +1091,9 @@ a.cal-cell:active .cal-day { transform: scale(0.92); }
   margin: 0 2px 0 3px;
 }
 
-.panel-claude .panel-label { color: var(--lavender-ink); }
+.panel-pi .panel-label { color: var(--lavender-ink); }
 
-.tag-claude {
+.tag-pi {
   display: inline-flex;
   align-items: center;
   gap: 5px;
@@ -1129,13 +1129,13 @@ a.cal-cell:active .cal-day { transform: scale(0.92); }
   background: currentColor;
   opacity: 0.4;
 }
-.panel-claude .prose ul > li::before { background: var(--lavender-strong); opacity: 0.7; }
+.panel-pi .prose ul > li::before { background: var(--lavender-strong); opacity: 0.7; }
 .prose ol { counter-reset: n; }
 .prose ol > li { position: relative; padding-left: 24px; counter-increment: n; }
 .prose ol > li::before { content: counter(n) "."; position: absolute; left: 0; font-weight: 600; color: var(--ink-2); }
 .prose strong { font-weight: 700; }
 .prose em { font-style: italic; color: var(--ink-soft); }
-.panel-claude .prose em { color: inherit; }
+.panel-pi .prose em { color: inherit; }
 .prose a { color: var(--lavender-ink); text-decoration: underline; text-underline-offset: 2px; }
 .prose code { font-size: 0.92em; background: var(--line); padding: 1px 6px; border-radius: 6px; }
 .prose li.ask-line { padding-left: 18px; }
@@ -1145,7 +1145,7 @@ a.cal-cell:active .cal-day { transform: scale(0.92); }
 .lesson-intro { margin-bottom: var(--s3); color: var(--ink-soft); }
 
 .white-card-parts { display: grid; gap: var(--s3); }
-.white-card-parts .panel-claude { margin: 0 calc(var(--s2) * -1) calc(var(--s2) * -1); }
+.white-card-parts .panel-pi { margin: 0 calc(var(--s2) * -1) calc(var(--s2) * -1); }
 
 /* My notes */
 .notes-card {
