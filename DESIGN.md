@@ -59,10 +59,10 @@ All text must meet WCAG AA contrast (4.5:1). If white on `--lavender` fails, dar
 - Motion: 200ms ease-out on taps and accordions. Respect `prefers-reduced-motion`.
 
 ## Navigation
-Floating near-black pill at the bottom with 4 tabs. The active tab is a lavender pill (`--lavender-strong`) with a white icon and label; inactive tabs are icons only in `rgba(255,255,255,0.78)`.
+Floating near-black pill at the bottom with 5 tabs. The active tab is a lavender pill (`--lavender-strong`) with a white icon and label; inactive tabs are icons only in `rgba(255,255,255,0.78)`.
 
 - **Position:** like Apple's apps (Fitness, Contacts), the bar sits over the home-indicator area: `bottom: max(16px, calc(env(safe-area-inset-bottom) - 13px))` = 21pt from the screen bottom on an iPhone with a 34pt home indicator; 16px in Safari and on desktop. Centred, `width: min(400px, 100% - 32px)`.
-- **Size:** bar 64px tall; tabs 48px tall; the pill sits 8px from the bar's outer edge (7px padding + 1px border).
+- **Size:** bar 64px tall; tabs 48px tall; the pill sits 8px from the bar's outer edge (7px padding + 1px border). Inactive tabs are 44px wide (11px padding + 22px icon), 2px apart, so the active label fits with 5 tabs; under 375px wide the bar is `100% - 24px`.
 - **Glass (15%):** `background: rgba(18,18,22,0.86)`, `backdrop-filter: blur(18px) saturate(160%)` (plus `-webkit-`), `border: 1px solid rgba(255,255,255,0.12)`, shadow `inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 30px rgba(18,18,22,0.28)`. Content scrolling underneath shows as a soft blur. Where `backdrop-filter` isn't supported, the bar is solid `--ink`.
 
 | Tab | Route |
@@ -70,9 +70,10 @@ Floating near-black pill at the bottom with 4 tabs. The active tab is a lavender
 | Home | `#/` |
 | Sessions | `#/sessions` |
 | Techniques | `#/techniques` |
+| Drills | `#/drills` (dumbbell icon) |
 | Words | `#/words` |
 
-Session detail: `#/session/2026-10-09`.
+Session detail: `#/session/2026-10-09`. A single drill: `#/drills/<drill-id>` (the id is the drill name in lowercase with hyphens, e.g. `#/drills/elbow-wall-drill`) - opens the Drills screen scrolled to that drill with a lavender ring.
 
 ## Screens
 
@@ -82,6 +83,7 @@ Session detail: `#/session/2026-10-09`.
 - **Stats row**, 3 big numerals: Sessions · This week · Techniques learned.
 - **Week strip**: Mon-Sun chips for the current week. Trained days are filled lavender, today has a lime ring.
 - **Latest session**: white card with Day badge, date, summary, technique chips, ↗ button. Opens the session.
+- **Home drills** (right under Latest session): compact white card with a lime dumbbell circle, "N drills to practise" and how many are ticked today ("1 of 4 done today" / "None done yet today"), ↗ button. Opens `#/drills`. Hidden when there are no active drills.
 - **Next time**: near-black card with the "Next time" bullets from the latest session, in white text.
 - **Milestones** from `goals.md`: a progress line (done / total), then each milestone as a row with a check circle.
 
@@ -105,11 +107,26 @@ Session detail: `#/session/2026-10-09`.
 - **Status summary**: a 4-segment bar showing counts per status.
 - Filter chips: All · Stance & movement · Punches · Kicks · Knees · Elbows · Defence · Clinch · Combos. Hide empty categories.
 - 2-column grid of category-tinted cards: name, Thai term if any, status pill, and a 4-dot progress indicator (filled up to the current status).
-- Tap a card -> bottom sheet with the key cue, first taught and last updated dates, and links to every session that mentions the technique.
+- Tap a card -> bottom sheet with the key cue, first taught and last updated dates, a "Home drill" link for each **active** drill that lists the technique, and links to every session that mentions the technique.
 
 Status labels: Seen · Drilling · Clean on pads · Usable in sparring (same as the files).
 
-### 5. Words
+### 5. Drills
+Home drills that fix what the coach corrects, from `drills.md`.
+- Glow header: label "Practice", title **"Home drills"**, subtitle "N active drills · N fixed".
+- **Today** (the near-black card): big "done / active" numeral with "done today", one dot per active drill (lime when ticked), and a short line of encouragement.
+- Filter chips: **Active** (default) · Fixed · All, with counts. Empty Fixed view: "No fixed drills yet".
+- One white card per drill:
+  - Drill name (small, `--lavender-ink`), then the **Fixes** line as the headline (18/700).
+  - Chips: the techniques (category-tinted; tap -> that technique's bottom sheet; "All punches" -> Techniques filtered to Punches) and the "Day N" it came from (`--lavender-soft`, tap -> the session). Chips are 32px tall with a 44px tap area.
+  - **Coach's cue** in a `--lime-soft` callout with the same ink-and-lime dot as "From class" - it's the coach's words.
+  - **Dose** line with a timer icon.
+  - **How to do it** accordion (collapsed by default, 200ms like the lesson accordions), steps as a numbered list with ink circles and lime numbers.
+  - Footer: "Practised N days" (or "Not practised yet") and "Done today" when ticked.
+- **Done today:** a round 48px check button top-right on each Active drill. Grey outline when not done, lime fill with an ink check when done. Stored in `localStorage` (`muay-thai-log:drills-done`, a list of dates per drill), so it's per device and resets each day. "Practised N days" counts the stored dates. If storage is blocked, ticks still work until the page is closed.
+- **Fixed** drills look calmer: outlined instead of white, no lime, a small mint "Fixed" badge instead of the check button.
+
+### 6. Words
 - Search field ("Search words...").
 - All New words rows from every session, deduplicated by standard term, sorted A-Z. Each row: standard term (bold), what I said, note, the Example line (same style as Session detail), and the "Day N" where it first appeared.
 - Search matches what I said, the standard term, the note and the example.
@@ -120,6 +137,7 @@ Status labels: Seen · Drilling · Clean on pads · Usable in sparring (same as 
 - `data/sessions.json` lists sessions (GitHub Pages can't list folders). Pi Liang adds a row each time a session is logged.
 - Parse `sessions/*.md` by headings: `##` = section, `###` = technique, `**From class**` / `**How it works**` = the two parts, markdown tables for New words.
 - Parse `techniques.md` tables (category = `##` heading) and `goals.md` checkboxes.
+- Parse `drills.md`: each `##` is a drill; the `- **Label:**` bullets are read by label (Fixes, Coach's cue, Technique, From, Status, Dose, How + numbered list), so order doesn't matter and missing fields are skipped. Technique names match `techniques.md` rows; "all punches" (all + a category) means every technique in that category.
 - Render markdown with a pinned CDN version of `marked`. Escape everything else.
 - If a file fails to load or parse, show a friendly empty state ("Nothing here yet") and never a blank page.
 

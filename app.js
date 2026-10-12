@@ -64,6 +64,8 @@
     flag: '<path d="M4 22V4a1 1 0 0 1 .4-.8A6 6 0 0 1 8 2c3 0 5 2 7.333 2q2 0 3.067-.8A1 1 0 0 1 20 4v10a1 1 0 0 1-.4.8A6 6 0 0 1 16 16c-3 0-5-2-8-2a6 6 0 0 0-4 1.528"/>',
     eye: '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>',
     rotate: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
+    dumbbell: '<path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/>',
+    timer: '<line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/>',
   };
 
   const icon = (name, size = 20, sw = 1.75) =>
@@ -417,7 +419,7 @@
   function splitTitle(title) {
     let t = String(title).trim();
     let num = null;
-    const n = t.match(/^(\d+)\s*[-–—.:)]\s*(.+)$/);
+    const n = t.match(/^(\d+)\s*[-–—.:)]\s*(?!\d)(.+)$/); // not "1-2 (jab-cross)"
     if (n) { num = n[1]; t = n[2]; }
     let sub = '';
     const p = t.match(/^(.*?)\s*\(([^)]+)\)\s*$/);
@@ -475,9 +477,11 @@
     categories: [],
     thai: [],
     milestones: [],
-    failed: { index: false, techniques: false, goals: false },
+    failed: { index: false, techniques: false, goals: false, drills: false },
     calMonth: null,
     techFilter: 'all',
+    drills: [],
+    drillFilter: 'active',
     wordsMode: 'list',
     wordsQuery: '',
     flash: { i: 0, order: null, revealed: false },
@@ -501,7 +505,7 @@
     const list = index && Array.isArray(index.sessions) ? index.sessions.filter((s) => s && parseISO(s.date)) : [];
     state.startDate = index && parseISO(index.startDate) ? index.startDate : null;
 
-    const [sessions, techText, goalsText] = await Promise.all([
+    const [sessions, techText, goalsText, drillsText] = await Promise.all([
       Promise.all(
         list.map(async (s) => {
           let doc = null;
@@ -515,6 +519,7 @@
       ),
       fetchText('techniques.md').catch(() => { state.failed.techniques = true; return ''; }),
       fetchText('goals.md').catch(() => { state.failed.goals = true; return ''; }),
+      fetchText('drills.md').catch(() => { state.failed.drills = true; return ''; }),
     ]);
 
     try {
@@ -529,6 +534,14 @@
       state.milestones = parseGoals(goalsText);
     } catch (e) {
       console.warn('Could not parse goals.md', e);
+    }
+    try {
+      state.drills = parseDrills(drillsText).map((d) => {
+        const links = drillLinks(d);
+        return { ...d, links, techIds: new Set(links.flatMap((l) => l.techs.map((t) => t.id))) };
+      });
+    } catch (e) {
+      console.warn('Could not parse drills.md', e);
     }
 
     sessions.sort((a, b) => a.dateObj - b.dateObj);
@@ -654,6 +667,7 @@
       <section class="block" aria-labelledby="h-latest">
         <div class="block-head"><h2 id="h-latest">Latest session</h2>${sessions.length > 1 ? '<a class="text-btn" href="#/sessions">See all</a>' : ''}</div>
         ${latest ? latestCard(latest) : emptyState('Nothing here yet', 'Your latest session will show up here.', 'calendar')}
+        ${drillsHomeCard()}
       </section>
 
       ${nextTimeCard(latest)}
@@ -1055,6 +1069,7 @@
     const info = { num: t.num, name: t.short, title: t.name, cat: t.cat.key };
     const tint = CATEGORIES.some((c) => c.key === t.cat.key) ? t.cat.key : 'other';
     const sessions = sessionsFor(t);
+    const drills = drillsFor(t);
     const ladder = STATUSES.map((s, i) => `<li class="${i < t.statusIdx ? 'on' : ''}${i === t.statusIdx ? ' current' : ''}">${s}${i === t.statusIdx ? '<span class="sr-only"> (current)</span>' : ''}</li>`).join('');
     return `<div class="sheet-hero">
         <div class="card-top">
@@ -1071,6 +1086,12 @@
         <div><p class="k">First taught</p><p class="v">${t.first ? esc(fmtISO(t.first) || t.first) : '-'}</p></div>
         <div><p class="k">Last updated</p><p class="v">${t.updated ? esc(fmtISO(t.updated) || t.updated) : '-'}</p></div>
       </div>
+      ${drills.length ? `<div class="block">
+        <div class="block-head"><h3 class="dsec-title" style="font-size:var(--fs-h3)">Home drill${drills.length === 1 ? '' : 's'}</h3><span class="meta">${drills.length}</span></div>
+        <ul class="link-list">${drills
+          .map((d) => `<li><a class="link-row drill-link" href="#/drills/${d.id}"><span class="dl-icon" aria-hidden="true">${icon('dumbbell', 18)}</span><span class="lr-text"><strong>${esc(d.title)}</strong>${d.fixes ? `<span>${mdInline(d.fixes)}</span>` : ''}</span><span class="arrow-btn" aria-hidden="true">${icon('arrowUpRight', 18)}</span></a></li>`)
+          .join('')}</ul>
+      </div>` : ''}
       <div class="block">
         <div class="block-head"><h3 class="dsec-title" style="font-size:var(--fs-h3)">Sessions</h3><span class="meta">${sessions.length}</span></div>
         ${sessions.length
@@ -1081,6 +1102,217 @@
               .join('')}</ul>`
           : emptyState('Nothing here yet', t.statusIdx < 0 ? 'Not taught yet. It will link here once a session covers it.' : 'No session mentions this yet.', 'calendar')}
       </div>`;
+  }
+
+  // ---------- Drills ----------
+
+  const slug = (s) => fold(s).replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'drill';
+  const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+
+  // drills.md: one "## Drill name" per drill, then "- **Label:** value" bullets and a
+  // numbered list under "How". Parsed by label, so order doesn't matter and missing
+  // fields are fine.
+  function parseDrills(raw) {
+    const found = [];
+    let d = null;
+    let field = null;
+    for (const line of clean(raw).split('\n')) {
+      const h = line.match(/^##\s+(.+?)\s*$/);
+      if (h) { d = { title: h[1], fields: {}, steps: [] }; found.push(d); field = null; continue; }
+      if (!d) continue;
+      const f = line.match(/^\s*[-*]\s+\*\*([^*]+?)\*\*\s*:?\s*(.*)$/);
+      if (f) { field = f[1].replace(/:\s*$/, '').trim().toLowerCase(); d.fields[field] = f[2].trim(); continue; }
+      const step = line.match(/^\s*\d+[.)]\s+(.*)$/);
+      if (step && field && /^(how|steps?)/.test(field)) { d.steps.push(step[1].trim()); continue; }
+      if (line.trim() && field && /^\s{2,}\S/.test(line)) {
+        if (d.steps.length && /^(how|steps?)/.test(field)) d.steps[d.steps.length - 1] += ' ' + line.trim();
+        else d.fields[field] = `${d.fields[field]} ${line.trim()}`.trim();
+      }
+    }
+    const used = new Set();
+    return found.map((x) => {
+      const get = (re) => { const k = Object.keys(x.fields).find((key) => re.test(key)); return k ? x.fields[k] : ''; };
+      const from = get(/^from/);
+      const dayM = from.match(/day\s*(\d+)/i);
+      const how = get(/^(how|steps?)/);
+      let id = slug(x.title);
+      while (used.has(id)) id += '-2';
+      used.add(id);
+      return {
+        id,
+        title: x.title,
+        fixes: get(/^fix/),
+        cue: get(/cue/),
+        techText: get(/^technique/),
+        date: (from.match(/\d{4}-\d{2}-\d{2}/) || [])[0] || '',
+        day: dayM ? dayM[1] : '',
+        status: /fixed/i.test(get(/^status/)) ? 'fixed' : 'active',
+        dose: get(/^dose/),
+        steps: x.steps.length ? x.steps : how ? [how] : [],
+      };
+    });
+  }
+
+  // "1 - Jab, 2 - Cross" -> technique rows; "all punches" -> every row in that category.
+  function drillLinks(d) {
+    return d.techText
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((label) => {
+        const all = label.match(/^all\s+(.+)$/i);
+        const cat = all ? CATEGORIES.find((c) => c.match.test(all[1].toLowerCase())) : null;
+        if (cat) return { kind: 'cat', label: label.charAt(0).toUpperCase() + label.slice(1), cat, techs: state.techniques.filter((t) => t.cat.key === cat.key) };
+        const t = findTechnique(label);
+        return t ? { kind: 'tech', label, tech: t, techs: [t] } : { kind: 'text', label, techs: [] };
+      });
+  }
+
+  // "Done today" ticks: { drillId: ['YYYY-MM-DD', ...] } in localStorage. If storage is
+  // blocked, ticks still work for this visit.
+  const DONE_KEY = 'muay-thai-log:drills-done';
+  let doneCache = null;
+
+  function doneMap() {
+    if (!doneCache) {
+      try { doneCache = JSON.parse(localStorage.getItem(DONE_KEY) || '{}'); } catch (e) { doneCache = {}; }
+      if (!doneCache || typeof doneCache !== 'object' || Array.isArray(doneCache)) doneCache = {};
+    }
+    return doneCache;
+  }
+
+  const doneDates = (id) => (Array.isArray(doneMap()[id]) ? doneMap()[id] : []);
+  const isDoneToday = (id) => doneDates(id).includes(toISO(today()));
+
+  function toggleDone(id) {
+    const t = toISO(today());
+    const was = isDoneToday(id);
+    const list = doneDates(id).filter((x) => x !== t);
+    if (!was) list.push(t);
+    doneMap()[id] = list.sort();
+    try { localStorage.setItem(DONE_KEY, JSON.stringify(doneMap())); } catch (e) { /* storage blocked - keep it for this visit */ }
+  }
+
+  const activeDrills = () => state.drills.filter((d) => d.status === 'active');
+  const drillsFor = (t) => activeDrills().filter((d) => d.techIds.has(t.id));
+
+  function renderDrills(focusId) {
+    const all = state.drills;
+    const active = activeDrills();
+    const fixed = all.length - active.length;
+    const focus = focusId ? all.find((d) => d.id === focusId) : null;
+    if (focus && state.drillFilter !== 'all' && state.drillFilter !== focus.status) state.drillFilter = 'all';
+
+    const header = `<header class="hero">
+      <div class="hero-top"><span class="eyebrow"><span class="dot"></span>Practice</span></div>
+      <h1 class="hero-title is-text">Home drills</h1>
+      <p class="hero-sub">${all.length ? `<strong>${plural(active.length, 'active drill')}</strong>${fixed ? `<span class="sep"></span><span>${fixed} fixed</span>` : ''}` : '<span>Short drills that fix what the coach corrects</span>'}</p>
+    </header>`;
+
+    if (!all.length) {
+      return `<section class="screen">${glow}${header}${emptyState('Nothing here yet', 'Home drills for the mistakes your coach corrects will show up here.', 'dumbbell')}</section>`;
+    }
+
+    const filters = [
+      { key: 'active', label: 'Active', n: active.length },
+      { key: 'fixed', label: 'Fixed', n: fixed },
+      { key: 'all', label: 'All', n: all.length },
+    ];
+
+    return `<section class="screen">${glow}${header}
+      <div id="drill-today">${drillToday()}</div>
+      <section class="block" aria-labelledby="h-drills">
+        <div class="block-head"><h2 id="h-drills">Drills</h2><span class="meta">Tick when done</span></div>
+        <div class="filters" role="group" aria-label="Filter drills">${filters
+          .map((f) => `<button type="button" class="chip" data-action="drill-filter" data-key="${f.key}" aria-pressed="${state.drillFilter === f.key}">${f.label}<span class="chip-count">${f.n}</span></button>`)
+          .join('')}</div>
+        <div id="drill-list">${drillList()}</div>
+      </section>
+    </section>`;
+  }
+
+  // Near-black summary card: how many active drills are ticked today.
+  function drillToday() {
+    const active = activeDrills();
+    if (!active.length) return '';
+    const done = active.filter((d) => isDoneToday(d.id)).length;
+    return `<section class="card dark drill-today" aria-label="Today: ${done} of ${active.length} drills done">
+      <div class="dt-row">
+        <div><span class="dt-num">${done}<small> / ${active.length}</small></span><span class="dt-label">done today</span></div>
+        <span class="dt-dots" aria-hidden="true">${active.map((d) => `<i${isDoneToday(d.id) ? ' class="on"' : ''}></i>`).join('')}</span>
+      </div>
+      <p class="dt-hint">${done === active.length ? 'All done for today. Rest well.' : 'A few minutes a day stops a mistake becoming a habit.'}</p>
+    </section>`;
+  }
+
+  function drillList() {
+    const f = state.drillFilter;
+    const list = state.drills.filter((d) => f === 'all' || d.status === f);
+    if (!list.length) {
+      return f === 'fixed'
+        ? emptyState('No fixed drills yet', 'A drill moves here once your coach stops correcting that mistake.', 'check')
+        : emptyState('Nothing to practise', 'Every drill is marked fixed. New ones appear when the coach corrects something.', 'dumbbell');
+    }
+    return `<div class="drill-list">${list.map(drillCard).join('')}</div>`;
+  }
+
+  function drillCard(d) {
+    const isActive = d.status === 'active';
+    const done = isActive && isDoneToday(d.id);
+    const days = doneDates(d.id).length;
+    const session = d.date ? sessionByDate(d.date) : null;
+    const chips = d.links.map((l) => {
+      if (l.kind === 'tech') {
+        const t = l.tech;
+        return `<button type="button" class="chip-sm chip-tap tint-${CATEGORIES.some((c) => c.key === t.cat.key) ? t.cat.key : 'other'}" data-action="open-tech" data-id="${t.id}" aria-haspopup="dialog">${t.num ? `<span class="chip-n">${esc(t.num)}</span>` : ''}${esc(t.short)}</button>`;
+      }
+      if (l.kind === 'cat') return `<button type="button" class="chip-sm chip-tap tint-${l.cat.key}" data-action="go-category" data-key="${l.cat.key}">${esc(l.label)}</button>`;
+      return `<span class="chip-sm">${esc(l.label)}</span>`;
+    });
+    if (d.day || d.date) {
+      const label = d.day ? `Day ${d.day}` : fmtISO(d.date);
+      chips.push(session
+        ? `<a class="chip-sm chip-tap chip-day" href="#/session/${esc(session.date)}" aria-label="From ${esc(label)}">${icon('calendar', 13, 2)}${esc(label)}</a>`
+        : `<span class="chip-sm chip-day">${icon('calendar', 13, 2)}${esc(label)}</span>`);
+    }
+    const foot = isActive || days
+      ? `<p class="drill-foot">${icon('flame', 15)}<span>${days ? `Practised ${plural(days, 'day')}` : 'Not practised yet'}</span>${done ? '<span class="sep"></span><strong>Done today</strong>' : ''}</p>`
+      : '';
+    return `<article class="card drill${isActive ? '' : ' is-fixed'}" id="drill-${d.id}" aria-labelledby="dn-${d.id}">
+      <div class="drill-top">
+        <div class="drill-heading">
+          <p class="drill-name" id="dn-${d.id}">${esc(d.title)}</p>
+          ${d.fixes ? `<h3 class="drill-fixes"><span class="sr-only">Fixes: </span>${mdInline(d.fixes)}</h3>` : ''}
+        </div>
+        ${isActive
+          ? `<button type="button" class="done-btn${done ? ' is-done' : ''}" data-action="drill-done" data-id="${d.id}" aria-pressed="${done}" aria-label="Done today: ${esc(d.title)}">${icon('check', 22, 2.5)}</button>`
+          : `<span class="fixed-badge">${icon('check', 14, 2.5)}Fixed</span>`}
+      </div>
+      ${chips.length ? `<div class="chips drill-chips">${chips.join('')}</div>` : ''}
+      ${d.cue ? `<div class="drill-cue"><p class="panel-label">Coach's cue</p><p class="drill-cue-text">${mdInline(d.cue)}</p></div>` : ''}
+      ${d.dose ? `<p class="drill-dose">${icon('timer', 16)}<span><b>Dose</b> ${mdInline(d.dose)}</span></p>` : ''}
+      ${d.steps.length ? `<div class="drill-how">
+        <button type="button" class="how-toggle" data-action="toggle-how" aria-expanded="false" aria-controls="how-${d.id}">
+          <span class="how-label">How to do it</span><span class="meta">${plural(d.steps.length, 'step')}</span>
+          <span class="tech-chev" aria-hidden="true">${icon('chevronDown', 18)}</span>
+        </button>
+        <div class="how-panel" id="how-${d.id}" inert><div class="how-inner"><ol class="how-steps">${d.steps.map((s) => `<li>${mdInline(s)}</li>`).join('')}</ol></div></div>
+      </div>` : ''}
+      ${foot}
+    </article>`;
+  }
+
+  // Compact Home card: how many drills to practise and how many are ticked today.
+  function drillsHomeCard() {
+    const active = activeDrills();
+    if (!active.length) return '';
+    const done = active.filter((d) => isDoneToday(d.id)).length;
+    const sub = done ? `${done} of ${active.length} done today` : 'None done yet today';
+    return `<a class="card drills-home" href="#/drills" aria-label="Home drills: ${plural(active.length, 'drill')} to practise, ${sub}">
+      <span class="dh-icon" aria-hidden="true">${icon('dumbbell', 22)}</span>
+      <span class="dh-text"><strong>${plural(active.length, 'drill')} to practise</strong><span>${sub}</span></span>
+      <span class="arrow-btn" aria-hidden="true">${icon('arrowUpRight', 20)}</span>
+    </a>`;
   }
 
   // ---------- Screens: Words ----------
@@ -1272,10 +1504,12 @@
     if (/^\/sessions\/?$/.test(h)) return { name: 'sessions', tab: 'sessions' };
     if (/^\/techniques\/?$/.test(h)) return { name: 'techniques', tab: 'techniques' };
     if (/^\/words\/?$/.test(h)) return { name: 'words', tab: 'words' };
+    const dr = h.match(/^\/drills(?:\/([a-z0-9-]+))?\/?$/);
+    if (dr) return { name: 'drills', tab: 'drills', arg: dr[1] };
     return { name: 'home', tab: 'home' };
   }
 
-  const TITLES = { home: 'Home', sessions: 'Sessions', techniques: 'Techniques', words: 'Words' };
+  const TITLES = { home: 'Home', sessions: 'Sessions', techniques: 'Techniques', drills: 'Drills', words: 'Words' };
 
   function render() {
     if (!state.loaded) return;
@@ -1291,6 +1525,7 @@
       else if (r.name === 'sessions') html = renderSessions();
       else if (r.name === 'techniques') html = renderTechniques();
       else if (r.name === 'words') html = renderWords();
+      else if (r.name === 'drills') html = renderDrills(r.arg);
       else html = renderHome();
     } catch (e) {
       console.warn('Render failed', e);
@@ -1307,6 +1542,7 @@
     document.title = `${s ? `Day ${s.day}` : TITLES[r.name] || 'Home'} · Muay Thai Log`;
 
     if (changed) window.scrollTo(0, 0);
+    if (r.name === 'drills' && r.arg) focusDrill(r.arg);
     if (r.name === 'session') setupScrollSpy();
   }
 
@@ -1397,6 +1633,25 @@
     else panel.setAttribute('inert', '');
   }
 
+  // Jump to a drill from a technique sheet or link: scroll it into view and ring it.
+  function focusDrill(id) {
+    const card = document.getElementById(`drill-${id}`);
+    if (!card) return;
+    card.classList.add('is-focus');
+    const top = card.getBoundingClientRect().top + window.scrollY - 24;
+    window.scrollTo({ top, behavior: 'auto' });
+  }
+
+  function toggleHow(btn, force) {
+    const box = btn.closest('.drill-how');
+    const open = force !== undefined ? force : btn.getAttribute('aria-expanded') !== 'true';
+    btn.setAttribute('aria-expanded', String(open));
+    box.classList.toggle('open', open);
+    const panel = box.querySelector('.how-panel');
+    if (open) panel.removeAttribute('inert');
+    else panel.setAttribute('inert', '');
+  }
+
   document.addEventListener('click', (e) => {
     const el = e.target.closest('[data-action]');
     if (!el) return;
@@ -1437,6 +1692,29 @@
       state.techFilter = el.dataset.key;
       view.querySelectorAll('[data-action="filter"]').forEach((b) => b.setAttribute('aria-pressed', String(b === el)));
       document.getElementById('tgrid').innerHTML = techGrid();
+    } else if (a === 'drill-filter') {
+      state.drillFilter = el.dataset.key;
+      view.querySelectorAll('[data-action="drill-filter"]').forEach((b) => b.setAttribute('aria-pressed', String(b === el)));
+      document.getElementById('drill-list').innerHTML = drillList();
+    } else if (a === 'drill-done') {
+      const id = el.dataset.id;
+      toggleDone(id);
+      const card = document.getElementById(`drill-${id}`);
+      const d = state.drills.find((x) => x.id === id);
+      if (card && d) {
+        const wasOpen = card.querySelector('.drill-how.open');
+        card.outerHTML = drillCard(d);
+        const fresh = document.getElementById(`drill-${id}`);
+        if (wasOpen) toggleHow(fresh.querySelector('.how-toggle'), true);
+        fresh.querySelector('.done-btn').focus({ preventScroll: true });
+      }
+      const today = document.getElementById('drill-today');
+      if (today) today.innerHTML = drillToday();
+    } else if (a === 'toggle-how') {
+      toggleHow(el);
+    } else if (a === 'go-category') {
+      state.techFilter = el.dataset.key;
+      location.hash = '#/techniques';
     } else if (a === 'open-tech') {
       const t = state.techniques.find((x) => x.id === el.dataset.id);
       if (t) openSheet(techSheet(t), el);
