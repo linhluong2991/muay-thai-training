@@ -12,5 +12,5 @@
 - [x] First class - 2026-10-09
 - [ ] 10 sessions
 - [ ] Full round on pads without stopping
-- [ ] First sparring session
+- [x] First sparring session - 2026-10-12
 - [ ] 50 sessions

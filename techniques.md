@@ -8,7 +8,7 @@ Add a row when a coach teaches something. Move status only when it actually chan
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
 | Stance (orthodox) | | Drilling | 2026-10-09 | 2026-10-09 | Left foot forward, rear foot out 45 degrees |
-| Guard | | Drilling | 2026-10-09 | 2026-10-09 | Hands cover the eyes, chin tucked |
+| Guard | | Drilling | 2026-10-09 | 2026-10-12 | Gloves lightly on the face, chin tucked, shoulders relaxed; eyes on the base of the neck |
 | Footwork - forward / back / left / right | | Drilling | 2026-10-09 | 2026-10-09 | One arm's length range; on the balls of the feet, rear heel slightly up |
 
 ## Punches
@@ -18,7 +18,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 |---|---|---|---|---|---|
 | 1 - Jab | | Drilling | 2026-10-09 | 2026-10-09 | Small step, shoulder rolls up, arm straight |
 | 2 - Cross | | Drilling | 2026-10-09 | 2026-10-09 | Pivot the rear foot |
-| 3 - Lead hook | | Drilling | 2026-10-09 | 2026-10-09 | Pivot lead foot, fist-elbow-shoulder level |
+| 3 - Lead hook | | Drilling | 2026-10-09 | 2026-10-12 | Pivot lead foot; fist, elbow and shoulder on one level |
 | 4 - Rear hook | | Drilling | 2026-10-09 | 2026-10-09 | Mirror of the lead hook |
 | 5 - Lead uppercut | | Drilling | 2026-10-09 | 2026-10-09 | Forearm vertical, fist one hand span from face |
 | 6 - Rear uppercut | | Drilling | 2026-10-09 | 2026-10-09 | Mirror of the lead uppercut |
@@ -49,6 +49,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 ## Combos
 | Combo | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|
+| 1-2 (jab-cross) | Drilling | 2026-10-12 | 2026-10-12 | Jab comes back as the cross goes out; pivot; exhale |
 
 ## Words to know
 - **Nak Muay** - Muay Thai practitioner
