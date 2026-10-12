@@ -9,6 +9,7 @@ My training log from Day 1 - Friday 2026-10-09.
 | `templates/session.md` | Blank session log - copy for each class |
 | `techniques.md` | Everything I've been taught + status |
 | `goals.md` | Goals and milestones |
+| `drills.md` | Home drills to fix my mistakes |
 | `images/` | Sketches and photos, named `YYYY-MM-DD-short-name.jpg` |
 | `PROJECT-INSTRUCTIONS.md` | Instructions for Pi Liang (the Project) |
 | `DESIGN.md` | Site design spec |

@@ -12,6 +12,7 @@ This Project tracks my Muay Thai training from Day 1 (Friday 2026-10-09). It wor
 - `sessions/YYYY-MM-DD.md` - one file per class, built from `templates/session.md`
 - `techniques.md` - every technique I've been taught, with its current status
 - `goals.md` - what I'm working toward, plus milestones reached
+- `drills.md` - home drills, one per mistake the coach corrects (Active / Fixed)
 - `images/` - photos of notebook sketches, gym boards, gear (named `YYYY-MM-DD-short-name.jpg`)
 - `data/sessions.json` - list of sessions the site reads (newest last)
 - `DESIGN.md` - site design spec; `BUILD-PROMPT.md` - prompt for Claude Code
@@ -31,6 +32,7 @@ I'm a beginner learning from Day 1, so each session file is a lesson note: what 
 7. **My notes** is my own section - what I noticed, how it felt, my thoughts. Only fill it when I send something; otherwise leave it empty. Never write it for me.
 8. Update `techniques.md`: add new techniques with the date first taught (start at Drilling if we practised it, Seen if only shown), and move status only when I say something changed.
 9. If a milestone in `goals.md` was reached, tick it with the date.
+9b. **Home drills:** when the coach corrects a mistake, add a drill to `drills.md` in the same format (Fixes, Coach's cue, Technique, From, Status: Active, Dose, How). Keep it short and doable at home without equipment. When I say a mistake is fixed, set its Status to Fixed - never delete it.
 10. Add the session to `data/sessions.json`: day, date, file, and a one-line summary.
 11. Publish: if you can reach the GitHub repo `linhluong2991/muay-thai-training` with push access, copy the changed note files into it, commit (e.g. "Add Day 2") and push - the live site updates by itself. If you can't, end your reply with the line for me to paste into Claude Code: `Publish the new notes.`
 12. Reply briefly: what you added, whether it's live, and at most one question.
