@@ -438,13 +438,21 @@
     const x = normName(a);
     const y = normName(b);
     if (!x || !y) return false;
-    if (x === y || x.startsWith(y + ' ') || y.startsWith(x + ' ')) return true;
+    if (x === y) return true;
+    // Prefix matches need a real word: "guard" ~ "guard and defence basics",
+    // but "1 2" (the 1-2 combo) must not match "1 2 3".
+    const [short, long] = x.length <= y.length ? [x, y] : [y, x];
+    if (/[a-z]/.test(short) && long.startsWith(short + ' ')) return true;
     const fx = x.split(' ')[0];
     const fy = y.split(' ')[0];
     return !/^\d+$/.test(fx) && fx.length > 3 && fx === fy;
   }
 
-  const findTechnique = (title) => state.techniques.find((t) => namesMatch(t.name, title)) || null;
+  // An exact name match wins over a loose one ("1-2-3 (...)" must not land on "1-2").
+  const findTechnique = (title) =>
+    state.techniques.find((t) => normName(t.name) === normName(title)) ||
+    state.techniques.find((t) => namesMatch(t.name, title)) ||
+    null;
 
   function techInfo(title) {
     const info = splitTitle(title);
