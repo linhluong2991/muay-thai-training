@@ -16,8 +16,8 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
-| 1 - Jab | | Drilling | 2026-10-09 | 2026-10-09 | Small step, shoulder rolls up, arm straight |
-| 2 - Cross | | Drilling | 2026-10-09 | 2026-10-09 | Pivot the rear foot |
+| 1 - Jab | | Drilling | 2026-10-09 | 2026-10-12 | Small step, shoulder rolls up; elbow forward, not out; arm straight, fist slightly tilted |
+| 2 - Cross | | Drilling | 2026-10-09 | 2026-10-12 | Pivot the rear foot; elbow forward, not out; fist slightly tilted |
 | 3 - Lead hook | | Drilling | 2026-10-09 | 2026-10-12 | Pivot lead foot; fist, elbow and shoulder on one level |
 | 4 - Rear hook | | Drilling | 2026-10-09 | 2026-10-09 | Mirror of the lead hook |
 | 5 - Lead uppercut | | Drilling | 2026-10-09 | 2026-10-09 | Forearm vertical, fist one hand span from face |
