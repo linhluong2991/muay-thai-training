@@ -50,6 +50,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Combo | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|
 | 1-2 (jab-cross) | Drilling | 2026-10-12 | 2026-10-12 | Jab comes back as the cross goes out; pivot; exhale |
+| 1-2-3 (jab-cross-lead hook) | Seen | 2026-10-12 | 2026-10-12 | The cross turns the hips, the hook turns them back |
 
 ## Words to know
 - **Nak Muay** - Muay Thai practitioner

@@ -57,3 +57,16 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   2. Check: both gloves resting on the forehead or cheekbones, elbows close to the ribs, chin tucked.
   3. Gentle contact, not squeezing - stay relaxed while the guard stays home.
   4. After every punch, the hand comes straight back to the same spot.
+
+## Combo shadowboxing
+- **Fixes:** In sparring I throw one punch, pause, then the next, instead of combos.
+- **Coach's cue:** Practise combos like 1-2 and 1-2-3.
+- **Technique:** 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook)
+- **From:** Day 2 (2026-10-12)
+- **Status:** Active
+- **Dose:** 3 rounds of 2 minutes, 30 seconds rest.
+- **How:**
+  1. Round 1: only 1-2. Say "one-two" as one word and throw it as one movement, then step back to guard.
+  2. Round 2: 1-2-3. Let the cross turn your hips so the hook comes straight after, no pause.
+  3. Round 3: mix them - 1-2, then 1-2-3, then 1-1-2.
+  4. Stay relaxed: shoulders down, breathe out on each punch ("tss-tss").
