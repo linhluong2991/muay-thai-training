@@ -1413,14 +1413,58 @@
 
   // Engine state. One 100ms interval drives everything, measured with performance.now(),
   // so pausing freezes the round clock and the calls together.
-  const caller = { s: null, timer: null, wake: null, audio: null, voice: null, result: null };
+  const caller = { s: null, timer: null, wake: null, voice: null, result: null, seq: 0 };
 
   function callerEvent(type, detail = {}) {
     // Lets tests (and future features) follow the caller without real audio.
     window.dispatchEvent(new CustomEvent('combo-caller', { detail: { type, t: performance.now(), ...detail } }));
   }
 
-  // --- Voice ---
+  // --- Sound: recorded clips, played as media ---
+  // On iPhone, speechSynthesis and Web Audio are muted by the silent switch and glitch
+  // when they overlap; <audio> media playback isn't muted. The clips are made on a Mac
+  // with audio/make_audio.py (voice: macOS "Samantha").
+  const VOICE_CLIPS = ['one', 'two', 'three', 'four', 'five', 'six', 'round-one', 'round-two', 'round-three', 'round-four', 'round-five', 'rest', 'done'];
+  const SFX_CLIPS = ['bell', 'bell-end', 'clack'];
+  const CLIP_GAP_MS = 80; // between chained numbers: "one" - "two" - "three"
+  const ROUND_LINE_DELAY_MS = 450; // "Round one" just after the start bell
+  const END_LINE_DELAY_MS = 900; // "Rest" / "Done" after the three end strikes
+  const clips = {};
+
+  function clip(name) {
+    if (!clips[name]) {
+      const el = new Audio(`audio/${SFX_CLIPS.includes(name) ? 'sfx' : 'voice'}/${name}.m4a`);
+      el.preload = 'auto';
+      const c = { el, failed: false, active: false };
+      el.addEventListener('error', () => { c.failed = true; });
+      clips[name] = c;
+    }
+    return clips[name];
+  }
+
+  // Inside the Start tap: load every clip and touch it once, so iPhone lets the page
+  // play it later without another tap.
+  function unlockClips() {
+    [...VOICE_CLIPS, ...SFX_CLIPS].forEach((name) => {
+      const c = clip(name);
+      if (c.unlocked || c.active) return;
+      try {
+        c.el.muted = true;
+        const p = c.el.play();
+        const settle = () => {
+          if (!c.active) { c.el.pause(); c.el.currentTime = 0; }
+          c.el.muted = false;
+          c.unlocked = true;
+        };
+        if (p && typeof p.then === 'function') p.then(settle, () => { c.el.muted = false; });
+        else settle();
+      } catch (e) {
+        c.el.muted = false;
+      }
+    });
+  }
+
+  // Fallback voice, only used when a clip can't load or play.
   function pickVoice() {
     if (!('speechSynthesis' in window)) return null;
     const voices = window.speechSynthesis.getVoices().filter((v) => /^en([-_]|$)/i.test(v.lang));
@@ -1430,12 +1474,8 @@
     return voices.sort((a, b) => score(b) - score(a))[0] || null;
   }
 
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.addEventListener?.('voiceschanged', () => { caller.voice = pickVoice(); });
-  }
-
-  function say(text) {
-    callerEvent('say', { text });
+  function speakFallback(text) {
+    callerEvent('fallback', { text });
     if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') return;
     try {
       const u = new SpeechSynthesisUtterance(text);
@@ -1443,66 +1483,95 @@
       if (caller.voice) u.voice = caller.voice;
       u.lang = caller.voice ? caller.voice.lang : 'en-US';
       u.rate = 1.1;
-      window.speechSynthesis.cancel(); // never queue up behind an old call
+      window.speechSynthesis.cancel();
       window.speechSynthesis.speak(u);
-    } catch (e) { /* no voice - the screen still shows every call */ }
+    } catch (e) { /* no voice at all - the screen still shows every call */ }
   }
 
-  // --- Bells (Web Audio, generated in code) ---
-  function audioCtx() {
-    if (!caller.audio) {
-      const AC = window.AudioContext || window.webkitAudioContext;
-      if (!AC) return null;
-      try { caller.audio = new AC(); } catch (e) { return null; }
-    }
-    if (caller.audio.state === 'suspended') caller.audio.resume().catch(() => {});
-    return caller.audio;
-  }
-
-  function strike(ctx, at) {
-    // A bell: a few inharmonic partials with a fast attack and long ring.
-    [[1, 0.5], [2.76, 0.22], [5.4, 0.12], [8.93, 0.05]].forEach(([ratio, level]) => {
-      const osc = ctx.createOscillator();
-      const g = ctx.createGain();
-      osc.type = 'sine';
-      osc.frequency.value = 830 * ratio;
-      g.gain.setValueAtTime(0.0001, at);
-      g.gain.exponentialRampToValueAtTime(level, at + 0.006);
-      g.gain.exponentialRampToValueAtTime(0.0001, at + 1.6 / Math.sqrt(ratio));
-      osc.connect(g).connect(ctx.destination);
-      osc.start(at);
-      osc.stop(at + 1.7);
+  function stopVoice() {
+    caller.seq++; // any running chain stops at its next step
+    VOICE_CLIPS.forEach((name) => {
+      const c = clips[name];
+      if (c && c.active) { c.active = false; c.el.pause(); c.el.currentTime = 0; }
     });
+    try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
   }
 
-  function clack(ctx, at) {
-    // Two sticks: a short burst of band-passed noise.
-    const len = Math.floor(ctx.sampleRate * 0.06);
-    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
-    const data = buf.getChannelData(0);
-    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 4);
-    const src = ctx.createBufferSource();
-    const bp = ctx.createBiquadFilter();
-    const g = ctx.createGain();
-    src.buffer = buf;
-    bp.type = 'bandpass';
-    bp.frequency.value = 2400;
-    bp.Q.value = 3;
-    g.gain.value = 1.4;
-    src.connect(bp).connect(g).connect(ctx.destination);
-    src.start(at);
+  // Play voice clips one after another; onDone runs when the last one has finished
+  // (or straight away if the fallback voice had to be used).
+  function voice(names, text, onDone = () => {}) {
+    stopVoice();
+    const token = caller.seq;
+    callerEvent('say', { text, clips: names });
+    const fallback = () => {
+      if (token !== caller.seq) return;
+      caller.seq++;
+      speakFallback(text);
+      onDone();
+    };
+    if (names.some((n) => clip(n).failed)) return fallback();
+    let i = 0;
+    const step = () => {
+      if (token !== caller.seq) return;
+      if (i >= names.length) return onDone();
+      const name = names[i++];
+      const c = clip(name);
+      if (c.failed) return fallback();
+      let finished = false;
+      const finish = () => {
+        if (finished) return;
+        finished = true;
+        clearTimeout(watchdog);
+        c.active = false;
+        if (token !== caller.seq) return;
+        if (i < names.length) setTimeout(step, CLIP_GAP_MS);
+        else onDone();
+      };
+      // If "ended" never arrives (a stalled clip), carry on anyway.
+      const watchdog = setTimeout(finish, ((Number.isFinite(c.el.duration) && c.el.duration) || 1) * 1000 + 700);
+      c.active = true;
+      c.el.muted = false;
+      try { c.el.currentTime = 0; } catch (e) { /* not loaded yet */ }
+      c.el.addEventListener('ended', finish, { once: true });
+      callerEvent('clip', { name });
+      let p;
+      try { p = c.el.play(); } catch (e) { p = Promise.reject(e); }
+      if (p && typeof p.catch === 'function') {
+        p.catch(() => {
+          if (finished) return;
+          finished = true;
+          clearTimeout(watchdog);
+          c.active = false;
+          fallback();
+        });
+      }
+    };
+    step();
   }
 
   function sound(kind) {
     callerEvent(kind);
-    const ctx = audioCtx();
-    if (!ctx) return;
+    const c = clip(kind);
+    if (c.failed) return;
     try {
-      const t = ctx.currentTime + 0.02;
-      if (kind === 'bell') strike(ctx, t);
-      if (kind === 'bell-end') [0, 0.32, 0.64].forEach((d) => strike(ctx, t + d));
-      if (kind === 'clack') [0, 0.2].forEach((d) => clack(ctx, t + d));
-    } catch (e) { /* audio is a bonus - the screen keeps working */ }
+      c.active = true; // so the unlock step in the Start tap leaves the first bell playing
+      c.unlocked = true;
+      c.el.addEventListener('ended', () => { c.active = false; }, { once: true });
+      c.el.muted = false;
+      c.el.currentTime = 0;
+      const p = c.el.play();
+      if (p && typeof p.catch === 'function') p.catch(() => { c.active = false; });
+    } catch (e) { c.active = false; /* the screen keeps working without bells */ }
+  }
+
+  const numberClips = (code) => comboNumbers(code).map((n) => NUM_WORDS[n]).filter((w) => VOICE_CLIPS.includes(w));
+  const roundClip = (n) => (VOICE_CLIPS.includes(`round-${NUM_WORDS[n]}`) ? [`round-${NUM_WORDS[n]}`] : []);
+
+  // Run a line a moment later, unless the session was stopped or paused in between.
+  function later(ms, fn) {
+    const s = caller.s;
+    const token = caller.seq;
+    setTimeout(() => { if (caller.s === s && caller.seq === token && !(s && s.paused)) fn(); }, ms);
   }
 
   // --- Screen wake lock ---
@@ -1551,20 +1620,19 @@
     const set = callerSettings();
     const pool = activeCombos(set);
     if (!pool.length) return;
-    // iPhone only allows sound that starts from a tap, so the audio context, the first
-    // bell and "Round one" all happen inside this click.
-    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* older Safari */ }
-    audioCtx();
     caller.result = null;
     caller.s = {
       pool, rounds: set.rounds, roundMs: set.roundMin * 60000, restMs: set.rest * 1000, base: PACES[set.pace].ms,
       phase: 'round', round: 1, elapsed: 0, nextCallAt: FIRST_CALL_MS, warned: false, paused: false,
-      calls: 0, current: null, last: null, bag: [], lastT: performance.now(),
+      calls: 0, current: null, last: null, bag: [], lastT: performance.now(), speaking: false, warnPending: false,
     };
     state.callerView = 'live';
     document.body.classList.add('caller-live');
     view.innerHTML = liveScreen();
+    // iPhone only plays sound that starts from a tap: the first bell starts here, and
+    // every other clip is loaded and unlocked in this same tap.
     beginRound(1);
+    unlockClips();
     clearInterval(caller.timer);
     caller.timer = setInterval(tickCaller, 100);
     requestWake();
@@ -1572,18 +1640,22 @@
 
   function beginRound(n) {
     const s = caller.s;
-    Object.assign(s, { phase: 'round', round: n, elapsed: 0, nextCallAt: FIRST_CALL_MS, warned: false, current: null });
+    Object.assign(s, { phase: 'round', round: n, elapsed: 0, nextCallAt: FIRST_CALL_MS, warned: false, warnPending: false, current: null });
+    stopVoice();
+    s.speaking = false;
     sound('bell');
-    say(`Round ${NUM_WORDS[n] || n}`);
+    later(ROUND_LINE_DELAY_MS, () => voice(roundClip(n), `Round ${NUM_WORDS[n] || n}`));
     updateLive(true);
   }
 
   function endRound() {
     const s = caller.s;
+    stopVoice();
+    s.speaking = false;
     sound('bell-end');
     if (s.round >= s.rounds) return finishCaller();
-    say('Rest');
     Object.assign(s, { phase: 'rest', elapsed: 0, current: null });
+    later(END_LINE_DELAY_MS, () => voice(['rest'], 'Rest'));
     updateLive(true);
   }
 
@@ -1597,15 +1669,24 @@
     s.elapsed += dt;
     if (s.phase === 'round') {
       const left = s.roundMs - s.elapsed;
-      if (!s.warned && left <= WARN_MS) { s.warned = true; sound('clack'); }
+      if (!s.warned && left <= WARN_MS) { s.warned = true; s.warnPending = true; }
+      if (s.warnPending && !s.speaking) { s.warnPending = false; sound('clack'); } // never on top of a call
       if (left <= 0) return endRound();
-      if (s.elapsed >= s.nextCallAt && left > 1200) {
+      if (s.elapsed >= s.nextCallAt && !s.speaking && left > 1200) {
         const c = nextCombo();
+        const gap = gapFor(c.code, s.base);
         s.current = c;
         s.calls++;
-        s.nextCallAt += gapFor(c.code, s.base); // on schedule, so gaps don't drift
-        say(spokenCombo(c.code));
+        // On schedule so gaps don't drift; if the last call ran long, count from now.
+        s.nextCallAt = s.elapsed - s.nextCallAt > 150 ? s.elapsed + gap : s.nextCallAt + gap;
+        s.speaking = true;
         callerEvent('call', { code: c.code, round: s.round });
+        voice(numberClips(c.code), spokenCombo(c.code), () => {
+          if (caller.s !== s) return;
+          s.speaking = false;
+          // The next call waits for this one to finish: never two calls at once.
+          s.nextCallAt = Math.max(s.nextCallAt, s.elapsed + (s.paused ? 0 : performance.now() - s.lastT));
+        });
         return updateLive(true);
       }
     } else if (s.phase === 'rest' && s.elapsed >= s.restMs) {
@@ -1615,6 +1696,7 @@
   }
 
   function teardownCaller() {
+    stopVoice();
     clearInterval(caller.timer);
     caller.timer = null;
     caller.s = null;
@@ -1624,9 +1706,10 @@
 
   function finishCaller() {
     const s = caller.s;
-    say('Done');
     caller.result = { rounds: s.round, calls: s.calls };
     teardownCaller();
+    const token = caller.seq;
+    setTimeout(() => { if (caller.seq === token && !caller.s) voice(['done'], 'Done'); }, END_LINE_DELAY_MS);
     state.callerView = 'done';
     view.innerHTML = renderCaller();
     window.scrollTo(0, 0);
@@ -1634,7 +1717,7 @@
 
   function stopCaller(rerender = true) {
     if (!caller.s) return;
-    try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+    stopVoice();
     callerEvent('stop');
     teardownCaller();
     state.callerView = 'setup';
@@ -1646,7 +1729,7 @@
     if (!s) return;
     s.paused = !s.paused;
     s.lastT = performance.now();
-    if (s.paused) { try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) { /* ignore */ } }
+    if (s.paused) { stopVoice(); s.speaking = false; }
     callerEvent(s.paused ? 'pause' : 'resume');
     updateLive(false);
   }
@@ -1749,7 +1832,7 @@
       <div class="caller-start">
         <button type="button" class="start-btn" data-action="caller-start"${on.length ? '' : ' disabled'}>${icon('play', 22, 2)}Start</button>
         <p class="start-note">${on.length ? `${plural(set.rounds, 'round')} of ${set.roundMin} min · about ${Math.round(totalMin)} min in total` : 'Turn on at least one combo to start.'}</p>
-        <p class="small-print">Sound on, phone where you can see it. Turn the silent switch off if you can't hear it.</p>
+        <p class="small-print">Sound on, phone where you can see it.</p>
       </div>
     </section>`;
   }
