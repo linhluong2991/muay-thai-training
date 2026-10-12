@@ -66,6 +66,10 @@
     rotate: '<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/>',
     dumbbell: '<path d="M17.596 12.768a2 2 0 1 0 2.829-2.829l-1.768-1.767a2 2 0 0 0 2.828-2.829l-2.828-2.828a2 2 0 0 0-2.829 2.828l-1.767-1.768a2 2 0 1 0-2.829 2.829z"/><path d="m2.5 21.5 1.4-1.4"/><path d="m20.1 3.9 1.4-1.4"/><path d="M5.343 21.485a2 2 0 1 0 2.829-2.828l1.767 1.768a2 2 0 1 0 2.829-2.829l-6.364-6.364a2 2 0 1 0-2.829 2.829l1.768 1.767a2 2 0 0 0-2.828 2.829z"/><path d="m9.6 14.4 4.8-4.8"/>',
     timer: '<line x1="10" x2="14" y1="2" y2="2"/><line x1="12" x2="15" y1="14" y2="11"/><circle cx="12" cy="14" r="8"/>',
+    volume: '<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>',
+    play: '<path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>',
+    pause: '<rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/>',
+    square: '<rect width="16" height="16" x="4" y="4" rx="2"/>',
   };
 
   const icon = (name, size = 20, sw = 1.75) =>
@@ -490,6 +494,8 @@
     techFilter: 'all',
     drills: [],
     drillFilter: 'active',
+    combos: [],
+    callerView: 'setup',
     wordsMode: 'list',
     wordsQuery: '',
     flash: { i: 0, order: null, revealed: false },
@@ -513,7 +519,7 @@
     const list = index && Array.isArray(index.sessions) ? index.sessions.filter((s) => s && parseISO(s.date)) : [];
     state.startDate = index && parseISO(index.startDate) ? index.startDate : null;
 
-    const [sessions, techText, goalsText, drillsText] = await Promise.all([
+    const [sessions, techText, goalsText, drillsText, combosText] = await Promise.all([
       Promise.all(
         list.map(async (s) => {
           let doc = null;
@@ -528,6 +534,7 @@
       fetchText('techniques.md').catch(() => { state.failed.techniques = true; return ''; }),
       fetchText('goals.md').catch(() => { state.failed.goals = true; return ''; }),
       fetchText('drills.md').catch(() => { state.failed.drills = true; return ''; }),
+      fetchText('combos.md').catch(() => ''),
     ]);
 
     try {
@@ -550,6 +557,11 @@
       });
     } catch (e) {
       console.warn('Could not parse drills.md', e);
+    }
+    try {
+      state.combos = buildComboPool(parseCombos(combosText));
+    } catch (e) {
+      console.warn('Could not parse combos.md', e);
     }
 
     sessions.sort((a, b) => a.dateObj - b.dateObj);
@@ -1218,7 +1230,7 @@
     </header>`;
 
     if (!all.length) {
-      return `<section class="screen">${glow}${header}${emptyState('Nothing here yet', 'Home drills for the mistakes your coach corrects will show up here.', 'dumbbell')}</section>`;
+      return `<section class="screen">${glow}${header}${callerEntryCard()}${emptyState('Nothing here yet', 'Home drills for the mistakes your coach corrects will show up here.', 'dumbbell')}</section>`;
     }
 
     const filters = [
@@ -1228,6 +1240,7 @@
     ];
 
     return `<section class="screen">${glow}${header}
+      ${callerEntryCard()}
       <div id="drill-today">${drillToday()}</div>
       <section class="block" aria-labelledby="h-drills">
         <div class="block-head"><h2 id="h-drills">Drills</h2><span class="meta">Tick when done</span></div>
@@ -1319,6 +1332,461 @@
     return `<a class="card drills-home" href="#/drills" aria-label="Home drills: ${plural(active.length, 'drill')} to practise, ${sub}">
       <span class="dh-icon" aria-hidden="true">${icon('dumbbell', 22)}</span>
       <span class="dh-text"><strong>${plural(active.length, 'drill')} to practise</strong><span>${sub}</span></span>
+      <span class="arrow-btn" aria-hidden="true">${icon('arrowUpRight', 20)}</span>
+    </a>`;
+  }
+
+  // ---------- Combo caller ----------
+  // A voice calls punch combos as numbers while Linh shadowboxes, in rounds with rests.
+  // Pool: "My combos" (Combos table in techniques.md) + "All basics" (combos.md).
+
+  const PUNCHES = { 1: 'jab', 2: 'cross', 3: 'lead hook', 4: 'rear hook', 5: 'lead uppercut', 6: 'rear uppercut' };
+  const NUM_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  const PACES = { slow: { label: 'Slow', ms: 5000 }, medium: { label: 'Medium', ms: 3500 }, fast: { label: 'Fast', ms: 2500 } };
+  const FIRST_CALL_MS = 2500; // after the bell and "Round one"
+  const WARN_MS = 10000; // two clacks 10 seconds before the round ends
+
+  // "1-2 (jab-cross)" -> "1-2"
+  const comboCode = (s) => {
+    const m = String(s || '').match(/^\s*(\d(?:\s*-\s*\d)*)(?!\d)/);
+    return m ? m[1].replace(/\s+/g, '') : '';
+  };
+  const comboNumbers = (code) => code.split('-').map(Number);
+  const punchNames = (code) => comboNumbers(code).map((n) => PUNCHES[n] || String(n)).join(', ');
+  const spokenCombo = (code) => comboNumbers(code).map((n) => NUM_WORDS[n] || String(n)).join(', ');
+
+  function parseCombos(raw) {
+    const { head, rows } = parseTable(clean(raw).split('\n'));
+    if (!head.length) return [];
+    const iCombo = Math.max(0, colIndex(head, /combo/));
+    const iPunches = colIndex(head, /punch/);
+    const iRange = colIndex(head, /range/);
+    return rows
+      .map((r) => ({ code: comboCode(stripMd(r[iCombo])), punches: iPunches >= 0 ? stripMd(r[iPunches]) : '', range: iRange >= 0 ? stripMd(r[iRange]) : '' }))
+      .filter((c) => c.code);
+  }
+
+  // Union of my combos and the basics, deduplicated by the number string.
+  function buildComboPool(basics) {
+    const pool = new Map();
+    for (const t of state.techniques.filter((x) => x.cat.key === 'combos')) {
+      const code = comboCode(t.name);
+      if (code && !pool.has(code)) pool.set(code, { code, punches: punchNames(code), range: '', mine: true, basic: false });
+    }
+    for (const b of basics) {
+      const c = pool.get(b.code);
+      if (c) Object.assign(c, { basic: true, punches: b.punches || c.punches, range: b.range });
+      else pool.set(b.code, { code: b.code, punches: b.punches || punchNames(b.code), range: b.range, mine: false, basic: true });
+    }
+    return [...pool.values()];
+  }
+
+  // Settings, remembered per device.
+  const CALLER_KEY = 'muay-thai-log:caller';
+  const CALLER_DEFAULTS = { rounds: 3, roundMin: 2, rest: 30, pace: 'medium', set: 'mine', off: [] };
+  let callerSettingsCache = null;
+
+  function callerSettings() {
+    if (!callerSettingsCache) {
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(CALLER_KEY) || '{}') || {}; } catch (e) { saved = {}; }
+      const pick = (v, ok, d) => (ok.includes(v) ? v : d);
+      callerSettingsCache = {
+        rounds: pick(saved.rounds, [1, 2, 3, 4, 5], CALLER_DEFAULTS.rounds),
+        roundMin: pick(saved.roundMin, [1, 2, 3], CALLER_DEFAULTS.roundMin),
+        rest: pick(saved.rest, [30, 60], CALLER_DEFAULTS.rest),
+        pace: pick(saved.pace, Object.keys(PACES), CALLER_DEFAULTS.pace),
+        set: pick(saved.set, ['mine', 'all'], CALLER_DEFAULTS.set),
+        off: Array.isArray(saved.off) ? saved.off.filter((x) => typeof x === 'string') : [],
+      };
+    }
+    return callerSettingsCache;
+  }
+
+  function saveCallerSettings() {
+    try { localStorage.setItem(CALLER_KEY, JSON.stringify(callerSettings())); } catch (e) { /* storage blocked - settings last for this visit */ }
+  }
+
+  const listedCombos = (set) => state.combos.filter((c) => (set.set === 'mine' ? c.mine : true));
+  const activeCombos = (set) => listedCombos(set).filter((c) => !set.off.includes(c.code));
+  const gapFor = (code, base) => base + 600 * Math.max(0, comboNumbers(code).length - 2);
+
+  // Engine state. One 100ms interval drives everything, measured with performance.now(),
+  // so pausing freezes the round clock and the calls together.
+  const caller = { s: null, timer: null, wake: null, audio: null, voice: null, result: null };
+
+  function callerEvent(type, detail = {}) {
+    // Lets tests (and future features) follow the caller without real audio.
+    window.dispatchEvent(new CustomEvent('combo-caller', { detail: { type, t: performance.now(), ...detail } }));
+  }
+
+  // --- Voice ---
+  function pickVoice() {
+    if (!('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices().filter((v) => /^en([-_]|$)/i.test(v.lang));
+    const novelty = /albert|bad news|bahh|bells|boing|bubbles|cellos|deranged|good news|hysterical|jester|organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|ralph|kathy|grandpa|grandma|eddy|flo|reed|rocko|sandy|shelley/i;
+    const natural = /samantha|daniel|karen|moira|serena|tessa|ava|allison|susan|evan|nathan|google (us|uk) english|microsoft (aria|jenny|guy|libby|ryan)/i;
+    const score = (v) => (v.localService ? 3 : 0) + (/^en[-_](us|gb)$/i.test(v.lang) ? 2 : 0) + (natural.test(v.name) ? 3 : 0) + (/enhanced|premium|natural/i.test(v.name) ? 2 : 0) - (novelty.test(v.name) ? 10 : 0);
+    return voices.sort((a, b) => score(b) - score(a))[0] || null;
+  }
+
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.addEventListener?.('voiceschanged', () => { caller.voice = pickVoice(); });
+  }
+
+  function say(text) {
+    callerEvent('say', { text });
+    if (!('speechSynthesis' in window) || typeof SpeechSynthesisUtterance === 'undefined') return;
+    try {
+      const u = new SpeechSynthesisUtterance(text);
+      if (!caller.voice) caller.voice = pickVoice();
+      if (caller.voice) u.voice = caller.voice;
+      u.lang = caller.voice ? caller.voice.lang : 'en-US';
+      u.rate = 1.1;
+      window.speechSynthesis.cancel(); // never queue up behind an old call
+      window.speechSynthesis.speak(u);
+    } catch (e) { /* no voice - the screen still shows every call */ }
+  }
+
+  // --- Bells (Web Audio, generated in code) ---
+  function audioCtx() {
+    if (!caller.audio) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return null;
+      try { caller.audio = new AC(); } catch (e) { return null; }
+    }
+    if (caller.audio.state === 'suspended') caller.audio.resume().catch(() => {});
+    return caller.audio;
+  }
+
+  function strike(ctx, at) {
+    // A bell: a few inharmonic partials with a fast attack and long ring.
+    [[1, 0.5], [2.76, 0.22], [5.4, 0.12], [8.93, 0.05]].forEach(([ratio, level]) => {
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = 830 * ratio;
+      g.gain.setValueAtTime(0.0001, at);
+      g.gain.exponentialRampToValueAtTime(level, at + 0.006);
+      g.gain.exponentialRampToValueAtTime(0.0001, at + 1.6 / Math.sqrt(ratio));
+      osc.connect(g).connect(ctx.destination);
+      osc.start(at);
+      osc.stop(at + 1.7);
+    });
+  }
+
+  function clack(ctx, at) {
+    // Two sticks: a short burst of band-passed noise.
+    const len = Math.floor(ctx.sampleRate * 0.06);
+    const buf = ctx.createBuffer(1, len, ctx.sampleRate);
+    const data = buf.getChannelData(0);
+    for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 4);
+    const src = ctx.createBufferSource();
+    const bp = ctx.createBiquadFilter();
+    const g = ctx.createGain();
+    src.buffer = buf;
+    bp.type = 'bandpass';
+    bp.frequency.value = 2400;
+    bp.Q.value = 3;
+    g.gain.value = 1.4;
+    src.connect(bp).connect(g).connect(ctx.destination);
+    src.start(at);
+  }
+
+  function sound(kind) {
+    callerEvent(kind);
+    const ctx = audioCtx();
+    if (!ctx) return;
+    try {
+      const t = ctx.currentTime + 0.02;
+      if (kind === 'bell') strike(ctx, t);
+      if (kind === 'bell-end') [0, 0.32, 0.64].forEach((d) => strike(ctx, t + d));
+      if (kind === 'clack') [0, 0.2].forEach((d) => clack(ctx, t + d));
+    } catch (e) { /* audio is a bonus - the screen keeps working */ }
+  }
+
+  // --- Screen wake lock ---
+  async function requestWake() {
+    const hint = () => { const el = document.getElementById('live-wake'); if (el) el.hidden = false; };
+    if (!('wakeLock' in navigator)) return hint();
+    try {
+      caller.wake = await navigator.wakeLock.request('screen');
+      caller.wake.addEventListener('release', () => { caller.wake = null; });
+    } catch (e) {
+      hint();
+    }
+  }
+
+  function releaseWake() {
+    if (caller.wake) caller.wake.release().catch(() => {});
+    caller.wake = null;
+  }
+
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && caller.s && !caller.wake) requestWake();
+  });
+
+  // --- Engine ---
+  function shuffled(list) {
+    const a = [...list];
+    for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+    return a;
+  }
+
+  // Shuffle bag: every combo once per pass (evenly spread), never the same one twice in a row.
+  function nextCombo() {
+    const s = caller.s;
+    if (!s.bag.length) {
+      s.bag = shuffled(s.pool);
+      if (s.pool.length > 1 && s.last && s.bag[0].code === s.last.code) {
+        const j = 1 + Math.floor(Math.random() * (s.bag.length - 1));
+        [s.bag[0], s.bag[j]] = [s.bag[j], s.bag[0]];
+      }
+    }
+    s.last = s.bag.shift();
+    return s.last;
+  }
+
+  function startCaller() {
+    const set = callerSettings();
+    const pool = activeCombos(set);
+    if (!pool.length) return;
+    // iPhone only allows sound that starts from a tap, so the audio context, the first
+    // bell and "Round one" all happen inside this click.
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* older Safari */ }
+    audioCtx();
+    caller.result = null;
+    caller.s = {
+      pool, rounds: set.rounds, roundMs: set.roundMin * 60000, restMs: set.rest * 1000, base: PACES[set.pace].ms,
+      phase: 'round', round: 1, elapsed: 0, nextCallAt: FIRST_CALL_MS, warned: false, paused: false,
+      calls: 0, current: null, last: null, bag: [], lastT: performance.now(),
+    };
+    state.callerView = 'live';
+    document.body.classList.add('caller-live');
+    view.innerHTML = liveScreen();
+    beginRound(1);
+    clearInterval(caller.timer);
+    caller.timer = setInterval(tickCaller, 100);
+    requestWake();
+  }
+
+  function beginRound(n) {
+    const s = caller.s;
+    Object.assign(s, { phase: 'round', round: n, elapsed: 0, nextCallAt: FIRST_CALL_MS, warned: false, current: null });
+    sound('bell');
+    say(`Round ${NUM_WORDS[n] || n}`);
+    updateLive(true);
+  }
+
+  function endRound() {
+    const s = caller.s;
+    sound('bell-end');
+    if (s.round >= s.rounds) return finishCaller();
+    say('Rest');
+    Object.assign(s, { phase: 'rest', elapsed: 0, current: null });
+    updateLive(true);
+  }
+
+  function tickCaller() {
+    const s = caller.s;
+    if (!s) return;
+    const t = performance.now();
+    const dt = Math.min(t - s.lastT, 1000); // a throttled background tab can't skip a round
+    s.lastT = t;
+    if (s.paused) return;
+    s.elapsed += dt;
+    if (s.phase === 'round') {
+      const left = s.roundMs - s.elapsed;
+      if (!s.warned && left <= WARN_MS) { s.warned = true; sound('clack'); }
+      if (left <= 0) return endRound();
+      if (s.elapsed >= s.nextCallAt && left > 1200) {
+        const c = nextCombo();
+        s.current = c;
+        s.calls++;
+        s.nextCallAt += gapFor(c.code, s.base); // on schedule, so gaps don't drift
+        say(spokenCombo(c.code));
+        callerEvent('call', { code: c.code, round: s.round });
+        return updateLive(true);
+      }
+    } else if (s.phase === 'rest' && s.elapsed >= s.restMs) {
+      return beginRound(s.round + 1);
+    }
+    updateLive(false);
+  }
+
+  function teardownCaller() {
+    clearInterval(caller.timer);
+    caller.timer = null;
+    caller.s = null;
+    releaseWake();
+    document.body.classList.remove('caller-live');
+  }
+
+  function finishCaller() {
+    const s = caller.s;
+    say('Done');
+    caller.result = { rounds: s.round, calls: s.calls };
+    teardownCaller();
+    state.callerView = 'done';
+    view.innerHTML = renderCaller();
+    window.scrollTo(0, 0);
+  }
+
+  function stopCaller(rerender = true) {
+    if (!caller.s) return;
+    try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) { /* ignore */ }
+    callerEvent('stop');
+    teardownCaller();
+    state.callerView = 'setup';
+    if (rerender) { view.innerHTML = renderCaller(); window.scrollTo(0, 0); }
+  }
+
+  function togglePause() {
+    const s = caller.s;
+    if (!s) return;
+    s.paused = !s.paused;
+    s.lastT = performance.now();
+    if (s.paused) { try { window.speechSynthesis && window.speechSynthesis.cancel(); } catch (e) { /* ignore */ } }
+    callerEvent(s.paused ? 'pause' : 'resume');
+    updateLive(false);
+  }
+
+  const mmss = (ms) => { const sec = Math.max(0, Math.ceil(ms / 1000)); return `${Math.floor(sec / 60)}:${pad(sec % 60)}`; };
+
+  // --- Screens ---
+  function liveScreen() {
+    return `<section class="live is-round" id="live" aria-label="Combo caller">
+      <div class="live-top">
+        <div><p class="live-round" id="live-round">Round 1 / 1</p><p class="live-state" id="live-state" hidden>Paused</p></div>
+        <p class="live-time" id="live-time" aria-live="off">0:00</p>
+      </div>
+      <div class="live-bar" aria-hidden="true"><span id="live-bar"></span></div>
+      <div class="live-main">
+        <p class="live-combo" id="live-combo">Round 1</p>
+        <p class="live-punches" id="live-punches">&nbsp;</p>
+      </div>
+      <p class="live-hint" id="live-wake" hidden>Keep your screen on - it may lock during the round.</p>
+      <div class="live-actions">
+        <button type="button" class="live-btn primary" id="live-pause" data-action="caller-pause">${icon('pause', 22, 2)}<span>Pause</span></button>
+        <button type="button" class="live-btn" data-action="caller-stop">${icon('square', 20, 2)}<span>Stop</span></button>
+      </div>
+    </section>`;
+  }
+
+  function updateLive(pop) {
+    const s = caller.s;
+    const el = (id) => document.getElementById(id);
+    const live = el('live');
+    if (!s || !live) return;
+    const rest = s.phase === 'rest';
+    live.classList.toggle('is-round', !rest);
+    live.classList.toggle('is-rest', rest);
+    live.classList.toggle('is-paused', s.paused);
+    live.classList.toggle('is-warning', !rest && s.warned);
+    const total = rest ? s.restMs : s.roundMs;
+    el('live-round').textContent = rest ? `Rest · next: round ${s.round + 1} of ${s.rounds}` : `Round ${s.round} / ${s.rounds}`;
+    el('live-state').hidden = !s.paused;
+    el('live-time').textContent = mmss(total - s.elapsed);
+    el('live-bar').style.transform = `scaleX(${Math.min(1, s.elapsed / total)})`;
+    const combo = el('live-combo');
+    const text = rest ? 'Rest' : s.current ? s.current.code : `Round ${s.round}`;
+    if (combo.textContent !== text || pop) {
+      combo.textContent = text;
+      combo.style.setProperty('--len', String(Math.max(3, text.length)));
+      el('live-punches').textContent = rest ? `Breathe. Round ${s.round + 1} starts soon.` : s.current ? s.current.punches : 'Get ready';
+      if (pop) { combo.classList.remove('pop'); void combo.offsetWidth; combo.classList.add('pop'); }
+    }
+    const btn = el('live-pause');
+    const label = s.paused ? 'Resume' : 'Pause';
+    if (btn.textContent.trim() !== label) btn.innerHTML = `${icon(s.paused ? 'play' : 'pause', 22, 2)}<span>${label}</span>`;
+  }
+
+  function segmented(key, options, value, label) {
+    return `<div class="seg" role="group" aria-label="${esc(label)}">${options
+      .map(([v, text]) => `<button type="button" data-action="caller-set" data-key="${key}" data-value="${v}" aria-pressed="${v === value}">${esc(text)}</button>`)
+      .join('')}</div>`;
+  }
+
+  function renderCaller() {
+    if (state.callerView === 'done' && caller.result) return callerDone();
+    const set = callerSettings();
+    const listed = listedCombos(set);
+    const on = activeCombos(set);
+    const totalMin = set.rounds * set.roundMin + ((set.rounds - 1) * set.rest) / 60;
+    const header = `<header class="hero">
+      <div class="hero-top"><a class="icon-btn ghost" href="#/drills" aria-label="Back to drills">${icon('chevronLeft', 22)}</a><span class="eyebrow"><span class="dot"></span>Practice</span></div>
+      <h1 class="hero-title is-text">Combo caller</h1>
+      <p class="hero-sub"><span>A voice calls combos as numbers while you shadowbox.</span></p>
+    </header>`;
+    if (!state.combos.length) {
+      return `<section class="screen">${glow}${header}${emptyState('Nothing here yet', 'Combos from techniques.md and combos.md will show up here.', 'volume')}</section>`;
+    }
+    const rows = listed
+      .map((c) => {
+        const isOn = !set.off.includes(c.code);
+        return `<li><button type="button" class="combo-row" role="checkbox" aria-checked="${isOn}" data-action="caller-combo" data-code="${esc(c.code)}">
+          <span class="check${isOn ? ' done' : ''}" aria-hidden="true">${isOn ? icon('check', 16, 2.5) : ''}</span>
+          <span class="combo-text"><strong>${esc(c.code)}</strong><span>${esc(c.punches)}</span></span>
+          ${c.mine && set.set === 'all' ? '<span class="combo-tag">Mine</span>' : ''}
+        </button></li>`;
+      })
+      .join('');
+    return `<section class="screen caller-setup">${glow}${header}
+      <section class="card caller-card" aria-label="Rounds">
+        <div class="set-row"><p class="set-label">Rounds</p>${segmented('rounds', [1, 2, 3, 4, 5].map((n) => [n, String(n)]), set.rounds, 'Rounds')}</div>
+        <div class="set-row"><p class="set-label">Round length</p>${segmented('roundMin', [[1, '1 min'], [2, '2 min'], [3, '3 min']], set.roundMin, 'Round length')}</div>
+        <div class="set-row"><p class="set-label">Rest</p>${segmented('rest', [[30, '30 s'], [60, '60 s']], set.rest, 'Rest between rounds')}</div>
+        <div class="set-row"><p class="set-label">Pace <span class="set-note">about ${(PACES[set.pace].ms / 1000).toString()} s between calls</span></p>${segmented('pace', Object.entries(PACES).map(([k, p]) => [k, p.label]), set.pace, 'Pace')}</div>
+      </section>
+      <section class="block" aria-labelledby="h-combos">
+        <div class="block-head"><h2 id="h-combos">Combos</h2><span class="meta">${on.length} of ${listed.length} on</span></div>
+        <div class="segmented" role="group" aria-label="Which combos">
+          <button type="button" data-action="caller-set" data-key="set" data-value="mine" aria-pressed="${set.set === 'mine'}">My combos</button>
+          <button type="button" data-action="caller-set" data-key="set" data-value="all" aria-pressed="${set.set === 'all'}">All basics</button>
+        </div>
+        ${listed.length ? `<div class="card combo-card"><ul class="combo-list">${rows}</ul></div>` : emptyState('No combos yet', 'Combos your coach teaches will show up here. Try All basics.', 'volume')}
+      </section>
+      <div class="caller-start">
+        <button type="button" class="start-btn" data-action="caller-start"${on.length ? '' : ' disabled'}>${icon('play', 22, 2)}Start</button>
+        <p class="start-note">${on.length ? `${plural(set.rounds, 'round')} of ${set.roundMin} min · about ${Math.round(totalMin)} min in total` : 'Turn on at least one combo to start.'}</p>
+        <p class="small-print">Sound on, phone where you can see it. Turn the silent switch off if you can't hear it.</p>
+      </div>
+    </section>`;
+  }
+
+  function callerDone() {
+    const r = caller.result;
+    const drill = state.drills.find((d) => /combo shadowboxing/i.test(d.title));
+    const canTick = drill && drill.status === 'active' && !isDoneToday(drill.id);
+    const ticked = drill && drill.status === 'active' && isDoneToday(drill.id);
+    return `<section class="screen">${glow}
+      <header class="hero">
+        <div class="hero-top"><a class="icon-btn ghost" href="#/drills" aria-label="Back to drills">${icon('chevronLeft', 22)}</a><span class="eyebrow"><span class="dot"></span>Combo caller</span></div>
+        <h1 class="hero-title is-text">Done</h1>
+        <p class="hero-sub"><span>Nice work. Shake out the arms.</span></p>
+      </header>
+      <section class="card stats done-stats" aria-label="Result">
+        <div class="stat"><span class="stat-num">${r.rounds}</span><span class="stat-label">${r.rounds === 1 ? 'Round' : 'Rounds'}</span></div>
+        <div class="stat"><span class="stat-num">${r.calls}</span><span class="stat-label">Combos called</span></div>
+      </section>
+      <p class="sr-only" role="status">Done - ${plural(r.rounds, 'round')}, ${plural(r.calls, 'combo')} called</p>
+      <div class="caller-start">
+        ${canTick ? `<button type="button" class="start-btn tick" data-action="caller-tick-drill" data-id="${drill.id}">${icon('check', 22, 2.5)}Mark ${esc(drill.title)} done today</button>` : ''}
+        ${ticked ? `<p class="done-note">${icon('check', 16, 2.5)}${esc(drill.title)} is ticked for today</p>` : ''}
+        <div class="done-actions">
+          <button type="button" class="pill-btn" data-action="caller-again">${icon('rotate', 18)}Go again</button>
+          <a class="pill-btn" href="#/drills">${icon('dumbbell', 18)}Back to drills</a>
+        </div>
+      </div>
+    </section>`;
+  }
+
+  // Entry card at the top of the Drills tab.
+  function callerEntryCard() {
+    if (!state.combos.length) return '';
+    return `<a class="card caller-entry tint-punches" href="#/caller">
+      <span class="ce-icon" aria-hidden="true">${icon('volume', 22)}</span>
+      <span class="dh-text"><strong>Combo caller</strong><span>A voice calls combos while you shadowbox</span></span>
       <span class="arrow-btn" aria-hidden="true">${icon('arrowUpRight', 20)}</span>
     </a>`;
   }
@@ -1512,12 +1980,13 @@
     if (/^\/sessions\/?$/.test(h)) return { name: 'sessions', tab: 'sessions' };
     if (/^\/techniques\/?$/.test(h)) return { name: 'techniques', tab: 'techniques' };
     if (/^\/words\/?$/.test(h)) return { name: 'words', tab: 'words' };
+    if (/^\/caller\/?$/.test(h)) return { name: 'caller', tab: 'drills' };
     const dr = h.match(/^\/drills(?:\/([a-z0-9-]+))?\/?$/);
     if (dr) return { name: 'drills', tab: 'drills', arg: dr[1] };
     return { name: 'home', tab: 'home' };
   }
 
-  const TITLES = { home: 'Home', sessions: 'Sessions', techniques: 'Techniques', drills: 'Drills', words: 'Words' };
+  const TITLES = { home: 'Home', sessions: 'Sessions', techniques: 'Techniques', drills: 'Drills', caller: 'Combo caller', words: 'Words' };
 
   function render() {
     if (!state.loaded) return;
@@ -1526,6 +1995,8 @@
     const key = `${r.name}:${r.arg || ''}`;
     const changed = key !== currentRoute;
     currentRoute = key;
+    if (caller.s && r.name !== 'caller') stopCaller(false); // leaving the caller stops it
+    if (changed && r.name === 'caller') state.callerView = 'setup';
 
     let html;
     try {
@@ -1534,6 +2005,7 @@
       else if (r.name === 'techniques') html = renderTechniques();
       else if (r.name === 'words') html = renderWords();
       else if (r.name === 'drills') html = renderDrills(r.arg);
+      else if (r.name === 'caller') html = renderCaller();
       else html = renderHome();
     } catch (e) {
       console.warn('Render failed', e);
@@ -1700,6 +2172,31 @@
       state.techFilter = el.dataset.key;
       view.querySelectorAll('[data-action="filter"]').forEach((b) => b.setAttribute('aria-pressed', String(b === el)));
       document.getElementById('tgrid').innerHTML = techGrid();
+    } else if (a === 'caller-set' || a === 'caller-combo') {
+      const set = callerSettings();
+      if (a === 'caller-set') {
+        const k = el.dataset.key;
+        set[k] = k === 'pace' || k === 'set' ? el.dataset.value : Number(el.dataset.value);
+      } else {
+        const code = el.dataset.code;
+        set.off = set.off.includes(code) ? set.off.filter((x) => x !== code) : [...set.off, code];
+      }
+      saveCallerSettings();
+      const y = window.scrollY;
+      const focusSel = a === 'caller-set' ? `[data-action="caller-set"][data-key="${el.dataset.key}"][data-value="${el.dataset.value}"]` : `[data-action="caller-combo"][data-code="${el.dataset.code}"]`;
+      view.innerHTML = renderCaller();
+      window.scrollTo(0, y);
+      const again = view.querySelector(focusSel);
+      if (again) again.focus({ preventScroll: true });
+    } else if (a === 'caller-start' || a === 'caller-again') {
+      startCaller();
+    } else if (a === 'caller-pause') {
+      togglePause();
+    } else if (a === 'caller-stop') {
+      stopCaller();
+    } else if (a === 'caller-tick-drill') {
+      if (!isDoneToday(el.dataset.id)) toggleDone(el.dataset.id);
+      view.innerHTML = renderCaller();
     } else if (a === 'drill-filter') {
       state.drillFilter = el.dataset.key;
       view.querySelectorAll('[data-action="drill-filter"]').forEach((b) => b.setAttribute('aria-pressed', String(b === el)));

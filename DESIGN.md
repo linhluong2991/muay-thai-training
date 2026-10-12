@@ -114,6 +114,7 @@ Status labels: Seen · Drilling · Clean on pads · Usable in sparring (same as 
 ### 5. Drills
 Home drills that fix what the coach corrects, from `drills.md`.
 - Glow header: label "Practice", title **"Home drills"**, subtitle "N active drills · N fixed".
+- **Combo caller** card at the top (above Today): lilac (Punches tint) card with an ink circle and lime speaker icon, "Combo caller" + "A voice calls combos while you shadowbox", ↗. Opens `#/caller`. Hidden if there are no combos.
 - **Today** (the near-black card): big "done / active" numeral with "done today", one dot per active drill (lime when ticked), and a short line of encouragement.
 - Filter chips: **Active** (default) · Fixed · All, with counts. Empty Fixed view: "No fixed drills yet".
 - One white card per drill:
@@ -126,7 +127,18 @@ Home drills that fix what the coach corrects, from `drills.md`.
 - **Done today:** a round 48px check button top-right on each Active drill. Grey outline when not done, lime fill with an ink check when done. Stored in `localStorage` (`muay-thai-log:drills-done`, a list of dates per drill), so it's per device and resets each day. "Practised N days" counts the stored dates. If storage is blocked, ticks still work until the page is closed.
 - **Fixed** drills look calmer: outlined instead of white, no lime, a small mint "Fixed" badge instead of the check button.
 
-### 6. Words
+### 6. Combo caller (`#/caller`, opened from the Drills tab; the Drills tab stays active)
+A voice calls punch combos as numbers while Linh shadowboxes - like a coach on pads - so she throws combos as one movement.
+- **Combos:** "My combos" = the Combos table in `techniques.md` (the number part, e.g. "1-2"); "All basics" = `combos.md` (Combo | Punches | Range, read by header). The pool is both, deduplicated by the number string; mine are tagged "Mine" in All basics.
+- **Setup:** glow header with a back button, "Combo caller". White card of segmented controls (ink pill = selected, 44px): Rounds 1-5 (default 3), Round length 1/2/3 min (2), Rest 30/60 s (30), Pace Slow/Medium/Fast (Medium) with "about N s between calls". Then a "My combos / All basics" segmented switch and a tickable list (number in 18/800, punch names small; lime check circle when on). Big lavender-strong "Start" button (64px), the total time under it, and small print. Settings are remembered in `localStorage` (`muay-thai-log:caller`).
+- **Calls:** pace gap = Slow 5 s / Medium 3.5 s / Fast 2.5 s, + 0.6 s per punch beyond the second, on a fixed schedule. First call 2.5 s after the round bell. Shuffle bag: every combo once per pass, never the same twice in a row.
+- **Sound:** `speechSynthesis`, numbers only ("one, two, three"), rate 1.1, the most natural local en-US/en-GB voice (novelty voices skipped). "Round one" at the start of each round, "Rest" at the end of a round, "Done" after the last. Bells made with Web Audio: one strike at round start, three at round end, two short clacks 10 s before the end. Everything starts from the Start tap (iPhone needs a tap for sound); `navigator.audioSession.type = 'playback'` where Safari supports it.
+- **Live screen** (full screen, nav hidden): `--ink` background. "Round 2 / 3" top left, big countdown (56px) top right - it turns lime in the last 10 s - and a lime progress bar. The current combo in huge lime type, sized to its length (about 170px for "1-2", 72px for "1-6-3-2" at 360px) with a short pop on each call, punch names under it. Large Pause/Resume (lime) and Stop (outline) buttons, 64px. A "Paused" pill when paused.
+- **Rest:** the whole screen turns calm `--lavender-soft` with ink text: "Rest", the countdown, and "next: round N of M".
+- **Screen Wake Lock** keeps the screen on while running; if it isn't available, a small hint "Keep your screen on" shows.
+- **Finish:** "Done" with Rounds and Combos called numerals, a lime "Mark Combo shadowboxing done today" button (only if that drill is Active and not ticked yet - uses the same done-today storage), "Go again" and "Back to drills". Leaving the screen stops the caller.
+
+### 7. Words
 - Search field ("Search words...").
 - All New words rows from every session, deduplicated by standard term, sorted A-Z. Each row: standard term (bold), what I said, note, the Example line (same style as Session detail), and the "Day N" where it first appeared.
 - Search matches what I said, the standard term, the note and the example.
@@ -137,6 +149,7 @@ Home drills that fix what the coach corrects, from `drills.md`.
 - `data/sessions.json` lists sessions (GitHub Pages can't list folders). Pi Liang adds a row each time a session is logged.
 - Parse `sessions/*.md` by headings: `##` = section, `###` = technique, `**From class**` / `**How it works**` = the two parts, markdown tables for New words.
 - Parse `techniques.md` tables (category = `##` heading) and `goals.md` checkboxes.
+- Parse `combos.md` (Combo | Punches | Range table) for the Combo caller.
 - Parse `drills.md`: each `##` is a drill; the `- **Label:**` bullets are read by label (Fixes, Coach's cue, Technique, From, Status, Dose, How + numbered list), so order doesn't matter and missing fields are skipped. Technique names match `techniques.md` rows; "all punches" (all + a category) means every technique in that category.
 - Render markdown with a pinned CDN version of `marked`. Escape everything else.
 - If a file fails to load or parse, show a friendly empty state ("Nothing here yet") and never a blank page.
