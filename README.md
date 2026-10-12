@@ -10,6 +10,7 @@ My training log from Day 1 - Friday 2026-10-09.
 | `techniques.md` | Everything I've been taught + status |
 | `goals.md` | Goals and milestones |
 | `drills.md` | Home drills to fix my mistakes |
+| `combos.md` | Basic combos for the Combo caller |
 | `images/` | Sketches and photos, named `YYYY-MM-DD-short-name.jpg` |
 | `PROJECT-INSTRUCTIONS.md` | Instructions for Pi Liang (the Project) |
 | `DESIGN.md` | Site design spec |
