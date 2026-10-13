@@ -1344,7 +1344,7 @@
   const PUNCHES = { 1: 'jab', 2: 'cross', 3: 'lead hook', 4: 'rear hook', 5: 'lead uppercut', 6: 'rear uppercut' };
   const NUM_WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
   const PACES = { slow: { label: 'Slow', ms: 5000 }, medium: { label: 'Medium', ms: 3500 }, fast: { label: 'Fast', ms: 2500 } };
-  const FIRST_CALL_MS = 2500; // after the bell and "Round one"
+  const FIRST_CALL_GAP_MS = 1500; // the first combo of a round: this long after "Round N" has ended
   const WARN_MS = 10000; // two clacks 10 seconds before the round ends
 
   // "1-2 (jab-cross)" -> "1-2"
@@ -1544,6 +1544,8 @@
           finished = true;
           clearTimeout(watchdog);
           c.active = false;
+          // Refused after it had already started: don't say it a second time.
+          if (c.el.currentTime > 0.05) { if (token === caller.seq) onDone(); return; }
           fallback();
         });
       }
@@ -1551,14 +1553,14 @@
     step();
   }
 
-  function sound(kind) {
+  function sound(kind, at) {
     if (waReady([kind])) {
       callerEvent(kind, { player: 'webaudio' });
       try {
         const src = wa.ctx.createBufferSource();
         src.buffer = wa.buffers[kind];
         src.connect(wa.ctx.destination);
-        src.start(wa.ctx.currentTime + 0.01);
+        src.start(Math.max(at || 0, wa.ctx.currentTime + 0.01));
       } catch (e) { /* bells are a bonus */ }
       return;
     }
@@ -1594,7 +1596,9 @@
   const LEAD_S = 0.06; // start sounds just ahead on the audio clock
   const NUM_GAP_S = 0.06; // between chained number clips (missing combo file only)
   const LOOKAHEAD_MS = 200; // a call is queued this early so it starts exactly on time
-  const wa = { ctx: null, buffers: {}, loading: null, comboFiles: new Set(), voice: [], silent: null };
+  const WARM_S = 0.3; // silent warm-up buffer in the Start tap; the first bell comes after it
+  const READY_TIMEOUT_MS = 10000; // "Getting ready..." never waits longer than this
+  const wa = { ctx: null, buffers: {}, loading: null, comboFiles: new Set(), voice: [], silent: null, warmEnd: 0 };
 
   const clipPath = (name) => `audio/${SFX_CLIPS.includes(name) || name === 'silence' ? 'sfx' : 'voice'}/${name}.m4a`;
   const AudioCtx = () => window.AudioContext || window.webkitAudioContext;
@@ -1646,12 +1650,13 @@
     if (AC && !wa.ctx) { try { wa.ctx = new AC(); } catch (e) { wa.ctx = null; } }
     if (wa.ctx) {
       if (wa.ctx.state !== 'running') { try { wa.ctx.resume(); } catch (e) { /* ignore */ } }
-      try { // a tiny silent buffer, played in the tap, fully unlocks iPhone's audio
+      try { // a short silent buffer, played in the tap, unlocks and warms up iPhone's audio
         const src = wa.ctx.createBufferSource();
-        src.buffer = wa.ctx.createBuffer(1, 1, 22050);
+        src.buffer = wa.ctx.createBuffer(1, Math.round(22050 * WARM_S), 22050);
         src.connect(wa.ctx.destination);
         src.start(0);
-      } catch (e) { /* ignore */ }
+        wa.warmEnd = wa.ctx.currentTime + WARM_S;
+      } catch (e) { wa.warmEnd = 0; }
     }
     loadBuffers();
   }
@@ -1691,7 +1696,7 @@
       if (onEnd) onEnd(ctx.currentTime);
     };
     wa.voice = srcs;
-    return { start, end: t };
+    return { start, end: t, sources: srcs.length };
   }
 
   // Round lines, "Rest", "Done": Web Audio if ready, else the <audio> player, else speech.
@@ -1702,6 +1707,39 @@
     } else {
       voice([name], text);
     }
+  }
+
+  // Between the Start tap and the first bell ("Getting ready..."): every sound this
+  // session needs is decoded, and the audio clock is really running - it has moved past
+  // the warm-up buffer. Linh's iPhone doubled the first combo of each round when sound
+  // started while the audio was still getting going or a clip wasn't decoded yet.
+  function neededClips(set, pool) {
+    const names = ['bell', 'bell-end', 'clack', 'rest', 'done'];
+    for (let n = 1; n <= set.rounds; n++) names.push(...roundClip(n));
+    pool.forEach((c) => names.push(...callClips(c.code)));
+    return [...new Set(names)];
+  }
+
+  async function prepareAudio(set, pool) {
+    if (!wa.ctx) return; // no Web Audio: the <audio> player needs no decoding
+    const deadline = performance.now() + READY_TIMEOUT_MS;
+    const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+    const within = (p) => Promise.race([p, wait(Math.max(0, deadline - performance.now()))]);
+    await within(loadBuffers());
+    // A clip that didn't decode gets one more try, in the real audio context.
+    const missing = neededClips(set, pool).filter((n) => !wa.buffers[n]);
+    if (missing.length) {
+      await within(Promise.all(missing.map((name) => fetch(clipPath(name))
+        .then((r) => { if (!r.ok) throw new Error(name); return r.arrayBuffer(); })
+        .then((data) => decode(wa.ctx, data))
+        .then((buf) => { wa.buffers[name] = buf; })
+        .catch(() => { /* this clip uses a fallback */ }))));
+    }
+    while (performance.now() < deadline && !(wa.ctx.state === 'running' && wa.ctx.currentTime >= wa.warmEnd)) {
+      if (wa.ctx.state !== 'running') { try { wa.ctx.resume(); } catch (e) { /* ignore */ } }
+      await wait(50);
+    }
+    callerEvent('ready', { missing: neededClips(set, pool).filter((n) => !wa.buffers[n]), state: wa.ctx.state });
   }
 
   // --- Screen wake lock ---
@@ -1755,37 +1793,85 @@
   }
 
   function startCaller() {
+    if (caller.s || caller.prep) return; // a second tap never starts a second session
     const set = callerSettings();
     const pool = activeCombos(set);
     if (!pool.length) return;
     caller.result = null;
-    // iPhone only plays sound that starts from a tap: the audio context, the silent loop
-    // and the first bell start here, and the <audio> fallback clips are unlocked too.
+    // iPhone only plays sound that starts from a tap: the audio context, its warm-up
+    // buffer and the silent loop start here, and the <audio> fallback clips are unlocked.
     startAudioSession();
+    unlockClips();
+    requestWake();
+    const prep = {};
+    caller.prep = prep;
+    view.querySelectorAll('[data-action="caller-start"], [data-action="caller-again"]').forEach((b) => {
+      b.disabled = true;
+      b.textContent = 'Getting ready...';
+    });
+    prepareAudio(set, pool).catch(() => {}).then(() => {
+      if (caller.prep !== prep) return; // left the screen while getting ready
+      caller.prep = null;
+      beginSession(set, pool);
+    });
+  }
+
+  function cancelPrep() {
+    if (!caller.prep) return;
+    caller.prep = null;
+    releaseWake();
+    stopAudioSession();
+  }
+
+  function beginSession(set, pool) {
     caller.s = {
       pool, rounds: set.rounds, roundMs: set.roundMin * 60000, restMs: set.rest * 1000, base: PACES[set.pace].ms,
-      phase: 'round', round: 1, elapsed: 0, nextCallAt: FIRST_CALL_MS, warned: false, paused: false,
+      phase: 'round', round: 1, elapsed: 0, nextCallAt: Infinity, waitLine: false, warned: false, paused: false,
       calls: 0, current: null, last: null, bag: [], lastT: performance.now(), speaking: false, warnPending: false,
-      pending: null, noMore: false, log: [], perf0: performance.now(), ctx0: wa.ctx ? wa.ctx.currentTime : null,
+      pending: null, noMore: false, log: [], firsts: [], perf0: performance.now(), ctx0: wa.ctx ? wa.ctx.currentTime : null,
     };
     state.callerView = 'live';
     document.body.classList.add('caller-live');
     view.innerHTML = liveScreen();
     beginRound(1);
-    unlockClips();
     clearInterval(caller.timer);
     caller.timer = setInterval(tickCaller, 100);
     cancelAnimationFrame(caller.raf);
     caller.raf = requestAnimationFrame(frameCaller);
-    requestWake();
+    if (!caller.wake) requestWake();
   }
 
+  // Bell, then "Round N", then the first combo FIRST_CALL_GAP_MS after "Round N" has
+  // really ended. With Web Audio all three are scheduled on the audio clock.
   function beginRound(n) {
     const s = caller.s;
     stopVoice();
-    Object.assign(s, { phase: 'round', round: n, elapsed: 0, nextCallAt: FIRST_CALL_MS, warned: false, warnPending: false, current: null, pending: null, speaking: false, noMore: false });
-    sound('bell');
-    later(ROUND_LINE_DELAY_MS, () => line(roundClip(n)[0] || 'round-one', `Round ${NUM_WORDS[n] || n}`));
+    Object.assign(s, { phase: 'round', round: n, elapsed: 0, nextCallAt: Infinity, waitLine: true, warned: false, warnPending: false, current: null, pending: null, speaking: false, noMore: false });
+    const name = roundClip(n)[0] || 'round-one';
+    const text = `Round ${NUM_WORDS[n] || n}`;
+    const first = { round: n, lineStart: null, lineEnd: null, sched: null, start: null, player: '', sources: 0, n: null };
+    s.firsts.push(first);
+    if (waReady([name])) {
+      const bellAt = Math.max(wa.ctx.currentTime + LEAD_S, wa.warmEnd || 0);
+      sound('bell', bellAt);
+      callerEvent('say', { text, clips: [name], player: 'webaudio' });
+      const plan = waVoice([name], bellAt + ROUND_LINE_DELAY_MS / 1000);
+      first.lineStart = plan.start - s.ctx0;
+      first.lineEnd = plan.end - s.ctx0;
+      s.nextCallAt = (plan.end - wa.ctx.currentTime) * 1000 + FIRST_CALL_GAP_MS; // the round clock is at 0
+      s.waitLine = false;
+    } else {
+      sound('bell');
+      later(ROUND_LINE_DELAY_MS, () => {
+        first.lineStart = sessionNow(s);
+        voice([name], text, () => {
+          if (caller.s !== s || s.round !== n || s.phase !== 'round' || !s.waitLine) return;
+          first.lineEnd = sessionNow(s);
+          s.waitLine = false;
+          s.nextCallAt = s.elapsed + (s.paused ? 0 : performance.now() - s.lastT) + FIRST_CALL_GAP_MS;
+        });
+      });
+    }
     updateLive(true);
   }
 
@@ -1812,6 +1898,7 @@
   }
 
   function makeCall(s, startInMs) {
+    if (caller.s !== s || s.speaking) return; // never two calls at once
     const c = nextCombo();
     const names = callClips(c.code);
     s.calls++;
@@ -1823,6 +1910,7 @@
     if (waReady(names)) {
       entry.player = 'webaudio';
       const plan = waVoice(names, wa.ctx.currentTime + startInMs / 1000, (t) => afterCall(s, entry, t - s.ctx0));
+      entry.sources = plan.sources;
       entry.sched = plan.start - s.ctx0;
       entry.len = plan.end - plan.start;
       s.pending = { combo: c, at: plan.start, entry }; // shown when the voice starts (frameCaller)
@@ -1830,12 +1918,19 @@
       entry.watchdog = setTimeout(() => { stopWaVoice(); afterCall(s, entry, sessionNow(s)); }, startInMs + entry.len * 1000 + 1500);
     } else {
       entry.player = wa.ctx ? 'media (no buffer)' : 'media';
+      entry.sources = 1;
       entry.sched = entry.shown = sessionNow(s);
       s.current = c;
       voice(names, spokenCombo(c.code), () => afterCall(s, entry, sessionNow(s)));
       updateLive(true);
     }
     if (prev && prev.end != null) prev.gap = entry.sched - prev.end;
+    const first = s.firsts[s.firsts.length - 1];
+    if (first && first.round === s.round && first.n == null) {
+      Object.assign(first, { n: entry.n, code: c.code, sched: entry.sched, start: entry.shown, player: entry.player, sources: entry.sources });
+      entry.first = first;
+      if (entry.player !== 'webaudio') callerEvent('first', { ...first });
+    }
     callerEvent('call', { code: c.code, round: s.round, player: entry.player, clips: names, sched: entry.sched, len: entry.len });
   }
 
@@ -1861,7 +1956,7 @@
       if (s.warnPending && (!s.speaking || waReady(['clack']))) { s.warnPending = false; sound('clack'); }
       if (left <= 0) return endRound();
       const dueIn = s.nextCallAt - s.elapsed;
-      const names = !s.speaking && !s.noMore ? callClips(peekCombo().code) : null;
+      const names = !s.speaking && !s.noMore && !s.waitLine ? callClips(peekCombo().code) : null;
       if (names && dueIn <= (waReady(names) ? LOOKAHEAD_MS : 0)) {
         const len = waReady(names) ? clipsLength(names) * 1000 : names.length * 450;
         const startIn = Math.max(0, dueIn);
@@ -1884,6 +1979,10 @@
       s.pending = null;
       s.current = p.combo;
       p.entry.shown = wa.ctx.currentTime - s.ctx0;
+      if (p.entry.first) {
+        p.entry.first.start = p.entry.shown;
+        callerEvent('first', { ...p.entry.first });
+      }
       callerEvent('show', { code: p.combo.code, n: p.entry.n });
       updateLive(true);
     }
@@ -1933,6 +2032,7 @@
       if (open && open.end == null) { clearTimeout(open.watchdog); open.end = sessionNow(s); open.player += ' (paused)'; }
       Object.assign(s, { speaking: false, pending: null });
     } else {
+      if (s.waitLine) { s.waitLine = false; s.nextCallAt = s.elapsed; } // the pause cut "Round N" short
       s.nextCallAt = Math.max(s.nextCallAt, s.elapsed + 800); // a breath before the next call
     }
     callerEvent(s.paused ? 'pause' : 'resume');
@@ -1998,10 +2098,13 @@
   // Times are seconds since Start, on the audio clock.
   function debugText(s) {
     const f = (x) => (x == null ? '    -' : x.toFixed(2).padStart(5));
+    const g = (x) => (x == null ? '-' : x.toFixed(2));
     const player = wa.ctx ? `webaudio (${wa.ctx.state})` : 'media';
     const head = [
       `player ${player} · buffers ${Object.keys(wa.buffers).length} · combo files ${wa.comboFiles.size} · silent loop ${wa.silent && !wa.silent.paused ? 'on' : 'off'}`,
-      `now ${f(sessionNow(s))} · next call in ${s.speaking ? 'after this one' : `${Math.max(0, (s.nextCallAt - s.elapsed) / 1000).toFixed(2)} s`}`,
+      `now ${f(sessionNow(s))} · next call in ${s.speaking ? 'after this one' : !Number.isFinite(s.nextCallAt) ? 'after the round line' : `${Math.max(0, (s.nextCallAt - s.elapsed) / 1000).toFixed(2)} s`}`,
+      // First call of each round: scheduled, actual start, player x sources, when "Round N" ended.
+      ...s.firsts.slice(-3).map((x) => `R${x.round} 1st ${g(x.sched)} start ${g(x.start)} ${x.player || '-'}${x.sources ? ` x${x.sources}` : ''} · line end ${g(x.lineEnd)}`),
       ' #  combo    sched  shown   len    end    gap  player',
     ];
     const rows = s.log.slice(-6).map((e) => `${String(e.n).padStart(2)}  ${e.code.padEnd(8)} ${f(e.sched)}  ${f(e.shown)} ${f(e.len)}  ${f(e.end)}  ${f(e.gap)}  ${e.player}`);
@@ -2054,7 +2157,7 @@
         ${listed.length ? `<div class="card combo-card"><ul class="combo-list">${rows}</ul></div>` : emptyState('No combos yet', 'Combos your coach teaches will show up here. Try All basics.', 'volume')}
       </section>
       <div class="caller-start">
-        <button type="button" class="start-btn" data-action="caller-start"${on.length ? '' : ' disabled'}>${icon('play', 22, 2)}Start</button>
+        <button type="button" class="start-btn" data-action="caller-start"${on.length && !caller.prep ? '' : ' disabled'}>${caller.prep ? 'Getting ready...' : `${icon('play', 22, 2)}Start`}</button>
         <p class="start-note">${on.length ? `${plural(set.rounds, 'round')} of ${set.roundMin} min · about ${Math.round(totalMin)} min in total` : 'Turn on at least one combo to start.'}</p>
         <p class="small-print">Sound on, phone where you can see it.</p>
       </div>
@@ -2081,7 +2184,7 @@
         ${canTick ? `<button type="button" class="start-btn tick" data-action="caller-tick-drill" data-id="${drill.id}">${icon('check', 22, 2.5)}Mark ${esc(drill.title)} done today</button>` : ''}
         ${ticked ? `<p class="done-note">${icon('check', 16, 2.5)}${esc(drill.title)} is ticked for today</p>` : ''}
         <div class="done-actions">
-          <button type="button" class="pill-btn" data-action="caller-again">${icon('rotate', 18)}Go again</button>
+          <button type="button" class="pill-btn" data-action="caller-again"${caller.prep ? ' disabled' : ''}>${caller.prep ? 'Getting ready...' : `${icon('rotate', 18)}Go again`}</button>
           <a class="pill-btn" href="#/drills">${icon('dumbbell', 18)}Back to drills</a>
         </div>
       </div>
@@ -2304,6 +2407,7 @@
     const changed = key !== currentRoute;
     currentRoute = key;
     if (caller.s && r.name !== 'caller') stopCaller(false); // leaving the caller stops it
+    if (r.name !== 'caller') cancelPrep();
     if (changed && r.name === 'caller') state.callerView = 'setup';
     if (r.name === 'caller') {
       if (r.arg === 'debug') state.callerDebug = true;
