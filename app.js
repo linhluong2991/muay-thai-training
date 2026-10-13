@@ -496,6 +496,7 @@
     drillFilter: 'active',
     combos: [],
     callerView: 'setup',
+    callerDebug: false,
     wordsMode: 'list',
     wordsQuery: '',
     flash: { i: 0, order: null, revealed: false },
@@ -1420,10 +1421,10 @@
     window.dispatchEvent(new CustomEvent('combo-caller', { detail: { type, t: performance.now(), ...detail } }));
   }
 
-  // --- Sound: recorded clips, played as media ---
-  // On iPhone, speechSynthesis and Web Audio are muted by the silent switch and glitch
-  // when they overlap; <audio> media playback isn't muted. The clips are made on a Mac
-  // with audio/make_audio.py (voice: macOS "Samantha").
+  // --- Fallback player: recorded clips as <audio> media ---
+  // Used only when Web Audio (below) isn't available or a buffer failed to decode; it
+  // falls back to speechSynthesis in turn. Clips are made on a Mac with
+  // audio/make_audio.py (voice: macOS "Samantha", 220 words per minute).
   const VOICE_CLIPS = ['one', 'two', 'three', 'four', 'five', 'six', 'round-one', 'round-two', 'round-three', 'round-four', 'round-five', 'rest', 'done'];
   const SFX_CLIPS = ['bell', 'bell-end', 'clack'];
   const CLIP_GAP_MS = 80; // between chained numbers: "one" - "two" - "three"
@@ -1445,7 +1446,7 @@
   // Inside the Start tap: load every clip and touch it once, so iPhone lets the page
   // play it later without another tap.
   function unlockClips() {
-    [...VOICE_CLIPS, ...SFX_CLIPS].forEach((name) => {
+    [...VOICE_CLIPS, ...SFX_CLIPS, ...[...wa.comboFiles].map((c) => `combo-${c}`)].forEach((name) => {
       const c = clip(name);
       if (c.unlocked || c.active) return;
       try {
@@ -1489,6 +1490,7 @@
   }
 
   function stopVoice() {
+    stopWaVoice();
     caller.seq++; // any running chain stops at its next step
     VOICE_CLIPS.forEach((name) => {
       const c = clips[name];
@@ -1550,7 +1552,17 @@
   }
 
   function sound(kind) {
-    callerEvent(kind);
+    if (waReady([kind])) {
+      callerEvent(kind, { player: 'webaudio' });
+      try {
+        const src = wa.ctx.createBufferSource();
+        src.buffer = wa.buffers[kind];
+        src.connect(wa.ctx.destination);
+        src.start(wa.ctx.currentTime + 0.01);
+      } catch (e) { /* bells are a bonus */ }
+      return;
+    }
+    callerEvent(kind, { player: 'media' });
     const c = clip(kind);
     if (c.failed) return;
     try {
@@ -1572,6 +1584,124 @@
     const s = caller.s;
     const token = caller.seq;
     setTimeout(() => { if (caller.s === s && caller.seq === token && !(s && s.paused)) fn(); }, ms);
+  }
+
+  // --- Web Audio player (main) ---
+  // Linh's iPhone retests: live speech glitched, and chained <audio> clips started late
+  // and unevenly, so a combo broke up and ran into the next call. Now every combo is ONE
+  // recorded phrase (audio/voice/combo-1-2-5-2.m4a), decoded once and started exactly
+  // on the audio clock. If a combo file is missing, its number clips are chained instead.
+  const LEAD_S = 0.06; // start sounds just ahead on the audio clock
+  const NUM_GAP_S = 0.06; // between chained number clips (missing combo file only)
+  const LOOKAHEAD_MS = 200; // a call is queued this early so it starts exactly on time
+  const wa = { ctx: null, buffers: {}, loading: null, comboFiles: new Set(), voice: [], silent: null };
+
+  const clipPath = (name) => `audio/${SFX_CLIPS.includes(name) || name === 'silence' ? 'sfx' : 'voice'}/${name}.m4a`;
+  const AudioCtx = () => window.AudioContext || window.webkitAudioContext;
+
+  function decode(ctx, data) {
+    return new Promise((resolve, reject) => {
+      const p = ctx.decodeAudioData(data, resolve, reject); // Safari's older callback form too
+      if (p && typeof p.then === 'function') p.then(resolve, reject);
+    });
+  }
+
+  // Fetch and decode every clip once. Runs when the caller screen opens: an
+  // OfflineAudioContext decodes without a tap, and the buffers play in the real context.
+  function loadBuffers() {
+    if (wa.loading) return wa.loading;
+    if (!AudioCtx()) return Promise.resolve();
+    const OAC = window.OfflineAudioContext || window.webkitOfflineAudioContext;
+    let decoder = null;
+    try { decoder = OAC ? new OAC(1, 1, 48000) : null; } catch (e) { decoder = null; }
+    decoder = decoder || wa.ctx;
+    if (!decoder) return Promise.resolve(); // decode after the Start tap instead
+    wa.loading = fetch('audio/voice/combos.json', { cache: 'no-cache' })
+      .then((r) => (r.ok ? r.json() : {}))
+      .catch(() => ({}))
+      .then((m) => {
+        (Array.isArray(m.combos) ? m.combos : []).forEach((c) => wa.comboFiles.add(c));
+        const names = [...VOICE_CLIPS, ...SFX_CLIPS, ...[...wa.comboFiles].map((c) => `combo-${c}`)];
+        return Promise.all(names.map((name) => fetch(clipPath(name))
+          .then((r) => { if (!r.ok) throw new Error(name); return r.arrayBuffer(); })
+          .then((data) => decode(decoder, data))
+          .then((buf) => { wa.buffers[name] = buf; })
+          .catch(() => { /* this clip uses a fallback */ })));
+      })
+      .then(() => callerEvent('buffers', { count: Object.keys(wa.buffers).length }));
+    return wa.loading;
+  }
+
+  // Inside the Start tap (iPhone's rule for sound).
+  function startAudioSession() {
+    try { if (navigator.audioSession) navigator.audioSession.type = 'playback'; } catch (e) { /* older Safari */ }
+    // A silent looping <audio> keeps iPhone in media playback, so the silent switch
+    // doesn't mute Web Audio. Stopped on Stop and after "Done".
+    try {
+      if (!wa.silent) { wa.silent = new Audio(clipPath('silence')); wa.silent.loop = true; wa.silent.preload = 'auto'; }
+      const p = wa.silent.play();
+      if (p && typeof p.catch === 'function') p.catch(() => {});
+    } catch (e) { /* no silent loop - the switch may mute sound */ }
+    const AC = AudioCtx();
+    if (AC && !wa.ctx) { try { wa.ctx = new AC(); } catch (e) { wa.ctx = null; } }
+    if (wa.ctx) {
+      if (wa.ctx.state !== 'running') { try { wa.ctx.resume(); } catch (e) { /* ignore */ } }
+      try { // a tiny silent buffer, played in the tap, fully unlocks iPhone's audio
+        const src = wa.ctx.createBufferSource();
+        src.buffer = wa.ctx.createBuffer(1, 1, 22050);
+        src.connect(wa.ctx.destination);
+        src.start(0);
+      } catch (e) { /* ignore */ }
+    }
+    loadBuffers();
+  }
+
+  function stopAudioSession() {
+    try { if (wa.silent) wa.silent.pause(); } catch (e) { /* ignore */ }
+  }
+
+  const waReady = (names) => !!wa.ctx && names.length > 0 && names.every((n) => wa.buffers[n]);
+  const clipsLength = (names) => names.reduce((t, n, i) => t + wa.buffers[n].duration + (i ? NUM_GAP_S : 0), 0);
+  const callClips = (code) => (wa.comboFiles.has(code) ? [`combo-${code}`] : numberClips(code));
+
+  function stopWaVoice() {
+    wa.voice.forEach((src) => { src.onended = null; try { src.stop(); } catch (e) { /* already stopped */ } });
+    wa.voice = [];
+  }
+
+  // One voice at a time: stop whatever is playing, then schedule `names` back to back
+  // from audio time `at`. onEnd(audioTime) runs when the last one has really ended.
+  function waVoice(names, at, onEnd) {
+    const ctx = wa.ctx;
+    stopWaVoice();
+    let t = Math.max(at || 0, ctx.currentTime + LEAD_S);
+    const start = t;
+    const srcs = names.map((name, i) => {
+      const src = ctx.createBufferSource();
+      src.buffer = wa.buffers[name];
+      src.connect(ctx.destination);
+      src.start(t);
+      t += src.buffer.duration + (i < names.length - 1 ? NUM_GAP_S : 0);
+      return src;
+    });
+    const last = srcs[srcs.length - 1];
+    last.onended = () => {
+      if (wa.voice[wa.voice.length - 1] !== last) return;
+      wa.voice = [];
+      if (onEnd) onEnd(ctx.currentTime);
+    };
+    wa.voice = srcs;
+    return { start, end: t };
+  }
+
+  // Round lines, "Rest", "Done": Web Audio if ready, else the <audio> player, else speech.
+  function line(name, text) {
+    if (waReady([name])) {
+      callerEvent('say', { text, clips: [name], player: 'webaudio' });
+      waVoice([name]);
+    } else {
+      voice([name], text);
+    }
   }
 
   // --- Screen wake lock ---
@@ -1603,17 +1733,25 @@
   }
 
   // Shuffle bag: every combo once per pass (evenly spread), never the same one twice in a row.
+  function fillBag(s) {
+    if (s.bag.length) return;
+    s.bag = shuffled(s.pool);
+    if (s.pool.length > 1 && s.last && s.bag[0].code === s.last.code) {
+      const j = 1 + Math.floor(Math.random() * (s.bag.length - 1));
+      [s.bag[0], s.bag[j]] = [s.bag[j], s.bag[0]];
+    }
+  }
+
   function nextCombo() {
     const s = caller.s;
-    if (!s.bag.length) {
-      s.bag = shuffled(s.pool);
-      if (s.pool.length > 1 && s.last && s.bag[0].code === s.last.code) {
-        const j = 1 + Math.floor(Math.random() * (s.bag.length - 1));
-        [s.bag[0], s.bag[j]] = [s.bag[j], s.bag[0]];
-      }
-    }
+    fillBag(s);
     s.last = s.bag.shift();
     return s.last;
+  }
+
+  // Seconds since the session started, on the audio clock when there is one.
+  function sessionNow(s) {
+    return wa.ctx && s.ctx0 != null ? wa.ctx.currentTime - s.ctx0 : (performance.now() - s.perf0) / 1000;
   }
 
   function startCaller() {
@@ -1621,42 +1759,91 @@
     const pool = activeCombos(set);
     if (!pool.length) return;
     caller.result = null;
+    // iPhone only plays sound that starts from a tap: the audio context, the silent loop
+    // and the first bell start here, and the <audio> fallback clips are unlocked too.
+    startAudioSession();
     caller.s = {
       pool, rounds: set.rounds, roundMs: set.roundMin * 60000, restMs: set.rest * 1000, base: PACES[set.pace].ms,
       phase: 'round', round: 1, elapsed: 0, nextCallAt: FIRST_CALL_MS, warned: false, paused: false,
       calls: 0, current: null, last: null, bag: [], lastT: performance.now(), speaking: false, warnPending: false,
+      pending: null, noMore: false, log: [], perf0: performance.now(), ctx0: wa.ctx ? wa.ctx.currentTime : null,
     };
     state.callerView = 'live';
     document.body.classList.add('caller-live');
     view.innerHTML = liveScreen();
-    // iPhone only plays sound that starts from a tap: the first bell starts here, and
-    // every other clip is loaded and unlocked in this same tap.
     beginRound(1);
     unlockClips();
     clearInterval(caller.timer);
     caller.timer = setInterval(tickCaller, 100);
+    cancelAnimationFrame(caller.raf);
+    caller.raf = requestAnimationFrame(frameCaller);
     requestWake();
   }
 
   function beginRound(n) {
     const s = caller.s;
-    Object.assign(s, { phase: 'round', round: n, elapsed: 0, nextCallAt: FIRST_CALL_MS, warned: false, warnPending: false, current: null });
     stopVoice();
-    s.speaking = false;
+    Object.assign(s, { phase: 'round', round: n, elapsed: 0, nextCallAt: FIRST_CALL_MS, warned: false, warnPending: false, current: null, pending: null, speaking: false, noMore: false });
     sound('bell');
-    later(ROUND_LINE_DELAY_MS, () => voice(roundClip(n), `Round ${NUM_WORDS[n] || n}`));
+    later(ROUND_LINE_DELAY_MS, () => line(roundClip(n)[0] || 'round-one', `Round ${NUM_WORDS[n] || n}`));
     updateLive(true);
   }
 
   function endRound() {
     const s = caller.s;
     stopVoice();
-    s.speaking = false;
+    Object.assign(s, { speaking: false, pending: null });
     sound('bell-end');
     if (s.round >= s.rounds) return finishCaller();
     Object.assign(s, { phase: 'rest', elapsed: 0, current: null });
-    later(END_LINE_DELAY_MS, () => voice(['rest'], 'Rest'));
+    later(END_LINE_DELAY_MS, () => line('rest', 'Rest'));
     updateLive(true);
+  }
+
+  // The voice of a call has ended: the next call comes one pace gap after this moment.
+  function afterCall(s, entry, endedAt) {
+    if (caller.s !== s || entry.end != null) return;
+    clearTimeout(entry.watchdog);
+    entry.end = endedAt;
+    s.speaking = false;
+    const sinceTick = s.paused ? 0 : performance.now() - s.lastT;
+    s.nextCallAt = s.elapsed + sinceTick + gapFor(entry.code, s.base);
+    callerEvent('ended', { code: entry.code, n: entry.n });
+  }
+
+  function makeCall(s, startInMs) {
+    const c = nextCombo();
+    const names = callClips(c.code);
+    s.calls++;
+    s.speaking = true;
+    const entry = { n: s.calls, code: c.code, names, player: '', sched: null, shown: null, len: null, end: null, gap: null };
+    const prev = s.log[s.log.length - 1];
+    s.log.push(entry);
+    if (s.log.length > 60) s.log.shift();
+    if (waReady(names)) {
+      entry.player = 'webaudio';
+      const plan = waVoice(names, wa.ctx.currentTime + startInMs / 1000, (t) => afterCall(s, entry, t - s.ctx0));
+      entry.sched = plan.start - s.ctx0;
+      entry.len = plan.end - plan.start;
+      s.pending = { combo: c, at: plan.start, entry }; // shown when the voice starts (frameCaller)
+      // If "ended" never arrives (an interrupted audio context), carry on anyway.
+      entry.watchdog = setTimeout(() => { stopWaVoice(); afterCall(s, entry, sessionNow(s)); }, startInMs + entry.len * 1000 + 1500);
+    } else {
+      entry.player = wa.ctx ? 'media (no buffer)' : 'media';
+      entry.sched = entry.shown = sessionNow(s);
+      s.current = c;
+      voice(names, spokenCombo(c.code), () => afterCall(s, entry, sessionNow(s)));
+      updateLive(true);
+    }
+    if (prev && prev.end != null) prev.gap = entry.sched - prev.end;
+    callerEvent('call', { code: c.code, round: s.round, player: entry.player, clips: names, sched: entry.sched, len: entry.len });
+  }
+
+  // The combo the next call will use, without taking it from the bag.
+  function peekCombo() {
+    const s = caller.s;
+    fillBag(s);
+    return s.bag[0];
   }
 
   function tickCaller() {
@@ -1670,24 +1857,17 @@
     if (s.phase === 'round') {
       const left = s.roundMs - s.elapsed;
       if (!s.warned && left <= WARN_MS) { s.warned = true; s.warnPending = true; }
-      if (s.warnPending && !s.speaking) { s.warnPending = false; sound('clack'); } // never on top of a call
+      // Web Audio mixes the clacks with the voice; the <audio> fallback waits for a gap.
+      if (s.warnPending && (!s.speaking || waReady(['clack']))) { s.warnPending = false; sound('clack'); }
       if (left <= 0) return endRound();
-      if (s.elapsed >= s.nextCallAt && !s.speaking && left > 1200) {
-        const c = nextCombo();
-        const gap = gapFor(c.code, s.base);
-        s.current = c;
-        s.calls++;
-        // On schedule so gaps don't drift; if the last call ran long, count from now.
-        s.nextCallAt = s.elapsed - s.nextCallAt > 150 ? s.elapsed + gap : s.nextCallAt + gap;
-        s.speaking = true;
-        callerEvent('call', { code: c.code, round: s.round });
-        voice(numberClips(c.code), spokenCombo(c.code), () => {
-          if (caller.s !== s) return;
-          s.speaking = false;
-          // The next call waits for this one to finish: never two calls at once.
-          s.nextCallAt = Math.max(s.nextCallAt, s.elapsed + (s.paused ? 0 : performance.now() - s.lastT));
-        });
-        return updateLive(true);
+      const dueIn = s.nextCallAt - s.elapsed;
+      const names = !s.speaking && !s.noMore ? callClips(peekCombo().code) : null;
+      if (names && dueIn <= (waReady(names) ? LOOKAHEAD_MS : 0)) {
+        const len = waReady(names) ? clipsLength(names) * 1000 : names.length * 450;
+        const startIn = Math.max(0, dueIn);
+        // Never start a call that would still be talking when the round ends.
+        if (s.elapsed + startIn + len > s.roundMs - 250) s.noMore = true;
+        else makeCall(s, startIn);
       }
     } else if (s.phase === 'rest' && s.elapsed >= s.restMs) {
       return beginRound(s.round + 1);
@@ -1695,10 +1875,26 @@
     updateLive(false);
   }
 
+  // Every frame: show a queued combo the moment its voice starts on the audio clock.
+  function frameCaller() {
+    const s = caller.s;
+    if (!s) return;
+    if (s.pending && wa.ctx && wa.ctx.currentTime >= s.pending.at) {
+      const p = s.pending;
+      s.pending = null;
+      s.current = p.combo;
+      p.entry.shown = wa.ctx.currentTime - s.ctx0;
+      callerEvent('show', { code: p.combo.code, n: p.entry.n });
+      updateLive(true);
+    }
+    caller.raf = requestAnimationFrame(frameCaller);
+  }
+
   function teardownCaller() {
     stopVoice();
     clearInterval(caller.timer);
     caller.timer = null;
+    cancelAnimationFrame(caller.raf);
     caller.s = null;
     releaseWake();
     document.body.classList.remove('caller-live');
@@ -1709,7 +1905,8 @@
     caller.result = { rounds: s.round, calls: s.calls };
     teardownCaller();
     const token = caller.seq;
-    setTimeout(() => { if (caller.seq === token && !caller.s) voice(['done'], 'Done'); }, END_LINE_DELAY_MS);
+    setTimeout(() => { if (caller.seq === token && !caller.s) line('done', 'Done'); }, END_LINE_DELAY_MS);
+    setTimeout(() => { if (!caller.s) stopAudioSession(); }, END_LINE_DELAY_MS + 2500);
     state.callerView = 'done';
     view.innerHTML = renderCaller();
     window.scrollTo(0, 0);
@@ -1720,6 +1917,7 @@
     stopVoice();
     callerEvent('stop');
     teardownCaller();
+    stopAudioSession();
     state.callerView = 'setup';
     if (rerender) { view.innerHTML = renderCaller(); window.scrollTo(0, 0); }
   }
@@ -1729,7 +1927,14 @@
     if (!s) return;
     s.paused = !s.paused;
     s.lastT = performance.now();
-    if (s.paused) { stopVoice(); s.speaking = false; }
+    if (s.paused) {
+      stopVoice();
+      const open = s.log[s.log.length - 1];
+      if (open && open.end == null) { clearTimeout(open.watchdog); open.end = sessionNow(s); open.player += ' (paused)'; }
+      Object.assign(s, { speaking: false, pending: null });
+    } else {
+      s.nextCallAt = Math.max(s.nextCallAt, s.elapsed + 800); // a breath before the next call
+    }
     callerEvent(s.paused ? 'pause' : 'resume');
     updateLive(false);
   }
@@ -1748,6 +1953,7 @@
         <p class="live-combo" id="live-combo">Round 1</p>
         <p class="live-punches" id="live-punches">&nbsp;</p>
       </div>
+      <pre class="live-debug" id="live-debug"${state.callerDebug ? '' : ' hidden'} aria-label="Sound timing log"></pre>
       <p class="live-hint" id="live-wake" hidden>Keep your screen on - it may lock during the round.</p>
       <div class="live-actions">
         <button type="button" class="live-btn primary" id="live-pause" data-action="caller-pause">${icon('pause', 22, 2)}<span>Pause</span></button>
@@ -1779,9 +1985,27 @@
       el('live-punches').textContent = rest ? `Breathe. Round ${s.round + 1} starts soon.` : s.current ? s.current.punches : 'Get ready';
       if (pop) { combo.classList.remove('pop'); void combo.offsetWidth; combo.classList.add('pop'); }
     }
+    const dbg = el('live-debug');
+    dbg.hidden = !state.callerDebug;
+    if (state.callerDebug) dbg.textContent = debugText(s);
     const btn = el('live-pause');
     const label = s.paused ? 'Resume' : 'Pause';
     if (btn.textContent.trim() !== label) btn.innerHTML = `${icon(s.paused ? 'play' : 'pause', 22, 2)}<span>${label}</span>`;
+  }
+
+  // Debug view (#/caller?debug, or long-press the round label): when each call was
+  // scheduled, shown, how long it was, when it ended, the gap after it, and the player.
+  // Times are seconds since Start, on the audio clock.
+  function debugText(s) {
+    const f = (x) => (x == null ? '    -' : x.toFixed(2).padStart(5));
+    const player = wa.ctx ? `webaudio (${wa.ctx.state})` : 'media';
+    const head = [
+      `player ${player} · buffers ${Object.keys(wa.buffers).length} · combo files ${wa.comboFiles.size} · silent loop ${wa.silent && !wa.silent.paused ? 'on' : 'off'}`,
+      `now ${f(sessionNow(s))} · next call in ${s.speaking ? 'after this one' : `${Math.max(0, (s.nextCallAt - s.elapsed) / 1000).toFixed(2)} s`}`,
+      ' #  combo    sched  shown   len    end    gap  player',
+    ];
+    const rows = s.log.slice(-6).map((e) => `${String(e.n).padStart(2)}  ${e.code.padEnd(8)} ${f(e.sched)}  ${f(e.shown)} ${f(e.len)}  ${f(e.end)}  ${f(e.gap)}  ${e.player}`);
+    return [...head, ...rows].join('\n');
   }
 
   function segmented(key, options, value, label) {
@@ -2063,7 +2287,8 @@
     if (/^\/sessions\/?$/.test(h)) return { name: 'sessions', tab: 'sessions' };
     if (/^\/techniques\/?$/.test(h)) return { name: 'techniques', tab: 'techniques' };
     if (/^\/words\/?$/.test(h)) return { name: 'words', tab: 'words' };
-    if (/^\/caller\/?$/.test(h)) return { name: 'caller', tab: 'drills' };
+    const cl = h.match(/^\/caller\/?(\?debug)?$/);
+    if (cl) return { name: 'caller', tab: 'drills', arg: cl[1] ? 'debug' : undefined };
     const dr = h.match(/^\/drills(?:\/([a-z0-9-]+))?\/?$/);
     if (dr) return { name: 'drills', tab: 'drills', arg: dr[1] };
     return { name: 'home', tab: 'home' };
@@ -2080,6 +2305,10 @@
     currentRoute = key;
     if (caller.s && r.name !== 'caller') stopCaller(false); // leaving the caller stops it
     if (changed && r.name === 'caller') state.callerView = 'setup';
+    if (r.name === 'caller') {
+      if (r.arg === 'debug') state.callerDebug = true;
+      loadBuffers(); // decode the clips now, so Start can play them straight away
+    }
 
     let html;
     try {
@@ -2347,6 +2576,17 @@
       if (next) next.focus();
     }
   });
+
+  let pressTimer = null;
+  document.addEventListener('pointerdown', (e) => {
+    if (!e.target.closest('#live-round')) return;
+    clearTimeout(pressTimer);
+    pressTimer = setTimeout(() => {
+      state.callerDebug = !state.callerDebug;
+      updateLive(false);
+    }, 700);
+  });
+  ['pointerup', 'pointercancel', 'pointerleave'].forEach((t) => document.addEventListener(t, () => clearTimeout(pressTimer), true));
 
   document.addEventListener('input', (e) => {
     if (e.target.id !== 'word-search') return;
