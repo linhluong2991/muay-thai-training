@@ -28,7 +28,11 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
 | Push kick | Teep | | | | |
-| Roundhouse kick | | | | | |
+| Rear roundhouse kick (right) | | Drilling | 2026-10-14 | 2026-10-14 | Step out at an angle; shin, foot pointed; turn the hips over; right hand at shoulder height; don't lean back |
+| Lead roundhouse kick - switch kick (left) | | Drilling | 2026-10-14 | 2026-10-14 | Small hop to switch stance, then kick like the right kick |
+| Calf kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick below the knee |
+| Body kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick to the ribs |
+| Head kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick to the head |
 
 ## Knees
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
@@ -41,6 +45,10 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 ## Defence
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
+| Checking kicks (shin block), both legs | | Drilling | 2026-10-14 | 2026-10-14 | Lift the knee, block with the shin |
+| Defence vs 1-2 (straights) | | Drilling | 2026-10-14 | 2026-10-14 | |
+| Defence vs 3-4 (hooks) | | Drilling | 2026-10-14 | 2026-10-14 | |
+| Defence vs 5-6 (uppercuts) | | Drilling | 2026-10-14 | 2026-10-14 | |
 
 ## Clinch
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
@@ -50,7 +58,8 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Combo | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|
 | 1-2 (jab-cross) | Drilling | 2026-10-12 | 2026-10-12 | Jab comes back as the cross goes out; pivot; exhale |
-| 1-2-3 (jab-cross-lead hook) | Seen | 2026-10-12 | 2026-10-12 | The cross turns the hips, the hook turns them back |
+| 1-2-3 (jab-cross-lead hook) | Drilling | 2026-10-12 | 2026-10-14 | The cross turns the hips, the hook turns them back |
+| 1-2-1-2 (double one-two) | Drilling | 2026-10-14 | 2026-10-14 | Keep the second jab sharp |
 
 ## Words to know
 - **Nak Muay** - Muay Thai practitioner

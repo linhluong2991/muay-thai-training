@@ -5,6 +5,20 @@ Pi Liang adds a drill whenever the coach corrects something; I mark it **Fixed**
 
 Status: **Active** (practise it) or **Fixed** (keep for reference).
 
+## Wall pivot kick drill
+- **Fixes:** I lose my balance on the roundhouse kick when I turn my hips.
+- **Coach's cue:** None yet - from my own notes. Coach's kick cues: turn the hips over, back straight or leaning slightly to the side, don't lean back.
+- **Technique:** Rear roundhouse kick, switch kick
+- **From:** Day 3 (2026-10-14)
+- **Status:** Active
+- **Dose:** 3 x 10 slow kicks each leg.
+- **How:**
+  1. Stand in stance next to a wall or chair, the hand on the non-kicking side resting on it.
+  2. Rise onto the ball of the standing foot and turn its heel towards the target.
+  3. Turn the hips over and swing the shin through slowly at calf height. Don't lean back.
+  4. Hold the finish for 2 seconds, then return to stance.
+  5. When it feels steady, take the hand off the wall and kick at half speed.
+
 ## Elbow wall drill
 - **Fixes:** My elbow swings out to the side before the jab and cross.
 - **Coach's cue:** Drive the elbow forward, not out to the side. Arm straight, fist slightly tilted.
