@@ -28,7 +28,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
 | Push kick | Teep | | | | |
-| Rear roundhouse kick (right) | | Drilling | 2026-10-14 | 2026-10-14 | Step out at an angle; shin, foot pointed; turn the hips over; right hand at shoulder height; don't lean back |
+| Rear roundhouse kick (right) | | Drilling | 2026-10-14 | 2026-10-14 | Step out at an angle; shin, foot pointed; turn the hips over; right arm swings out at shoulder height; don't lean back |
 | Lead roundhouse kick - switch kick (left) | | Drilling | 2026-10-14 | 2026-10-14 | Small hop to switch stance, then kick like the right kick |
 | Calf kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick below the knee |
 | Body kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick to the ribs |
@@ -46,9 +46,9 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
 | Checking kicks (shin block), both legs | | Drilling | 2026-10-14 | 2026-10-14 | Lift the knee, block with the shin |
-| Defence vs 1-2 (straights) | | Drilling | 2026-10-14 | 2026-10-14 | |
-| Defence vs 3-4 (hooks) | | Drilling | 2026-10-14 | 2026-10-14 | |
-| Defence vs 5-6 (uppercuts) | | Drilling | 2026-10-14 | 2026-10-14 | |
+| Defence vs 1-2 (straights) | | Drilling | 2026-10-14 | 2026-10-14 | Same defence for both straights |
+| Defence vs 3-4 (hooks) | | Drilling | 2026-10-14 | 2026-10-14 | Block left and right to cover the side of the head |
+| Defence vs 5-6 (uppercuts) | | Drilling | 2026-10-14 | 2026-10-14 | Protect the chin; eyes clear, gloves glued to the head, chin tucked |
 
 ## Clinch
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
