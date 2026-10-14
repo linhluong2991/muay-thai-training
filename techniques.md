@@ -45,7 +45,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 ## Defence
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
-| Checking kicks (shin block), both legs | | Drilling | 2026-10-14 | 2026-10-14 | Lift the knee, block with the shin |
+| Checking kicks (shin block), both legs | | Drilling | 2026-10-14 | 2026-10-14 | Same-side leg up; elbow close to the knee; foot flexed, not pointed |
 | Defence vs 1-2 (straights) | | Drilling | 2026-10-14 | 2026-10-14 | Same defence for both straights |
 | Defence vs 3-4 (hooks) | | Drilling | 2026-10-14 | 2026-10-14 | Block left and right to cover the side of the head |
 | Defence vs 5-6 (uppercuts) | | Drilling | 2026-10-14 | 2026-10-14 | Protect the chin; eyes clear, gloves glued to the head, chin tucked |
