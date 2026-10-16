@@ -49,6 +49,8 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Defence vs 1-2 (straights) | | Drilling | 2026-10-14 | 2026-10-14 | Same defence for both straights |
 | Defence vs 3-4 (hooks) | | Drilling | 2026-10-14 | 2026-10-14 | Block left and right to cover the side of the head |
 | Defence vs 5-6 (uppercuts) | | Drilling | 2026-10-14 | 2026-10-14 | Protect the chin; eyes clear, gloves glued to the head, chin tucked |
+| Catching kicks | | Drilling | 2026-10-16 | 2026-10-16 | Catch the kick, step back, release, then kick back |
+| Catch and sweep | | Drilling | 2026-10-16 | 2026-10-16 | Same side: left hand catches -> left foot steps back (right -> right); sweep the ankle while pushing the head or collar |
 
 ## Clinch
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
