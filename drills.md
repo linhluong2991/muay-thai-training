@@ -5,6 +5,63 @@ Pi Liang adds a drill whenever the coach corrects something; I mark it **Fixed**
 
 Status: **Active** (practise it) or **Fixed** (keep for reference).
 
+## Morning review flow (12-15 min)
+- **Fixes:** Only 10-15 minutes in the morning to review everything I've learned. Moves are chained together here, the way they happen in class and sparring, instead of practised one at a time.
+- **Coach's cue:** None - Pi Liang's plan, built from what the coach taught on Days 1-4.
+- **Technique:** Guard, 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook), 1-2-1-2 (double one-two), Defence vs 1-2 (straights), Defence vs 3-4 (hooks), Defence vs 5-6 (uppercuts), Checking kicks (shin block), Rear roundhouse kick (right), Lead roundhouse kick - switch kick (left), Catch and sweep
+- **From:** Day 4 (2026-10-16)
+- **Status:** Active
+- **Dose:** 6 blocks, about 12 minutes, plus 15 seconds' rest between blocks. Half speed, no power - clean form beats speed. Short on time? Do blocks 2, 3 and 4 only (7 minutes).
+- **How:**
+  1. **Warm-up - 1 min.** Rope-less skipping: small bounces on the balls of the feet, wrists turning small circles. Then roll the shoulders back 5 times.
+  2. **Hands - 2 min.** In stance, throw 1-2, then 1-2-3, then 1-2-1-2, and repeat (about 30 combos). Use the Combo caller if you like. After every combo: hands back to the glued guard, rear foot pivots on every cross, breathe out on each punch.
+  3. **Defend, then answer - 2 min.** Imagine a partner. Block the straights -> answer 1-2. Cover the left hook, then the right hook -> answer 1-2-3. Close up for the uppercut -> answer 1-2. Eyes clear above the gloves, chin tucked. About 10 rounds of the three.
+  4. **Check, then kick - 2 min.** Check with the left leg -> right kick at calf height. Check with the right leg -> switch kick with the left. Then 1-2 -> right kick. Slow: rise onto the ball of the standing foot, turn the hips over, land with the shin, foot pointed. About 10 of each chain.
+  5. **Catch and sweep - 2 min.** Walk through it in the air, 5 times each side, saying it out loud: "catch right, step back, step forward, sweep left, push left" - then the mirror. After each sweep, back to guard and finish with a 1-2.
+  6. **Reflexes - 2 min.** Wall dot ball catch (below). No ball? Use the Combo caller and fire each call as fast as you can with good form.
+  7. **Cool-down - 1 min.** Hip flexor lunge, 30 seconds each side.
+  8. When the coach teaches something new, swap it into the matching block rather than adding a new one.
+
+## Wall dot ball catch
+- **Fixes:** Slow reactions; seeing strikes coming from outside where I'm looking.
+- **Coach's cue:** None - from a video I watched. Trains peripheral vision: in a fight your eyes stay on the opponent's chest or base of the neck, so punches and kicks come from the corner of your eye.
+- **Technique:** Guard
+- **From:** Day 4 (2026-10-16)
+- **Status:** Active
+- **Dose:** 3 x 30 seconds, 15 seconds rest. About 2 minutes.
+- **How:**
+  1. Mark a small dot on the wall at eye level. Stand about 1.5-2 m away with a tennis ball.
+  2. Keep your eyes on the dot the whole time - don't look at the ball.
+  3. Throw the ball at the wall with one hand and catch it with the other hand.
+  4. Switch: throw with the other hand and catch with the first.
+  5. Getting easy? Step closer, throw a little harder, or stand in your fighting stance with the guard up between throws.
+
+## Ball drop catch
+- **Fixes:** Slow reactions.
+- **Coach's cue:** None - from Pi Liang's research.
+- **Technique:** Guard
+- **From:** Day 4 (2026-10-16)
+- **Status:** Active
+- **Dose:** 2 x 10 catches each hand.
+- **How:**
+  1. Stand in stance, guard up, a tennis ball in one hand at shoulder height.
+  2. Let it drop, then catch it before it bounces a second time.
+  3. Hand straight back to guard after every catch.
+  4. Harder: drop from lower, or catch before the first bounce.
+
+## Bounce and jab
+- **Fixes:** Slow reactions; timing punches to a moving target.
+- **Coach's cue:** None - from Pi Liang's research.
+- **Technique:** 1 - Jab, 2 - Cross
+- **From:** Day 4 (2026-10-16)
+- **Status:** Active
+- **Dose:** 2 x 1 minute.
+- **How:**
+  1. In stance, bounce the tennis ball on the floor in front of you.
+  2. As it rises, throw a light jab at it (touch, not a hard punch), then catch it.
+  3. When that's easy: jab-cross at the rising ball, then catch.
+  4. Guard stays up between bounces.
+
 ## Shin, not foot - bag distance drill
 - **Fixes:** I hit the bag with the top of my right foot instead of my shin, and got blisters.
 - **Coach's cue:** Kick with the shin, not the foot (Day 3).
