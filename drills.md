@@ -5,6 +5,20 @@ Pi Liang adds a drill whenever the coach corrects something; I mark it **Fixed**
 
 Status: **Active** (practise it) or **Fixed** (keep for reference).
 
+## Shin, not foot - bag distance drill
+- **Fixes:** I hit the bag with the top of my right foot instead of my shin, and got blisters.
+- **Coach's cue:** Kick with the shin, not the foot (Day 3).
+- **Technique:** Rear roundhouse kick, body kick
+- **From:** Day 4 (2026-10-16)
+- **Status:** Active
+- **Dose:** 3 x 8 slow kicks each leg, no power.
+- **How:**
+  1. Stand in stance facing a wall or a door frame (or a pillow held against the wall).
+  2. Raise the leg slowly into the kick and touch the target with the shin, a hand's width above the ankle.
+  3. If the foot touches first, you're too far - take a small step in and try again.
+  4. Remember that distance; on the bag, step in to it before you kick.
+  5. Pivot on the ball of the standing foot every time, heel lifted.
+
 ## Wall pivot kick drill
 - **Fixes:** I lose my balance on the roundhouse kick when I turn my hips.
 - **Coach's cue:** None yet - from my own notes. Coach's kick cues: turn the hips over, back straight or leaning slightly to the side, don't lean back.
