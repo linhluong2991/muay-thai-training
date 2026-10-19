@@ -22,6 +22,34 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   7. **Cool-down - 1 min.** Hip flexor lunge, 30 seconds each side.
   8. When the coach teaches something new, swap it into the matching block rather than adding a new one.
 
+## Side-step box drill
+- **Fixes:** In tag and sparring I keep circling instead of moving left and right, and it drains my stamina.
+- **Coach's cue:** None yet - from my own notes.
+- **Technique:** Footwork - forward / back / left / right
+- **From:** Day 5 (2026-10-19)
+- **Status:** Active
+- **Dose:** 3 rounds of 1 minute, 30 seconds rest.
+- **How:**
+  1. In stance, guard up, on the balls of the feet. Imagine a small square on the floor.
+  2. Step forward, step left, step back, step right - one small step each, then reset your stance.
+  3. Lead with the foot closest to where you're going: left foot first to go left, right foot first to go right. Feet never cross.
+  4. Round 2: add a 1-2 after every side-step.
+  5. Round 3: free - mix side-steps, steps in and steps out. Count how often you circle; aim for less.
+
+## Check and cover drill
+- **Fixes:** When I check a kick, I forget to cover my face - partners kick to make me check, then punch me.
+- **Coach's cue:** None - from a teammate's tip in sparring.
+- **Technique:** Checking kicks (shin block), Guard
+- **From:** Day 5 (2026-10-19)
+- **Status:** Active
+- **Dose:** 3 x 10 checks, alternating legs.
+- **How:**
+  1. Stand in stance in front of a mirror, guard up.
+  2. Lift the lead leg to check: same-side elbow drops to meet the knee, the other glove stays on your cheek.
+  3. Freeze for 1 second and look: is the face still covered? Chin tucked?
+  4. Put the foot down and answer straight away with a 1-2.
+  5. Switch to the rear leg and repeat.
+
 ## Wall dot ball catch
 - **Fixes:** Slow reactions; seeing strikes coming from outside where I'm looking.
 - **Coach's cue:** None - from a video I watched. Trains peripheral vision: in a fight your eyes stay on the opponent's chest or base of the neck, so punches and kicks come from the corner of your eye.

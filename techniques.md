@@ -31,6 +31,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Rear roundhouse kick (right) | | Drilling | 2026-10-14 | 2026-10-14 | Step out at an angle; shin, foot pointed; turn the hips over; right arm swings out at shoulder height; don't lean back |
 | Lead roundhouse kick - switch kick (left) | | Drilling | 2026-10-14 | 2026-10-14 | Small hop to switch stance, then kick like the right kick |
 | Calf kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick below the knee |
+| Thigh kick (low kick) | | Drilling | 2026-10-19 | 2026-10-19 | Roundhouse kick to the outside of the thigh, lower shin lands |
 | Body kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick to the ribs |
 | Head kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick to the head |
 
