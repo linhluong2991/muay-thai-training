@@ -36,6 +36,20 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   4. Round 2: add a 1-2 after every side-step.
   5. Round 3: free - mix side-steps, steps in and steps out. Count how often you circle; aim for less.
 
+## Punch and pivot
+- **Fixes:** In sparring I keep circling instead of attacking and getting out at an angle; I stay in front of my partner after I punch.
+- **Coach's cue:** None - from a video I saved ("3 footwork drills to attack + exit safely", Drill 3).
+- **Technique:** Footwork - forward / back / left / right, 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook)
+- **From:** Day 5 (2026-10-19)
+- **Status:** Active
+- **Dose:** 3 rounds of 1 minute, 30 seconds rest.
+- **How:**
+  1. In stance, guard up. Throw a 1-2 at an imaginary partner.
+  2. Pivot: stay on the ball of the lead foot and swing the rear foot around about a quarter turn, so you end up facing the side of where your partner was.
+  3. Reset your stance and guard, then throw the next 1-2 from the new angle.
+  4. Round 2: 1-2-3, then pivot. Round 3: mix in the step in and out - 1-2, step back out of range.
+  5. Small, quick pivots. Hands stay up while you turn.
+
 ## Check and cover drill
 - **Fixes:** When I check a kick, I forget to cover my face - partners kick to make me check, then punch me.
 - **Coach's cue:** None - from a teammate's tip in sparring.
