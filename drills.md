@@ -22,6 +22,19 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   7. **Cool-down - 1 min.** Hip flexor lunge, 30 seconds each side.
   8. When the coach teaches something new, swap it into the matching block rather than adding a new one.
 
+## Hip-turn kick drill
+- **Fixes:** I forget to turn my hips when I kick because I'm focused on footwork and the target; my left (switch) kick is weaker and the switch isn't smooth.
+- **Coach's cue:** Use the hips - turn the hips over when you kick. After 1-2-3, step the lead foot out to the left a little, then kick to the body.
+- **Technique:** Rear roundhouse kick (right), Lead roundhouse kick - switch kick (left), 1-2-3 + right body kick
+- **From:** Day 6 (2026-10-26)
+- **Status:** Active
+- **Dose:** 3 rounds of 1 minute, 30 seconds rest. Slow, no power.
+- **How:**
+  1. Round 1 - right kick, hips only: in stance, kick slowly at waist height. Think only "belly button turns to the side, standing heel to the target". Ignore the target.
+  2. Round 2 - switch kick: small hop, then kick straight away in one beat - no landing and stopping. Same hip cue. Hands up during the hop.
+  3. Round 3 - combo: 1-2-3, small step out to the left with the lead foot, right kick to the body. Back to guard.
+  4. Hand on a wall or chair if you lose balance; take it away when it feels steady.
+
 ## Side-step box drill
 - **Fixes:** In tag and sparring I keep circling instead of moving left and right, and it drains my stamina.
 - **Coach's cue:** None yet - from my own notes.

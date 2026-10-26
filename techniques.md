@@ -28,7 +28,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
 | Push kick | Teep | | | | |
-| Rear roundhouse kick (right) | | Drilling | 2026-10-14 | 2026-10-14 | Step out at an angle; shin, foot pointed; turn the hips over; right arm swings out at shoulder height; don't lean back |
+| Rear roundhouse kick (right) | | Drilling | 2026-10-14 | 2026-10-26 | Step out at an angle; shin, foot pointed; turn the hips over; right arm swings out at shoulder height; don't lean back |
 | Lead roundhouse kick - switch kick (left) | | Drilling | 2026-10-14 | 2026-10-14 | Small hop to switch stance, then kick like the right kick |
 | Calf kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick below the knee |
 | Thigh kick (low kick) | | Drilling | 2026-10-19 | 2026-10-19 | Roundhouse kick to the outside of the thigh, lower shin lands |
@@ -63,6 +63,8 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | 1-2 (jab-cross) | Drilling | 2026-10-12 | 2026-10-12 | Jab comes back as the cross goes out; pivot; exhale |
 | 1-2-3 (jab-cross-lead hook) | Drilling | 2026-10-12 | 2026-10-14 | The cross turns the hips, the hook turns them back |
 | 1-2-1-2 (double one-two) | Drilling | 2026-10-14 | 2026-10-14 | Keep the second jab sharp |
+| 1-2-3 + right body kick | Drilling | 2026-10-26 | 2026-10-26 | After the hook, step the lead foot out to the left a little, then kick to the body; turn the hips over |
+| Cross + right kick (2 + right kick) | Drilling | 2026-10-26 | 2026-10-26 | The cross loads the hips for the kick |
 
 ## Words to know
 - **Nak Muay** - Muay Thai practitioner
