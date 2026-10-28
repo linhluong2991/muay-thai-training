@@ -22,6 +22,20 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   7. **Cool-down - 1 min.** Hip flexor lunge, 30 seconds each side.
   8. When the coach teaches something new, swap it into the matching block rather than adding a new one.
 
+## Guard-up knee and teep drill
+- **Fixes:** When I knee or teep, both my hands drop to create force; driving the hips forward is hard - my hips feel tight and my back stiff.
+- **Coach's cue:** Keep the hand up guarding the head. Push the hips forward on every knee and teep.
+- **Technique:** Straight knee - rear (right), Switch knee (left), Lead teep (left), Rear teep (right)
+- **From:** Day 7 (2026-10-28)
+- **Status:** Active
+- **Dose:** 3 rounds of 1 minute, 30 seconds rest. Slow, no power. Then the hip flexor lunge, 30 seconds each side.
+- **How:**
+  1. Round 1 - straight knee: in stance in front of a mirror. Heel to thigh, toes pointed, push the belt buckle forward. Only the same-side arm swings; check the other glove is still on your face.
+  2. Round 2 - switch knee: small hop, knee straight off it, then return to stance. Alternate the two returns the coach taught.
+  3. Round 3 - lead teep: knee up, push straight out with the hips, ball of the foot, foot back to stance. Guard stays home.
+  4. Hips feel tight? Make the movement smaller and tilt the pelvis forward rather than arching the lower back.
+  5. While the right little toe hurts: skip rear teeps, and don't rise onto the ball of the right foot - keep the right foot flat when it's the standing foot.
+
 ## Hip-turn kick drill
 - **Fixes:** I forget to turn my hips when I kick because I'm focused on footwork and the target; my left (switch) kick is weaker and the switch isn't smooth.
 - **Coach's cue:** Use the hips - turn the hips over when you kick. After 1-2-3, step the lead foot out to the left a little, then kick to the body.
