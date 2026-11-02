@@ -24,7 +24,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
 
 ## Standing-foot pivot drill
 - **Fixes:** On the right kick I hop on my standing (left) foot instead of pivoting.
-- **Coach's cue:** Left foot stays on the ball of the foot and pivots as the right leg kicks (from my notes on the power-kick set with the coach).
+- **Coach's cue:** Left foot stays on the ball of the foot and pivots as the right leg kicks. (Day 8: fixed it in class straight after - 10 more kicks done correctly.)
 - **Technique:** Rear roundhouse kick (right)
 - **From:** Day 8 (2026-11-02)
 - **Status:** Active
