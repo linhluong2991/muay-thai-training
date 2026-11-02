@@ -29,7 +29,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 |---|---|---|---|---|---|
 | Lead teep (left) | Teep | Drilling | 2026-10-28 | 2026-10-28 | Contact with the ball of the foot; push the hips forward; left arm swings, right hand guards the head |
 | Rear teep (right) | Teep | Drilling | 2026-10-28 | 2026-10-28 | Contact with the whole foot (flat sole); push the hips forward; right arm swings, left hand guards the head |
-| Rear roundhouse kick (right) | | Drilling | 2026-10-14 | 2026-10-26 | Step out at an angle; shin, foot pointed; turn the hips over; right arm swings out at shoulder height; don't lean back |
+| Rear roundhouse kick (right) | | Drilling | 2026-10-14 | 2026-11-02 | Step out at an angle; shin, foot pointed; turn the hips over; left foot stays on the ball and pivots - no hop; right arm swings out at shoulder height; don't lean back |
 | Lead roundhouse kick - switch kick (left) | | Drilling | 2026-10-14 | 2026-10-14 | Small hop to switch stance, then kick like the right kick |
 | Calf kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick below the knee |
 | Thigh kick (low kick) | | Drilling | 2026-10-19 | 2026-10-19 | Roundhouse kick to the outside of the thigh, lower shin lands |

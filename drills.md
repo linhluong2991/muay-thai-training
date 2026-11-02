@@ -22,6 +22,19 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   7. **Cool-down - 1 min.** Hip flexor lunge, 30 seconds each side.
   8. When the coach teaches something new, swap it into the matching block rather than adding a new one.
 
+## Standing-foot pivot drill
+- **Fixes:** On the right kick I hop on my standing (left) foot instead of pivoting.
+- **Coach's cue:** Left foot stays on the ball of the foot and pivots as the right leg kicks (from my notes on the power-kick set with the coach).
+- **Technique:** Rear roundhouse kick (right)
+- **From:** Day 8 (2026-11-02)
+- **Status:** Active
+- **Dose:** 3 rounds of 10 slow kicks, 30 seconds rest. No power.
+- **How:**
+  1. Stand in stance in socks on a smooth floor (easier to pivot), one hand on a wall or chair.
+  2. Kick slowly at waist height. Rise onto the ball of the left foot and turn its heel towards the target - the ball of the foot never leaves the floor.
+  3. After each kick, look down: the left foot should be in the same spot, just turned. If it moved, you hopped - go slower.
+  4. Round 3: 5 kicks in a row, re-planting the right foot in stance between kicks. Still no hop.
+
 ## Guard-up knee and teep drill
 - **Fixes:** When I knee or teep, both my hands drop to create force; driving the hips forward is hard - my hips feel tight and my back stiff.
 - **Coach's cue:** Keep the hand up guarding the head. Push the hips forward on every knee and teep.
@@ -213,14 +226,15 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   4. After every punch, the hand comes straight back to the same spot.
 
 ## Combo shadowboxing
-- **Fixes:** In sparring I throw one punch, pause, then the next, instead of combos.
+- **Fixes:** In sparring I throw one punch, pause, then the next, instead of combos. In combos with punches and a kick, the kick is even slower (Day 8).
 - **Coach's cue:** Practise combos like 1-2 and 1-2-3.
-- **Technique:** 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook)
+- **Technique:** 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook), 1-2-3 + right body kick, Cross + right kick (2 + right kick)
 - **From:** Day 2 (2026-10-12)
 - **Status:** Active
-- **Dose:** 3 rounds of 2 minutes, 30 seconds rest.
+- **Dose:** 4 rounds of 2 minutes, 30 seconds rest.
 - **How:**
   1. Round 1: only 1-2. Say "one-two" as one word and throw it as one movement, then step back to guard.
   2. Round 2: 1-2-3. Let the cross turn your hips so the hook comes straight after, no pause.
   3. Round 3: mix them - 1-2, then 1-2-3, then 1-1-2.
   4. Stay relaxed: shoulders down, breathe out on each punch ("tss-tss").
+  5. Round 4 (added Day 8) - punch into kick: 1-2-3 -> right body kick, then 2 -> right kick. Throw the kick as the last punch comes back, not after you have reset. Punches at half power, so the kick flows straight on.
