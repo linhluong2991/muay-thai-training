@@ -8,7 +8,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
 ## Morning review flow (12-15 min)
 - **Fixes:** Only 10-15 minutes in the morning to review everything I've learned. Moves are chained together here, the way they happen in class and sparring, instead of practised one at a time.
 - **Coach's cue:** None - Pi Liang's plan, built from what the coach taught on Days 1-4.
-- **Technique:** Guard, 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook), 1-2-1-2 (double one-two), Defence vs 1-2 (straights), Defence vs 3-4 (hooks), Defence vs 5-6 (uppercuts), Checking kicks (shin block), Rear roundhouse kick (right), Lead roundhouse kick - switch kick (left), Catch and sweep
+- **Technique:** Guard, 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook), 1-2-1-2 (double one-two), Defence vs 1-2 (straights), Defence vs 3-4 (hooks), Defence vs 5-6 (uppercuts), Checking kicks (shin block), Rear roundhouse kick (right), Lead roundhouse kick - switch kick (left), Catch and sweep, Teep counter vs kicks
 - **From:** Day 4 (2026-10-16)
 - **Status:** Active
 - **Dose:** 6 blocks, about 12 minutes, plus 15 seconds' rest between blocks. Half speed, no power - clean form beats speed. Short on time? Do blocks 2, 3 and 4 only (7 minutes).
@@ -16,11 +16,63 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   1. **Warm-up - 1 min.** Rope-less skipping: small bounces on the balls of the feet, wrists turning small circles. Then roll the shoulders back 5 times.
   2. **Hands - 2 min.** In stance, throw 1-2, then 1-2-3, then 1-2-1-2, and repeat (about 30 combos). Use the Combo caller if you like. After every combo: hands back to the glued guard, rear foot pivots on every cross, breathe out on each punch.
   3. **Defend, then answer - 2 min.** Imagine a partner. Block the straights -> answer 1-2. Cover the left hook, then the right hook -> answer 1-2-3. Close up for the uppercut -> answer 1-2. Eyes clear above the gloves, chin tucked. About 10 rounds of the three.
-  4. **Check, then kick - 2 min.** Check with the left leg -> right kick at calf height. Check with the right leg -> switch kick with the left. Then 1-2 -> right kick. Slow: rise onto the ball of the standing foot, turn the hips over, land with the shin, foot pointed. About 10 of each chain.
+  4. **Check, then kick - 2 min.** Check with the left leg -> right kick at calf height. Check with the right leg -> switch kick with the left. Then 1-2 -> right kick. Slow: rise onto the ball of the standing foot, turn the hips over, land with the shin, foot pointed. About 10 of each chain. Day 9: add check -> left teep, and check -> right kick with the same leg.
   5. **Catch and sweep - 2 min.** Walk through it in the air, 5 times each side, saying it out loud: "catch right, step back, step forward, sweep left, push left" - then the mirror. After each sweep, back to guard and finish with a 1-2.
   6. **Reflexes - 2 min.** Wall dot ball catch (below). No ball? Use the Combo caller and fire each call as fast as you can with good form.
   7. **Cool-down - 1 min.** Hip flexor lunge, 30 seconds each side.
   8. When the coach teaches something new, swap it into the matching block rather than adding a new one.
+
+## Double kick reset drill
+- **Fixes:** On the double right kick, my right foot comes back level with the left, so the second kick has no power. When I bring it behind the left foot instead, I lose my balance.
+- **Coach's cue:** After each kick, the right foot goes back behind the left foot; the left foot stays where it is.
+- **Technique:** Double roundhouse kick (right)
+- **From:** Day 9 (2026-11-04)
+- **Status:** Active
+- **Dose:** 3 rounds of 6 doubles, 30 seconds rest. Slow, no power.
+- **How:**
+  1. Stand in stance, one hand on a wall or chair. Put a sock on the floor where your right foot sits in stance.
+  2. Slow right kick at waist height, then bring the leg back on the same path and land the ball of the right foot on the sock - behind the left foot, not beside it.
+  3. As the foot lands, bring the shoulders and guard back to stance too. Hold one beat, then kick again and land on the sock again.
+  4. Round 3: no hand on the wall, and no pause between the two kicks.
+
+## Low base and balance builder
+- **Fixes:** On moves that throw me off balance - leaning into a kick, sinking low for the low kick to the standing leg, the extra hip turn - my body resists and I stop short instead of finishing the movement. The low position feels heavy, like a single-leg squat.
+- **Coach's cue:** Slip and low kick: the left foot steps out to the left, lean left, sink low on the left leg and dig in, the right leg kicks the thigh. Kicks: lean, turn the hips, step the standing foot out off the line.
+- **Technique:** Slip and low kick vs the cross, Rear roundhouse kick (right)
+- **From:** Day 9 (2026-11-04)
+- **Status:** Active
+- **Dose:** About 6 minutes - 4 blocks, 30 seconds rest between them.
+- **How:**
+  1. **Balance - 1 min.** Stand on the left leg, on the ball of the foot, knee slightly bent, guard up, 30 seconds. Then the right leg. Too easy? Turn the head slowly left and right.
+  2. **Low base - 1 min.** Slow step-out lunges to the left: step the left foot out, sit down onto it with the knee over the toes, lean the upper body left, then push back up to stance. 8 reps.
+  3. **Slip and low kick, slow motion - 2 min.** Hand on a wall. Step out left, lean left, sink, then slowly swing the right shin to thigh height. 8 reps. Every rep goes all the way to the end position, however slowly - this is how your body learns the position is safe.
+  4. **Full kick, full finish - 1 min.** 8 slow right kicks with the lean and the hip turn. Hold the finish for 2 seconds each time. Take the hand off the wall for the last few.
+  5. Speed up only when it stops feeling scary at slow speed - never the other way round.
+
+## Step-and-jab timing
+- **Fixes:** When I move forward and jab, I step the left foot first and then jab, instead of both together. Standing still I can do it right.
+- **Coach's cue:** None - from my own notes.
+- **Technique:** 1 - Jab, Footwork - forward / back / left / right
+- **From:** Day 9 (2026-11-04)
+- **Status:** Active
+- **Dose:** 3 rounds of 1 minute, 30 seconds rest.
+- **How:**
+  1. In stance, guard up. Say "step-jab" as one word: the fist and the left foot land on the same beat.
+  2. Start the jab a fraction before the foot moves - the hand leads, the foot catches up.
+  3. Round 1: one stepping jab, reset, repeat. Round 2: two stepping jabs moving forward, then step back. Round 3: stepping jab, 1-2, step back out.
+  4. Film it once in slow motion on your phone - the foot and the fist should land together.
+
+## Fast check and foot shape drill
+- **Fixes:** My left and right checks are slow. I forget the foot shape: flex the foot on the check, point it on the knee and the kick.
+- **Coach's cue:** On a check, flex the foot. On a knee and a kick, point the foot (Day 9).
+- **Technique:** Checking kicks (shin block), Straight knee - rear (right), Rear roundhouse kick (right), Teep counter vs kicks, Check + teep, Check + kick (same leg)
+- **From:** Day 9 (2026-11-04)
+- **Status:** Active
+- **Dose:** 3 rounds of 1 minute, 30 seconds rest.
+- **How:**
+  1. Round 1 - speed: in stance, check left, foot down, check right. Up and straight back down, short and sharp, foot flexed, elbow meeting the knee.
+  2. Round 2 - foot shape: check (flex) -> right knee (point) -> right kick (point). Say "flex - point - point" out loud. Defend = flex, attack = point.
+  3. Round 3 - check and answer: check left -> left teep with the same leg; check right -> right kick with the same leg. Slow, guard up.
 
 ## Standing-foot pivot drill
 - **Fixes:** On the right kick I hop on my standing (left) foot instead of pivoting.
@@ -50,8 +102,8 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   5. While the right little toe hurts: skip rear teeps, and don't rise onto the ball of the right foot - keep the right foot flat when it's the standing foot.
 
 ## Hip-turn kick drill
-- **Fixes:** I forget to turn my hips when I kick because I'm focused on footwork and the target; my left (switch) kick is weaker and the switch isn't smooth.
-- **Coach's cue:** Use the hips - turn the hips over when you kick. After 1-2-3, step the lead foot out to the left a little, then kick to the body.
+- **Fixes:** I forget to turn my hips when I kick because I'm focused on footwork and the target; my left (switch) kick is weaker and the switch isn't smooth. (Day 9) Still forgetting to turn the hips and lean.
+- **Coach's cue:** Use the hips - turn the hips over when you kick. After 1-2-3, step the lead foot out to the left a little, then kick to the body. Day 9: lean, turn the hips over, and step the standing foot out off the line of the bag.
 - **Technique:** Rear roundhouse kick (right), Lead roundhouse kick - switch kick (left), 1-2-3 + right body kick
 - **From:** Day 6 (2026-10-26)
 - **Status:** Active
@@ -61,6 +113,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   2. Round 2 - switch kick: small hop, then kick straight away in one beat - no landing and stopping. Same hip cue. Hands up during the hop.
   3. Round 3 - combo: 1-2-3, small step out to the left with the lead foot, right kick to the body. Back to guard.
   4. Hand on a wall or chair if you lose balance; take it away when it feels steady.
+  5. (Day 9) Before each kick, step the standing foot out off the line - then lean to the side and turn.
 
 ## Side-step box drill
 - **Fixes:** In tag and sparring I keep circling instead of moving left and right, and it drains my stamina.
@@ -79,7 +132,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
 ## Punch and pivot
 - **Fixes:** In sparring I keep circling instead of attacking and getting out at an angle; I stay in front of my partner after I punch.
 - **Coach's cue:** None - from a video I saved ("3 footwork drills to attack + exit safely", Drill 3).
-- **Technique:** Footwork - forward / back / left / right, 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook)
+- **Technique:** Footwork - forward / back / left / right, 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook), 1-2 + step back, Cutting the angle + right body kick
 - **From:** Day 5 (2026-10-19)
 - **Status:** Active
 - **Dose:** 3 rounds of 1 minute, 30 seconds rest.
@@ -89,6 +142,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   3. Reset your stance and guard, then throw the next 1-2 from the new angle.
   4. Round 2: 1-2-3, then pivot. Round 3: mix in the step in and out - 1-2, step back out of range.
   5. Small, quick pivots. Hands stay up while you turn.
+  6. Round 4 (added Day 9): pivot - ball of the left foot, right foot steps across to the left - then a right body kick from the new angle.
 
 ## Check and cover drill
 - **Fixes:** When I check a kick, I forget to cover my face - partners kick to make me check, then punch me.
@@ -146,7 +200,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
 
 ## Shin, not foot - bag distance drill
 - **Fixes:** I hit the bag with the top of my right foot instead of my shin, and got blisters.
-- **Coach's cue:** Kick with the shin, not the foot (Day 3).
+- **Coach's cue:** Kick with the shin, not the foot (Day 3). Day 9: kick precisely with the shin - the wrong part hurts the foot, toes and ankle.
 - **Technique:** Rear roundhouse kick, body kick
 - **From:** Day 4 (2026-10-16)
 - **Status:** Active
@@ -159,7 +213,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   5. Pivot on the ball of the standing foot every time, heel lifted.
 
 ## Wall pivot kick drill
-- **Fixes:** I lose my balance on the roundhouse kick when I turn my hips.
+- **Fixes:** I lose my balance on the roundhouse kick when I turn my hips. (Day 9) I lose my balance when I lean into the kick.
 - **Coach's cue:** None yet - from my own notes. Coach's kick cues: turn the hips over, back straight or leaning slightly to the side, don't lean back.
 - **Technique:** Rear roundhouse kick, switch kick
 - **From:** Day 3 (2026-10-14)
@@ -200,7 +254,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   4. Between rounds, shake out the arms and roll the shoulders back 5 times.
 
 ## Uppercut mirror drill
-- **Fixes:** My forearm tilts forward on the uppercut instead of staying vertical.
+- **Fixes:** My forearm tilts forward on the uppercut instead of staying vertical. (Day 9) My 5-6 isn't good yet and I forget the sequence.
 - **Coach's cue:** Elbow to fist straight up and down. Fist ends about a hand span from my face. Knees bend, shoulder dips, then punch low to high.
 - **Technique:** 5 - Lead uppercut, 6 - Rear uppercut
 - **From:** Day 1 (2026-10-09)
@@ -211,10 +265,11 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   2. Small dip, then drive up from the legs.
   3. Freeze at the top: forearm vertical, fist a hand span from your face, palm facing you.
   4. If the forearm leans forward, reset and go slower.
+  5. (Day 9) 5-6 pairs: lead uppercut, rear uppercut, back to guard. Say "five - six" out loud. 3 x 8, slow.
 
 ## Glued guard check
-- **Fixes:** In sparring, partners' punches knock my own gloves into my face.
-- **Coach's cue:** None yet - from my own sparring notes.
+- **Fixes:** In sparring, partners' punches knock my own gloves into my face. (Day 9) When defending I often leave gaps.
+- **Coach's cue:** Day 9: when defending, always keep the gloves tight to the head with no gaps - cover the eyes. (Started from my own sparring notes, Day 2.)
 - **Technique:** Guard
 - **From:** Day 2 (2026-10-12)
 - **Status:** Active
@@ -224,11 +279,12 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   2. Check: both gloves resting on the forehead or cheekbones, elbows close to the ribs, chin tucked.
   3. Gentle contact, not squeezing - stay relaxed while the guard stays home.
   4. After every punch, the hand comes straight back to the same spot.
+  5. (Day 9) Defence freeze: cover up with the gloves over the eyebrows. Look over the gloves, never between them - no gaps.
 
 ## Combo shadowboxing
 - **Fixes:** In sparring I throw one punch, pause, then the next, instead of combos. In combos with punches and a kick, the kick is even slower (Day 8).
 - **Coach's cue:** Practise combos like 1-2 and 1-2-3.
-- **Technique:** 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook), 1-2-3 + right body kick, Cross + right kick (2 + right kick)
+- **Technique:** 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook), 1-2-3 + right body kick, Cross + right kick (2 + right kick), Cross - dip - lead hook (2, dip, 3)
 - **From:** Day 2 (2026-10-12)
 - **Status:** Active
 - **Dose:** 4 rounds of 2 minutes, 30 seconds rest.
@@ -238,3 +294,4 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   3. Round 3: mix them - 1-2, then 1-2-3, then 1-1-2.
   4. Stay relaxed: shoulders down, breathe out on each punch ("tss-tss").
   5. Round 4 (added Day 8) - punch into kick: 1-2-3 -> right body kick, then 2 -> right kick. Throw the kick as the last punch comes back, not after you have reset. Punches at half power, so the kick flows straight on.
+  6. Round 5 (added Day 9) - 2 - dip - 3: three slow beats, saying "two - dip - three" out loud, then blend it into one movement. Dip with the knees, not the waist.
