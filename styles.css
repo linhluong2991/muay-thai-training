@@ -2328,6 +2328,15 @@ body.caller-live .tabbar { display: none; }
 }
 
 .tab[aria-current="page"] .tab-label { display: inline; }
+.tab[aria-current="page"].is-tight .tab-label { display: none; } /* safety net: label hidden if it can't fit */
+
+/* Six tabs: on phones the inactive tabs are slimmer (40px wide, 48px tall)
+   so the active label fits - "Techniques" is the longest */
+@media (max-width: 430px) {
+  .tabbar { gap: 1px; }
+  .tab { min-width: 40px; padding: 0 9px; }
+  .tab .tab-label { font-size: 13px; }
+}
 
 @media (hover: hover) { .tab:not([aria-current="page"]):hover { color: #fff; background: rgba(255, 255, 255, 0.08); } }
 
@@ -2497,6 +2506,192 @@ body.caller-live .tabbar { display: none; }
 
 .sheet-close { position: relative; z-index: 2; }
 
+/* ---------- Pictures ---------- */
+
+.pic-list { display: grid; gap: var(--s3); }
+
+.pic-card {
+  padding: var(--s4);
+  border-radius: var(--r-card);
+}
+
+.pic-head {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-bottom: var(--s3);
+}
+
+.pic-names { flex: 1; min-width: 0; display: grid; gap: 2px; }
+.pic-names h3 { font-size: var(--fs-h3); font-weight: 600; line-height: 1.3; letter-spacing: -0.01em; }
+.pic-names span { font-size: var(--fs-small); color: var(--ink-soft); }
+
+.pic { margin: 0; min-width: 0; }
+
+.pic-btn {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--r-panel);
+  background: var(--surface);
+  transition: transform var(--dur) var(--ease);
+}
+
+.pic-btn:active { transform: scale(0.985); }
+
+.pic-btn img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 420px;
+  object-fit: contain;
+  background: var(--surface);
+}
+
+.pic.is-thumb .pic-btn img {
+  aspect-ratio: 1;
+  height: auto;
+  object-fit: cover;
+}
+
+.pic figcaption {
+  display: grid;
+  gap: 2px;
+  padding: var(--s2) 4px 0;
+}
+
+.pic-cap { font-size: 14px; font-weight: 500; line-height: 1.45; }
+.pic.is-thumb .pic-cap { font-size: var(--fs-small); }
+
+.pic-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--s3);
+  font-size: var(--fs-label);
+  color: var(--ink-soft);
+}
+
+.pic-meta:empty { display: none; }
+
+.pic-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-height: 32px;
+  max-width: 100%;
+  font-size: var(--fs-label);
+  font-weight: 500;
+  color: var(--lavender-ink);
+}
+
+.pic-source span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pic-credit { font-size: var(--fs-label); color: var(--ink-soft); }
+.lb-text .pic-credit { display: block; color: var(--on-dark-2); }
+
+.pic-more {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s3);
+  margin-top: var(--s3);
+}
+
+.pic-none {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  min-height: 72px;
+  border-radius: var(--r-panel);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(18, 18, 22, 0.08);
+  font-size: var(--fs-small);
+  font-weight: 500;
+  color: var(--ink-soft);
+}
+
+/* Technique sheet: first picture on top */
+.pic.is-sheet { margin-top: var(--s4); }
+.pic.is-sheet .pic-btn img { max-height: 46vh; max-height: 46dvh; }
+
+/* ---------- Full-screen picture ---------- */
+
+body.lightbox-open { overflow: hidden; }
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  background: var(--ink);
+  color: var(--on-dark);
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  opacity: 0;
+  transition: opacity var(--dur) var(--ease);
+}
+
+.lightbox[hidden] { display: none; }
+.lightbox.is-open { opacity: 1; }
+
+.lb-top {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s3);
+  padding: var(--s3) var(--s4) var(--s2) var(--pad);
+}
+
+.lb-title {
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px var(--s3);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.lb-count { font-size: var(--fs-small); font-weight: 500; color: var(--on-dark-2); }
+
+.lightbox .icon-btn { flex: none; background: rgba(255, 255, 255, 0.12); color: var(--on-dark); }
+.lightbox .icon-btn:disabled { opacity: 0.3; }
+@media (hover: hover) { .lightbox .icon-btn:not(:disabled):hover { background: var(--lime); color: var(--ink); } }
+
+.lb-stage {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--s2) var(--s3);
+  touch-action: pan-y pinch-zoom;
+}
+
+.lb-stage img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: var(--r-panel);
+  background: var(--surface);
+}
+
+.lb-foot {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: var(--s3) var(--s4) var(--s5);
+}
+
+.lb-text { flex: 1; min-width: 0; text-align: center; }
+.lb-text p { font-size: var(--fs-body); font-weight: 500; line-height: 1.45; }
+.lb-text .pic-source { color: var(--lime); justify-content: center; }
+
 /* ---------- Boot skeleton ---------- */
 
 .boot { position: relative; padding-top: 32px; }
@@ -2534,8 +2729,8 @@ body.caller-live .tabbar { display: none; }
   .punch { font-size: 11.5px; gap: 6px; }
   .cal-card { padding: var(--s4) var(--s3); }
   .cal-day { width: 36px; height: 36px; }
-  /* five tabs: a little more room so "Techniques" fits in the active pill */
-  .tabbar { width: calc(100% - 24px); }
+  /* six tabs: a little more room so "Techniques" fits in the active pill */
+  .tabbar { width: calc(100% - 16px); }
 }
 
 /* ---------- Motion preferences ---------- */

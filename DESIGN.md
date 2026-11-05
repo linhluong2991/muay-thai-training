@@ -59,10 +59,10 @@ All text must meet WCAG AA contrast (4.5:1). If white on `--lavender` fails, dar
 - Motion: 200ms ease-out on taps and accordions. Respect `prefers-reduced-motion`.
 
 ## Navigation
-Floating near-black pill at the bottom with 5 tabs. The active tab is a lavender pill (`--lavender-strong`) with a white icon and label; inactive tabs are icons only in `rgba(255,255,255,0.78)`.
+Floating near-black pill at the bottom with 6 tabs. The active tab is a lavender pill (`--lavender-strong`) with a white icon and label; inactive tabs are icons only in `rgba(255,255,255,0.78)`.
 
 - **Position:** like Apple's apps (Fitness, Contacts), the bar sits over the home-indicator area: `bottom: max(16px, calc(env(safe-area-inset-bottom) - 13px))` = 21pt from the screen bottom on an iPhone with a 34pt home indicator; 16px in Safari and on desktop. Centred, `width: min(400px, 100% - 32px)`.
-- **Size:** bar 64px tall; tabs 48px tall; the pill sits 8px from the bar's outer edge (7px padding + 1px border). Inactive tabs are 44px wide (11px padding + 22px icon), 2px apart, so the active label fits with 5 tabs; under 375px wide the bar is `100% - 24px`.
+- **Size:** bar 64px tall; tabs 48px tall; the pill sits 8px from the bar's outer edge (7px padding + 1px border). Inactive tabs are 44px wide (11px padding + 22px icon), 2px apart. With 6 tabs the active label needs more room on phones, so up to 430px wide the inactive tabs are 40px wide (9px padding, still 48px tall), 1px apart, and the label is 13px; under 375px wide the bar is `100% - 16px`. That way "Techniques" (the longest label) fits at 360px. Safety net: if the active label still doesn't fit (e.g. large system text), the active pill shows its icon only.
 - **Glass (15%):** `background: rgba(18,18,22,0.86)`, `backdrop-filter: blur(18px) saturate(160%)` (plus `-webkit-`), `border: 1px solid rgba(255,255,255,0.12)`, shadow `inset 0 1px 0 rgba(255,255,255,0.10), 0 10px 30px rgba(18,18,22,0.28)`. Content scrolling underneath shows as a soft blur. Where `backdrop-filter` isn't supported, the bar is solid `--ink`.
 
 | Tab | Route |
@@ -70,6 +70,7 @@ Floating near-black pill at the bottom with 5 tabs. The active tab is a lavender
 | Home | `#/` |
 | Sessions | `#/sessions` |
 | Techniques | `#/techniques` |
+| Pictures | `#/pictures` (image icon) |
 | Drills | `#/drills` (dumbbell icon) |
 | Words | `#/words` |
 
@@ -107,11 +108,19 @@ Session detail: `#/session/2026-10-09`. A single drill: `#/drills/<drill-id>` (t
 - **Status summary**: a 4-segment bar showing counts per status.
 - Filter chips: All · Stance & movement · Punches · Kicks · Knees · Elbows · Defence · Clinch · Combos. Hide empty categories.
 - 2-column grid of category-tinted cards: name, Thai term if any, status pill, and a 4-dot progress indicator (filled up to the current status).
-- Tap a card -> bottom sheet with the key cue, first taught and last updated dates, a "Home drill" link for each **active** drill that lists the technique, and links to every session that mentions the technique.
+- Tap a card -> bottom sheet with the technique's first picture at the top (if it has one; tap it for the full-screen view, with "1 of N pictures" when there are more), then the key cue, first taught and last updated dates, a "Home drill" link for each **active** drill that lists the technique, and links to every session that mentions the technique.
 
 Status labels: Seen · Drilling · Clean on pads · Usable in sparring (same as the files).
 
-### 5. Drills
+### 5. Pictures
+Reference pictures of the correct form, one place to look before training. Personal use: each picture links to the page it came from.
+- Glow header: label "Library", title **"Pictures"**, subtitle "N of M techniques" + "Tap a picture to see it big".
+- Grouped by the same sections as Techniques (Stance & movement, Punches, Kicks, Knees, Elbows, Defence, Clinch - empty sections hidden). Combos and general rows like "Punching basics" are left out.
+- One category-tinted card per technique: number badge or icon, name, a light ↗ button that opens the technique's bottom sheet. Then the first picture full width on a white 16px panel (whole picture shown, max 420px tall), its caption (14/500) and a small "source" link (external-link icon + site name, `--lavender-ink`, opens in a new tab). Extra pictures sit below in a 2-column grid of square thumbnails, each with its caption and source.
+- No pictures: a soft panel with an image icon and "No picture yet".
+- **Full-screen view:** tap any picture. `--ink` background, technique name and "2 / 3" at the top, the close button (44px) top right, the picture as large as fits, then caption and source link (lime) at the bottom with ‹ › buttons when there are more. Swipe left/right or arrow keys to move, Escape or tapping the dark area to close. Opens over the bottom sheet too.
+
+### 6. Drills
 Home drills that fix what the coach corrects, from `drills.md`.
 - Glow header: label "Practice", title **"Home drills"**, subtitle "N active drills · N fixed".
 - **Combo caller** card at the top (above Today): lilac (Punches tint) card with an ink circle and lime speaker icon, "Combo caller" + "A voice calls combos while you shadowbox", ↗. Opens `#/caller`. Hidden if there are no combos.
@@ -127,7 +136,7 @@ Home drills that fix what the coach corrects, from `drills.md`.
 - **Done today:** a round 48px check button top-right on each Active drill. Grey outline when not done, lime fill with an ink check when done. Stored in `localStorage` (`muay-thai-log:drills-done`, a list of dates per drill), so it's per device and resets each day. "Practised N days" counts the stored dates. If storage is blocked, ticks still work until the page is closed.
 - **Fixed** drills look calmer: outlined instead of white, no lime, a small mint "Fixed" badge instead of the check button.
 
-### 6. Combo caller (`#/caller`, opened from the Drills tab; the Drills tab stays active)
+### 7. Combo caller (`#/caller`, opened from the Drills tab; the Drills tab stays active)
 A voice calls punch combos as numbers while Linh shadowboxes - like a coach on pads - so she throws combos as one movement.
 - **Combos:** "My combos" = the Combos table in `techniques.md` (the number part, e.g. "1-2"); "All basics" = `combos.md` (Combo | Punches | Range, read by header). The pool is both, deduplicated by the number string; mine are tagged "Mine" in All basics.
 - **Setup:** glow header with a back button, "Combo caller". White card of segmented controls (ink pill = selected, 44px): Rounds 1-5 (default 3), Round length 1/2/3 min (2), Rest 30/60 s (30), Pace Slow/Medium/Fast (Medium) with "about N s between calls". Then a "My combos / All basics" segmented switch and a tickable list (number in 18/800, punch names small; lime check circle when on). Big lavender-strong "Start" button (64px), the total time under it, and small print. Settings are remembered in `localStorage` (`muay-thai-log:caller`).
@@ -146,7 +155,7 @@ A voice calls punch combos as numbers while Linh shadowboxes - like a coach on p
 - **Screen Wake Lock** keeps the screen on while running; if it isn't available, a small hint "Keep your screen on" shows.
 - **Finish:** "Done" with Rounds and Combos called numerals, a lime "Mark Combo shadowboxing done today" button (only if that drill is Active and not ticked yet - uses the same done-today storage), "Go again" and "Back to drills". Leaving the screen stops the caller.
 
-### 7. Words
+### 8. Words
 - Search field ("Search words...").
 - All New words rows from every session, deduplicated by standard term, sorted A-Z. Each row: standard term (bold), what I said, note, the Example line (same style as Session detail), and the "Day N" where it first appeared.
 - Search matches what I said, the standard term, the note and the example.
@@ -158,6 +167,7 @@ A voice calls punch combos as numbers while Linh shadowboxes - like a coach on p
 - Parse `sessions/*.md` by headings: `##` = section, `###` = technique, `**From class**` / `**How it works**` = the two parts, markdown tables for New words.
 - Parse `techniques.md` tables (category = `##` heading) and `goals.md` checkboxes.
 - Parse `combos.md` (Combo | Punches | Range table) for the Combo caller.
+- `data/pictures.json` lists the reference pictures: an object keyed by the exact technique name from `techniques.md`, each value a list of `{ "file": "images/techniques/<name>-1.jpg", "page": "<web page it came from>", "caption": "<what to look at>" }` (optional `width`/`height` in pixels avoid jumps while loading; optional `credit`, e.g. "Author, CC BY-SA 4.0", is shown next to the source link - required for Creative Commons pictures). The first picture is the one shown in the technique sheet. Pictures live in `images/techniques/` as compressed jpg, max 1200px wide. If a name changes in `techniques.md`, rename its key here too.
 - Parse `drills.md`: each `##` is a drill; the `- **Label:**` bullets are read by label (Fixes, Coach's cue, Technique, From, Status, Dose, How + numbered list), so order doesn't matter and missing fields are skipped. Technique names match `techniques.md` rows; "all punches" (all + a category) means every technique in that category.
 - Render markdown with a pinned CDN version of `marked`. Escape everything else.
 - If a file fails to load or parse, show a friendly empty state ("Nothing here yet") and never a blank page.

@@ -4,3 +4,6 @@
 CLAUDE.md
 agent-report/
 task-input/
+
+# Local preview config for Claude Code
+.claude/

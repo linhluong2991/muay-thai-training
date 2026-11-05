@@ -12,10 +12,12 @@ My training log from Day 1 - Friday 2026-10-09.
 | `drills.md` | Home drills to fix my mistakes |
 | `combos.md` | Basic combos for the Combo caller |
 | `images/` | Sketches and photos, named `YYYY-MM-DD-short-name.jpg` |
+| `images/techniques/` | Reference pictures for the Pictures tab |
 | `PROJECT-INSTRUCTIONS.md` | Instructions for Pi Liang (the Project) |
 | `DESIGN.md` | Site design spec |
 | `BUILD-PROMPT.md` | The prompt Nong Code used to build the site |
 | `data/sessions.json` | Session list the site reads |
+| `data/pictures.json` | Reference pictures per technique (keyed by the name in `techniques.md`) |
 | `CLAUDE.md` | Rules Nong Code reads automatically |
 | `agent-report/` | Nong Code's reports after each task |
 | `task-input/` | My material + task files for Nong Code |

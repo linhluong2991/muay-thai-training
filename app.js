@@ -70,6 +70,8 @@
     play: '<path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/>',
     pause: '<rect x="14" y="4" width="4" height="16" rx="1"/><rect x="6" y="4" width="4" height="16" rx="1"/>',
     square: '<rect width="16" height="16" x="4" y="4" rx="2"/>',
+    image: '<rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/>',
+    externalLink: '<path d="M15 3h6v6"/><path d="M10 14 21 3"/><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>',
   };
 
   const icon = (name, size = 20, sw = 1.75) =>
@@ -495,6 +497,7 @@
     drills: [],
     drillFilter: 'active',
     combos: [],
+    pictures: {},
     callerView: 'setup',
     callerDebug: false,
     wordsMode: 'list',
@@ -520,7 +523,7 @@
     const list = index && Array.isArray(index.sessions) ? index.sessions.filter((s) => s && parseISO(s.date)) : [];
     state.startDate = index && parseISO(index.startDate) ? index.startDate : null;
 
-    const [sessions, techText, goalsText, drillsText, combosText] = await Promise.all([
+    const [sessions, techText, goalsText, drillsText, combosText, picturesText] = await Promise.all([
       Promise.all(
         list.map(async (s) => {
           let doc = null;
@@ -536,6 +539,7 @@
       fetchText('goals.md').catch(() => { state.failed.goals = true; return ''; }),
       fetchText('drills.md').catch(() => { state.failed.drills = true; return ''; }),
       fetchText('combos.md').catch(() => ''),
+      fetchText('data/pictures.json').catch(() => ''),
     ]);
 
     try {
@@ -563,6 +567,11 @@
       state.combos = buildComboPool(parseCombos(combosText));
     } catch (e) {
       console.warn('Could not parse combos.md', e);
+    }
+    try {
+      if (picturesText) state.pictures = parsePictures(JSON.parse(picturesText));
+    } catch (e) {
+      console.warn('Could not parse data/pictures.json', e);
     }
 
     sessions.sort((a, b) => a.dateObj - b.dateObj);
@@ -1092,11 +1101,13 @@
     const sessions = sessionsFor(t);
     const drills = drillsFor(t);
     const ladder = STATUSES.map((s, i) => `<li class="${i < t.statusIdx ? 'on' : ''}${i === t.statusIdx ? ' current' : ''}">${s}${i === t.statusIdx ? '<span class="sr-only"> (current)</span>' : ''}</li>`).join('');
+    const pics = picturesFor(t);
     return `<div class="sheet-hero">
         <div class="card-top">
           <span class="sheet-tags">${t.num ? badge(info) : ''}<span class="sheet-cat tint-${tint}">${esc(t.cat.label)}</span></span>
           <button type="button" class="icon-btn sheet-close" data-action="close-sheet" aria-label="Close">${icon('x', 20)}</button>
         </div>
+        ${pics.length ? pictureFigure(pics[0], t, 0, 'is-sheet', pics.length > 1 ? `1 of ${pics.length} pictures` : '') : ''}
         <h2 class="sheet-title" id="sheet-title">${t.num ? `<span class="sr-only">${esc(t.num)} - </span>` : ''}${esc(t.short)}</h2>
         ${t.sub ? `<p class="sheet-thai" style="font-style:normal">${esc(t.sub)}</p>` : ''}
         ${t.thai ? `<p class="sheet-thai">${esc(t.thai)}</p>` : ''}
@@ -1123,6 +1134,176 @@
               .join('')}</ul>`
           : emptyState('Nothing here yet', t.statusIdx < 0 ? 'Not taught yet. It will link here once a session covers it.' : 'No session mentions this yet.', 'calendar')}
       </div>`;
+  }
+
+  // ---------- Pictures ----------
+
+  // data/pictures.json: { "<technique name from techniques.md>": [{ file, page, caption }] }.
+  // Looked up by exact name first, then by the normalised name.
+  function parsePictures(json) {
+    const src = json && typeof json === 'object' && json.pictures && typeof json.pictures === 'object' ? json.pictures : json;
+    const out = { exact: {}, norm: {} };
+    if (!src || typeof src !== 'object') return out;
+    for (const [name, list] of Object.entries(src)) {
+      if (!Array.isArray(list)) continue;
+      const pics = list
+        .filter((p) => p && typeof p.file === 'string' && /^[\w./-]+\.(jpe?g|png|webp|gif|avif)$/i.test(p.file) && !p.file.includes('..'))
+        .map((p) => ({
+          file: p.file,
+          page: typeof p.page === 'string' && /^https?:\/\//i.test(p.page) ? p.page : '',
+          caption: typeof p.caption === 'string' ? p.caption.trim() : '',
+          credit: typeof p.credit === 'string' ? p.credit.trim() : '',
+          w: Number(p.width) || 0,
+          h: Number(p.height) || 0,
+        }));
+      if (!pics.length) continue;
+      out.exact[name.trim()] = pics;
+      out.norm[normName(name)] = pics;
+    }
+    return out;
+  }
+
+  const picturesFor = (t) => (state.pictures.exact && (state.pictures.exact[t.name] || state.pictures.norm[normName(t.name)])) || [];
+
+  // General rows like "Punching basics" aren't one move, so they get no picture.
+  const pictureTechniques = () => state.techniques.filter((t) => t.cat.key !== 'combos' && !/\bbasics\b/i.test(t.name));
+
+  const sourceHost = (url) => {
+    try { return new URL(url).hostname.replace(/^www\./, ''); } catch (e) { return 'source'; }
+  };
+
+  function pictureImg(p, t, i, cls = '') {
+    const size = p.w && p.h ? ` width="${p.w}" height="${p.h}"` : '';
+    return `<button type="button" class="pic-btn ${cls}" data-action="open-picture" data-id="${t.id}" data-i="${i}" aria-label="View full screen: ${esc(t.name)}${p.caption ? ` - ${esc(p.caption)}` : ''}">
+      <img src="${esc(p.file)}" alt="${esc(p.caption || t.name)}"${size} loading="lazy" decoding="async">
+    </button>`;
+  }
+
+  // Source link, plus the author and licence when the picture needs a credit (e.g. CC BY-SA).
+  const sourceLink = (p) =>
+    (p.page ? `<a class="pic-source" href="${esc(p.page)}" target="_blank" rel="noopener noreferrer">${icon('externalLink', 14)}<span>${esc(sourceHost(p.page))}</span></a>` : '') +
+    (p.credit ? `<span class="pic-credit">${esc(p.credit)}</span>` : '');
+
+  function pictureFigure(p, t, i, cls = '', more = '') {
+    return `<figure class="pic ${cls}">
+      ${pictureImg(p, t, i)}
+      <figcaption>${p.caption ? `<span class="pic-cap">${esc(p.caption)}</span>` : ''}<span class="pic-meta">${more ? `<span>${esc(more)}</span>` : ''}${sourceLink(p)}</span></figcaption>
+    </figure>`;
+  }
+
+  function pictureCard(t) {
+    const info = { num: t.num, name: t.short, title: t.name, cat: t.cat.key };
+    const tint = CATEGORIES.some((c) => c.key === t.cat.key) ? t.cat.key : 'other';
+    const pics = picturesFor(t);
+    const [first, ...rest] = pics;
+    return `<article class="pic-card tint-${tint}" aria-labelledby="pic-${t.id}">
+      <div class="pic-head">
+        ${badge(info)}
+        <div class="pic-names"><h3 id="pic-${t.id}">${t.num ? `<span class="sr-only">${esc(t.num)} - </span>` : ''}${esc(t.short)}</h3>${t.sub ? `<span>${esc(t.sub)}</span>` : ''}</div>
+        <button type="button" class="arrow-btn light" data-action="open-tech" data-id="${t.id}" aria-haspopup="dialog" aria-label="Open ${esc(t.name)}">${icon('arrowUpRight', 18)}</button>
+      </div>
+      ${first
+        ? `${pictureFigure(first, t, 0, 'is-main')}${rest.length ? `<div class="pic-more">${rest.map((p, i) => pictureFigure(p, t, i + 1, 'is-thumb')).join('')}</div>` : ''}`
+        : `<p class="pic-none">${icon('image', 18)}No picture yet</p>`}
+    </article>`;
+  }
+
+  function renderPictures() {
+    const list = pictureTechniques();
+    const withPics = list.filter((t) => picturesFor(t).length).length;
+
+    const header = `<header class="hero">
+      <div class="hero-top"><span class="eyebrow"><span class="dot"></span>Library</span></div>
+      <h1 class="hero-title is-text">Pictures</h1>
+      <p class="hero-sub">${list.length ? `<strong>${withPics} of ${list.length} techniques</strong><span class="sep"></span><span>Tap a picture to see it big</span>` : '<span>The right shape for each move</span>'}</p>
+    </header>`;
+
+    if (!list.length) {
+      return `<section class="screen">${glow}${header}${emptyState('Nothing here yet', 'Pictures appear here once techniques are added to techniques.md.', 'image')}</section>`;
+    }
+
+    const groups = [];
+    for (const t of list) {
+      const key = `${t.cat.key}:${t.cat.key === 'other' ? t.cat.label : ''}`;
+      let g = groups.find((x) => x.key === key);
+      if (!g) { g = { key, cat: t.cat, items: [] }; groups.push(g); }
+      g.items.push(t);
+    }
+    const order = (g) => { const i = CATEGORIES.findIndex((c) => c.key === g.cat.key); return i < 0 ? CATEGORIES.length : i; };
+    groups.sort((a, b) => order(a) - order(b));
+
+    return `<section class="screen">${glow}${header}
+      ${groups
+        .map((g, gi) => `<section class="block" aria-labelledby="h-pics-${gi}">
+          <div class="block-head"><h2 id="h-pics-${gi}">${esc(g.cat.label)}</h2><span class="meta">${plural(g.items.length, 'technique')}</span></div>
+          <div class="pic-list">${g.items.map(pictureCard).join('')}</div>
+        </section>`)
+        .join('')}
+    </section>`;
+  }
+
+  // Full-screen view: one technique's pictures, with previous / next when there are more.
+  const lightbox = document.getElementById('lightbox');
+  const lb = { t: null, i: 0, ret: null, swiped: false };
+
+  function lightboxHtml() {
+    const pics = picturesFor(lb.t);
+    const p = pics[lb.i];
+    const many = pics.length > 1;
+    return `<div class="lb-top">
+        <span class="lb-title">${esc(lb.t.name)}${many ? `<span class="lb-count tabular">${lb.i + 1} / ${pics.length}</span>` : ''}</span>
+        <button type="button" class="icon-btn lb-close" data-action="close-picture" aria-label="Close">${icon('x', 22)}</button>
+      </div>
+      <div class="lb-stage" data-action="close-picture">
+        <img src="${esc(p.file)}" alt="${esc(p.caption || lb.t.name)}">
+      </div>
+      <div class="lb-foot">
+        ${many ? `<button type="button" class="icon-btn lb-nav" data-action="picture-prev" aria-label="Previous picture"${lb.i === 0 ? ' disabled' : ''}>${icon('chevronLeft', 22)}</button>` : ''}
+        <div class="lb-text">${p.caption ? `<p>${esc(p.caption)}</p>` : ''}${sourceLink(p)}</div>
+        ${many ? `<button type="button" class="icon-btn lb-nav" data-action="picture-next" aria-label="Next picture"${lb.i === pics.length - 1 ? ' disabled' : ''}>${icon('chevronRight', 22)}</button>` : ''}
+      </div>`;
+  }
+
+  function openPicture(t, i, trigger) {
+    if (!picturesFor(t)[i]) return;
+    if (lightbox.hidden) lb.ret = trigger || null;
+    lb.t = t;
+    lb.i = i;
+    lightbox.innerHTML = lightboxHtml();
+    lightbox.setAttribute('aria-label', `Picture: ${t.name}`);
+    if (lightbox.hidden) {
+      lightbox.hidden = false;
+      document.body.classList.add('lightbox-open');
+      [view, document.querySelector('.tabbar'), sheetLayer].forEach((el) => el.setAttribute('inert', ''));
+      requestAnimationFrame(() => lightbox.classList.add('is-open'));
+    }
+    lightbox.querySelector('.lb-close').focus({ preventScroll: true });
+  }
+
+  function stepPicture(d) {
+    const n = picturesFor(lb.t).length;
+    const i = Math.min(n - 1, Math.max(0, lb.i + d));
+    if (i === lb.i) return;
+    openPicture(lb.t, i);
+    const again = lightbox.querySelector(`[data-action="${d < 0 ? 'picture-prev' : 'picture-next'}"]:not([disabled])`) || lightbox.querySelector('.lb-close');
+    again.focus({ preventScroll: true });
+  }
+
+  function closePicture() {
+    if (lightbox.hidden) return;
+    lightbox.classList.remove('is-open');
+    lightbox.hidden = true;
+    lightbox.innerHTML = '';
+    document.body.classList.remove('lightbox-open');
+    // The sheet may still be open underneath: keep the page behind it inert.
+    sheetLayer.removeAttribute('inert');
+    if (sheetLayer.hidden) {
+      view.removeAttribute('inert');
+      document.querySelector('.tabbar').removeAttribute('inert');
+    }
+    if (lb.ret && document.body.contains(lb.ret)) lb.ret.focus({ preventScroll: true });
+    lb.ret = null;
+    lb.t = null;
   }
 
   // ---------- Drills ----------
@@ -2389,6 +2570,7 @@
     if (m) return { name: 'session', tab: 'sessions', arg: m[1] };
     if (/^\/sessions\/?$/.test(h)) return { name: 'sessions', tab: 'sessions' };
     if (/^\/techniques\/?$/.test(h)) return { name: 'techniques', tab: 'techniques' };
+    if (/^\/pictures\/?$/.test(h)) return { name: 'pictures', tab: 'pictures' };
     if (/^\/words\/?$/.test(h)) return { name: 'words', tab: 'words' };
     const cl = h.match(/^\/caller\/?(\?debug)?$/);
     if (cl) return { name: 'caller', tab: 'drills', arg: cl[1] ? 'debug' : undefined };
@@ -2397,10 +2579,11 @@
     return { name: 'home', tab: 'home' };
   }
 
-  const TITLES = { home: 'Home', sessions: 'Sessions', techniques: 'Techniques', drills: 'Drills', caller: 'Combo caller', words: 'Words' };
+  const TITLES = { home: 'Home', sessions: 'Sessions', techniques: 'Techniques', pictures: 'Pictures', drills: 'Drills', caller: 'Combo caller', words: 'Words' };
 
   function render() {
     if (!state.loaded) return;
+    closePicture();
     closeSheet(true);
     const r = parseRoute();
     const key = `${r.name}:${r.arg || ''}`;
@@ -2419,6 +2602,7 @@
       if (r.name === 'session') html = renderDetail(r.arg);
       else if (r.name === 'sessions') html = renderSessions();
       else if (r.name === 'techniques') html = renderTechniques();
+      else if (r.name === 'pictures') html = renderPictures();
       else if (r.name === 'words') html = renderWords();
       else if (r.name === 'drills') html = renderDrills(r.arg);
       else if (r.name === 'caller') html = renderCaller();
@@ -2430,9 +2614,11 @@
     view.innerHTML = html;
 
     document.querySelectorAll('.tab').forEach((a) => {
+      a.classList.remove('is-tight');
       if (a.dataset.tab === r.tab) a.setAttribute('aria-current', 'page');
       else a.removeAttribute('aria-current');
     });
+    fitTabLabel();
 
     const s = r.name === 'session' ? sessionByDate(r.arg) : null;
     document.title = `${s ? `Day ${s.day}` : TITLES[r.name] || 'Home'} · Muay Thai Log`;
@@ -2440,6 +2626,14 @@
     if (changed) window.scrollTo(0, 0);
     if (r.name === 'drills' && r.arg) focusDrill(r.arg);
     if (r.name === 'session') setupScrollSpy();
+  }
+
+  // If the active label doesn't fit (very narrow screen, large text), show the icon only.
+  function fitTabLabel() {
+    const act = document.querySelector('.tab[aria-current="page"]');
+    if (!act) return;
+    act.classList.remove('is-tight');
+    if (act.scrollWidth > act.clientWidth + 1) act.classList.add('is-tight');
   }
 
   // Highlight the chip for the section in view, and pin the bar style once stuck.
@@ -2641,6 +2835,15 @@
       if (t) openSheet(techSheet(t), el);
     } else if (a === 'close-sheet') {
       closeSheet();
+    } else if (a === 'open-picture') {
+      const t = state.techniques.find((x) => x.id === el.dataset.id);
+      if (t) openPicture(t, Number(el.dataset.i) || 0, el);
+    } else if (a === 'close-picture') {
+      // Tapping the dark area closes; tapping the picture itself or swiping doesn't.
+      if (el.classList.contains('lb-stage') && (e.target.tagName === 'IMG' || lb.swiped)) { lb.swiped = false; return; }
+      closePicture();
+    } else if (a === 'picture-prev' || a === 'picture-next') {
+      stepPicture(a === 'picture-prev' ? -1 : 1);
     } else if (a === 'words-mode') {
       if (state.wordsMode === el.dataset.mode) return;
       state.wordsMode = el.dataset.mode;
@@ -2692,6 +2895,16 @@
   });
   ['pointerup', 'pointercancel', 'pointerleave'].forEach((t) => document.addEventListener(t, () => clearTimeout(pressTimer), true));
 
+  // Swipe left / right in the full-screen view.
+  let swipeX = null;
+  lightbox.addEventListener('pointerdown', (e) => { swipeX = e.target.closest('.lb-stage') ? e.clientX : null; lb.swiped = false; });
+  lightbox.addEventListener('pointerup', (e) => {
+    if (swipeX === null) return;
+    const dx = e.clientX - swipeX;
+    swipeX = null;
+    if (Math.abs(dx) > 50) { lb.swiped = true; stepPicture(dx < 0 ? 1 : -1); }
+  });
+
   document.addEventListener('input', (e) => {
     if (e.target.id !== 'word-search') return;
     state.wordsQuery = e.target.value;
@@ -2701,6 +2914,18 @@
   });
 
   document.addEventListener('keydown', (e) => {
+    if (!lightbox.hidden) {
+      if (e.key === 'Escape') { e.preventDefault(); closePicture(); }
+      else if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); stepPicture(e.key === 'ArrowLeft' ? -1 : 1); }
+      else if (e.key === 'Tab') {
+        const f = [...lightbox.querySelectorAll('a[href], button:not([disabled])')];
+        const first = f[0];
+        const last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+      return;
+    }
     if (!sheetLayer.hidden) {
       if (e.key === 'Escape') { e.preventDefault(); closeSheet(); return; }
       if (e.key === 'Tab') {
@@ -2719,6 +2944,8 @@
   });
 
   window.addEventListener('hashchange', render);
+  window.addEventListener('resize', fitTabLabel);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitTabLabel);
 
   // ---------- Start ----------
 

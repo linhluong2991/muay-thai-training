@@ -1,0 +1,417 @@
+{
+  "Stance (orthodox)": [
+    {
+      "file": "images/techniques/stance-orthodox-1.jpg",
+      "page": "https://muaythai.com/muay-thai-stance/",
+      "caption": "Left foot forward, rear foot turned out, rear heel slightly up",
+      "width": 1200,
+      "height": 668
+    },
+    {
+      "file": "images/techniques/stance-orthodox-2.jpg",
+      "page": "https://blog.joinfightcamp.com/training/beginner-drills-for-enhancing-your-boxing-footwork/",
+      "caption": "Side view: weight on the balls of the feet, rear heel lifted",
+      "width": 1100,
+      "height": 1100
+    },
+    {
+      "file": "images/techniques/stance-orthodox-3.jpg",
+      "page": "https://expertboxing.com/the-perfect-boxing-stance",
+      "caption": "Foot diagram: front foot forward, rear foot angled out behind",
+      "width": 426,
+      "height": 302
+    }
+  ],
+  "Guard": [
+    {
+      "file": "images/techniques/guard-1.jpg",
+      "page": "https://expertboxing.com/secret-to-keeping-your-hands-up-in-boxing",
+      "caption": "Gloves resting lightly on the face, elbows down",
+      "width": 700,
+      "height": 394
+    },
+    {
+      "file": "images/techniques/guard-2.jpg",
+      "page": "https://blog.joinfightcamp.com/training/beginner-drills-for-enhancing-your-boxing-footwork/",
+      "caption": "Hands up at the face, shoulders relaxed, elbows in",
+      "width": 1100,
+      "height": 1100
+    }
+  ],
+  "Footwork - forward / back / left / right": [
+    {
+      "file": "images/techniques/footwork-forward-back-left-right-1.jpg",
+      "page": "https://blog.joinfightcamp.com/training/beginner-footwork-basics-tutorial-for-boxing-kickboxing/",
+      "caption": "In and out: front foot leads in, rear foot leads out, heel up",
+      "width": 1200,
+      "height": 608
+    },
+    {
+      "file": "images/techniques/footwork-forward-back-left-right-2.jpg",
+      "page": "https://blog.joinfightcamp.com/training/beginner-footwork-basics-tutorial-for-boxing-kickboxing/",
+      "caption": "Side to side: the foot nearest the direction moves first",
+      "width": 1200,
+      "height": 608
+    }
+  ],
+  "Step back after punching": [
+    {
+      "file": "images/techniques/step-back-after-punching-1.jpg",
+      "page": "https://blog.joinfightcamp.com/training/beginner-footwork-basics-tutorial-for-boxing-kickboxing/",
+      "caption": "Step back out of range, rear foot first, hands back in guard",
+      "width": 685,
+      "height": 700
+    }
+  ],
+  "1 - Jab": [
+    {
+      "file": "images/techniques/1-jab-1.jpg",
+      "page": "https://blog.joinfightcamp.com/training/how-to-throw-boxing-jab-cross-punches/",
+      "caption": "Arm fully straight to the target, rear hand covering the face",
+      "width": 1100,
+      "height": 1100
+    },
+    {
+      "file": "images/techniques/1-jab-2.jpg",
+      "page": "https://expertboxing.com/how-to-throw-a-jab",
+      "caption": "Side view: shoulder rolls up to the chin, arm straight",
+      "width": 500,
+      "height": 290
+    },
+    {
+      "file": "images/techniques/1-jab-3.jpg",
+      "page": "https://expertboxing.com/how-to-throw-a-straight-punch",
+      "caption": "Front view: elbow stays behind the fist, not out to the side",
+      "width": 500,
+      "height": 336
+    }
+  ],
+  "2 - Cross": [
+    {
+      "file": "images/techniques/2-cross-1.jpg",
+      "page": "https://blog.joinfightcamp.com/training/how-to-throw-boxing-jab-cross-punches/",
+      "caption": "Rear foot pivots and hips open as the arm extends",
+      "width": 1100,
+      "height": 1100
+    },
+    {
+      "file": "images/techniques/2-cross-2.jpg",
+      "page": "https://blog.joinfightcamp.com/training/how-to-throw-boxing-jab-cross-punches/",
+      "caption": "Front view: elbow behind the fist, rear heel up",
+      "width": 690,
+      "height": 700
+    }
+  ],
+  "3 - Lead hook": [
+    {
+      "file": "images/techniques/3-lead-hook-1.jpg",
+      "page": "https://blog.joinfightcamp.com/training/how-to-throw-a-lead-hook-punch/",
+      "caption": "Arm up to shoulder height, elbow bent, lead foot pivots",
+      "width": 880,
+      "height": 1100
+    },
+    {
+      "file": "images/techniques/3-lead-hook-2.jpg",
+      "page": "https://blog.joinfightcamp.com/training/how-to-throw-a-boxing-lead-hook-rear-hook/",
+      "caption": "Fist, elbow and shoulder level; feet turn with the punch",
+      "width": 1200,
+      "height": 608
+    },
+    {
+      "file": "images/techniques/3-lead-hook-3.jpg",
+      "page": "https://blog.joinfightcamp.com/training/how-to-throw-a-boxing-lead-hook-rear-hook/",
+      "caption": "From above and side: forearm flat, elbow at shoulder height",
+      "width": 1200,
+      "height": 608
+    }
+  ],
+  "4 - Rear hook": [
+    {
+      "file": "images/techniques/4-rear-hook-1.jpg",
+      "page": "https://blog.joinfightcamp.com/training/how-to-throw-a-boxing-lead-hook-rear-hook/",
+      "caption": "Mirror of the lead hook: rear arm level at shoulder height",
+      "width": 1200,
+      "height": 608
+    },
+    {
+      "file": "images/techniques/4-rear-hook-2.jpg",
+      "page": "https://blog.joinfightcamp.com/training/how-to-throw-a-boxing-lead-hook-rear-hook/",
+      "caption": "Rear foot pivots, hips open, elbow bent at 90-120 degrees",
+      "width": 1200,
+      "height": 608
+    }
+  ],
+  "5 - Lead uppercut": [
+    {
+      "file": "images/techniques/5-lead-uppercut-1.jpg",
+      "page": "https://evolve-university.com/library/boxing/basics/video-left-uppercut/",
+      "caption": "Lead forearm rises vertical, rear hand stays at the chin",
+      "width": 1200,
+      "height": 675
+    }
+  ],
+  "6 - Rear uppercut": [
+    {
+      "file": "images/techniques/6-rear-uppercut-1.jpg",
+      "page": "https://blog.joinfightcamp.com/training/how-to-throw-a-proper-uppercut-punch/",
+      "caption": "Forearm vertical, fist close in front of the face",
+      "width": 1000,
+      "height": 660
+    },
+    {
+      "file": "images/techniques/6-rear-uppercut-2.jpg",
+      "page": "https://evolve-university.com/library/boxing/basics/video-right-uppercut/",
+      "caption": "Rear fist up with elbow under it, lead glove guards face",
+      "width": 1200,
+      "height": 675
+    },
+    {
+      "file": "images/techniques/6-rear-uppercut-3.jpg",
+      "page": "https://commons.wikimedia.org/wiki/File:Uppercut_derecho.jpg",
+      "caption": "Sequence: guard, dip to load, then rear fist comes up",
+      "credit": "Expoblor123, CC BY-SA 4.0",
+      "width": 960,
+      "height": 543
+    }
+  ],
+  "Lead teep (left)": [
+    {
+      "file": "images/techniques/lead-teep-left-1.jpg",
+      "page": "https://warriorcollective.co.uk/blogs/wcarticles/muay-thai-teep",
+      "caption": "Ball of the foot into the stomach, hips pushed forward",
+      "width": 1200,
+      "height": 800
+    }
+  ],
+  "Rear teep (right)": [
+    {
+      "file": "images/techniques/rear-teep-right-1.jpg",
+      "page": "https://warriorcollective.co.uk/blogs/wcarticles/muay-thai-teep",
+      "caption": "Rear-leg teep to the chest with the flat of the foot",
+      "width": 1200,
+      "height": 800
+    }
+  ],
+  "Rear roundhouse kick (right)": [
+    {
+      "file": "images/techniques/rear-roundhouse-kick-right-1.jpg",
+      "page": "https://legacy-blog.joinfightcamp.com/blogs/kickboxing/how-to-do-a-roundhouse-kick-in-kickboxing",
+      "caption": "Up on the ball of the standing foot, heel turned, hips over",
+      "width": 1200,
+      "height": 1191
+    },
+    {
+      "file": "images/techniques/rear-roundhouse-kick-right-2.jpg",
+      "page": "https://www.wikihow.com/Learn-Muay-Thai",
+      "caption": "Standing foot pivots (45° shown) as the shin swings in",
+      "credit": "wikiHow, CC BY-NC-SA 3.0",
+      "width": 460,
+      "height": 345
+    }
+  ],
+  "Lead roundhouse kick - switch kick (left)": [
+    {
+      "file": "images/techniques/lead-roundhouse-kick-switch-kick-left-1.jpg",
+      "page": "https://legacy-blog.joinfightcamp.com/blogs/kickboxing/how-to-do-a-roundhouse-kick-in-kickboxing",
+      "caption": "Left kick: up on the ball of the right foot, hips turned over",
+      "width": 1200,
+      "height": 1223
+    },
+    {
+      "file": "images/techniques/lead-roundhouse-kick-switch-kick-left-2.jpg",
+      "page": "https://commons.wikimedia.org/wiki/File:Kicking_Thai_Pads.JPG",
+      "caption": "Left shin into the body pad, up on the ball of the right foot",
+      "credit": "Kru Tony Moore, CC BY-SA 4.0",
+      "width": 1200,
+      "height": 799
+    }
+  ],
+  "Calf kick": [
+    {
+      "file": "images/techniques/calf-kick-1.jpg",
+      "page": "https://warriorcollective.co.uk/blogs/wcarticles/japanese-kickboxing-techniques",
+      "caption": "Shin lands on the calf, below the knee",
+      "width": 1200,
+      "height": 800
+    },
+    {
+      "file": "images/techniques/calf-kick-2.jpg",
+      "page": "https://www.wikihow.com/Do-Leg-Kicks",
+      "caption": "Target: the lower leg, below the knee",
+      "credit": "wikiHow, CC BY-NC-SA 3.0",
+      "width": 460,
+      "height": 345
+    }
+  ],
+  "Thigh kick (low kick)": [
+    {
+      "file": "images/techniques/thigh-kick-low-kick-1.jpg",
+      "page": "https://www.wikihow.com/Do-Leg-Kicks",
+      "caption": "Shin swings into the outside of the thigh",
+      "credit": "wikiHow, CC BY-NC-SA 3.0",
+      "width": 460,
+      "height": 345
+    },
+    {
+      "file": "images/techniques/thigh-kick-low-kick-2.jpg",
+      "page": "https://www.wikihow.com/Do-Leg-Kicks",
+      "caption": "Land with the lower shin, just above the ankle",
+      "credit": "wikiHow, CC BY-NC-SA 3.0",
+      "width": 460,
+      "height": 345
+    }
+  ],
+  "Body kick": [
+    {
+      "file": "images/techniques/body-kick-1.jpg",
+      "page": "https://muaythai.com/muay-thai-switch-kick/",
+      "caption": "Shin into the ribs, up on the ball of the standing foot",
+      "width": 1200,
+      "height": 628
+    },
+    {
+      "file": "images/techniques/body-kick-2.jpg",
+      "page": "https://commons.wikimedia.org/wiki/File:Womens_Muay_Thai.jpg",
+      "caption": "Shin to the body, one arm swung down, the other guarding",
+      "credit": "Eric Langley, CC BY 2.0",
+      "width": 1200,
+      "height": 795
+    }
+  ],
+  "Head kick": [
+    {
+      "file": "images/techniques/head-kick-1.jpg",
+      "page": "https://warriorcollective.co.uk/blogs/wcarticles/japanese-kickboxing-techniques",
+      "caption": "Shin at head height; partner blocks with the arm",
+      "width": 1200,
+      "height": 800
+    },
+    {
+      "file": "images/techniques/head-kick-2.jpg",
+      "page": "https://www.ubudmuaythai.com/blog/muay-thai-switch-kick",
+      "caption": "Head-height kick, up on the ball of the standing foot",
+      "width": 560,
+      "height": 700
+    }
+  ],
+  "Slip and low kick vs the cross": [
+    {
+      "file": "images/techniques/slip-and-low-kick-vs-the-cross-1.jpg",
+      "page": "https://www.wikihow.com/Slip-Punches-in-Boxing",
+      "caption": "The slip: lean left, weight onto the left leg",
+      "credit": "wikiHow, CC BY-NC-SA 3.0",
+      "width": 460,
+      "height": 345
+    },
+    {
+      "file": "images/techniques/slip-and-low-kick-vs-the-cross-2.jpg",
+      "page": "https://www.wikihow.com/Do-Leg-Kicks",
+      "caption": "Then: lead foot steps out left to set up the right kick",
+      "credit": "wikiHow, CC BY-NC-SA 3.0",
+      "width": 460,
+      "height": 345
+    }
+  ],
+  "Straight knee - rear (right)": [
+    {
+      "file": "images/techniques/straight-knee-rear-right-1.jpg",
+      "page": "https://evolve-mma.com/blog/the-ultimate-guide-to-the-muay-thai-spear-knee/",
+      "caption": "Knee drives straight in like an arrow, hips forward, up on the toes",
+      "width": 1000,
+      "height": 562
+    }
+  ],
+  "Switch knee (left)": [
+    {
+      "file": "images/techniques/switch-knee-left-1.jpg",
+      "page": "https://evolve-mma.com/blog/how-to-utilize-the-switch-knee-for-muay-thai/",
+      "caption": "Left knee lands in the body, hips pushed forward, standing foot on the ball",
+      "width": 1000,
+      "height": 563
+    }
+  ],
+  "Checking kicks (shin block), both legs": [
+    {
+      "file": "images/techniques/checking-kicks-shin-block-both-legs-1.jpg",
+      "page": "https://tfcgym.com.au/catch-kick-return-kick-muay-thai-breakdown/",
+      "caption": "Same-side leg up to meet the kick, elbow down to the knee",
+      "width": 1200,
+      "height": 800
+    },
+    {
+      "file": "images/techniques/checking-kicks-shin-block-both-legs-2.jpg",
+      "page": "https://evolve-university.com/blog/heres-how-to-utilize-checks-in-muay-thai/",
+      "caption": "Knee lifted high, elbow closing the gap down to the knee",
+      "width": 1000,
+      "height": 563
+    }
+  ],
+  "Defence vs 1-2 (straights)": [
+    {
+      "file": "images/techniques/defence-vs-1-2-straights-1.jpg",
+      "page": "https://blog.joinfightcamp.com/training/4-defensive-blocking-drills-for-boxing/",
+      "caption": "High guard: the straight lands on the glove at the forehead",
+      "width": 1200,
+      "height": 495
+    },
+    {
+      "file": "images/techniques/defence-vs-1-2-straights-2.jpg",
+      "page": "https://expertboxing.com/how-to-parry-punches",
+      "caption": "Parry: the rear glove taps the jab aside, the other hand stays up",
+      "width": 400,
+      "height": 284
+    }
+  ],
+  "Defence vs 3-4 (hooks)": [
+    {
+      "file": "images/techniques/defence-vs-3-4-hooks-1.jpg",
+      "page": "https://blog.joinfightcamp.com/training/4-defensive-blocking-drills-for-boxing/",
+      "caption": "Glove and forearm cover the side of the head to take the hook",
+      "width": 1200,
+      "height": 578
+    }
+  ],
+  "Defence vs 5-6 (uppercuts)": [
+    {
+      "file": "images/techniques/defence-vs-5-6-uppercuts-1.jpg",
+      "page": "https://www.hayabusafight.com/blogs/community/how-to-block-an-uppercut",
+      "caption": "Gloves glued to the head, elbows in, chin tucked behind the arms",
+      "width": 1080,
+      "height": 1080
+    }
+  ],
+  "Catching kicks": [
+    {
+      "file": "images/techniques/catching-kicks-1.jpg",
+      "page": "https://tfcgym.com.au/catch-kick-return-kick-muay-thai-breakdown/",
+      "caption": "Arm wraps under the kicking leg, other hand guards the head",
+      "width": 1200,
+      "height": 800
+    }
+  ],
+  "Teep counter vs kicks": [
+    {
+      "file": "images/techniques/teep-counter-vs-kicks-1.jpg",
+      "page": "https://evolve-mma.com/blog/3-muay-thai-counters-you-need-to-know/",
+      "caption": "Teep straight into the hips to push them off before they kick",
+      "width": 1000,
+      "height": 563
+    },
+    {
+      "file": "images/techniques/teep-counter-vs-kicks-2.jpg",
+      "page": "https://muaythai.com/teep-kick/",
+      "caption": "Teep lands on the belly as they come forward and stops them",
+      "width": 1200,
+      "height": 628
+    }
+  ],
+  "Catch and sweep": [
+    {
+      "file": "images/techniques/catch-and-sweep-1.jpg",
+      "page": "https://www.hayabusafight.com/blogs/community/how-to-catch-and-sweep",
+      "caption": "Kick caught under the arm, sweeping leg reaches for the standing ankle",
+      "width": 1000,
+      "height": 1000
+    }
+  ]
+}
