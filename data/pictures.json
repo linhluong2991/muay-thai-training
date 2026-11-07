@@ -413,5 +413,63 @@
       "width": 1000,
       "height": 1000
     }
+  ],
+  "Plum (double collar tie) + step-back knee": [
+    {
+      "file": "images/techniques/plum-double-collar-tie-step-back-knee-1.jpg",
+      "page": "https://commons.wikimedia.org/wiki/File:Muay_thai_clinch.jpg",
+      "caption": "Plum: one hand flat on top of the other on the back of the head, fingers not interlocked",
+      "width": 1200,
+      "height": 800,
+      "credit": "U.S. Marine Corps photo, Lance Cpl. Wayne C. Edmiston, public domain"
+    },
+    {
+      "file": "images/techniques/plum-double-collar-tie-step-back-knee-2.jpg",
+      "page": "https://warriorcollective.co.uk/products/muay-thai-clinch-developing-world-class-fighters-with-damien-trainor",
+      "caption": "Head pulled down with both hands, knee driving up into the body",
+      "width": 1200,
+      "height": 800
+    }
+  ],
+  "Stopping the clinch entry + turn and knee": [
+    {
+      "file": "images/techniques/stopping-the-clinch-entry-turn-and-knee-1.jpg",
+      "page": "https://8limbsus.com/muay-thai-thailand/muay-thai-clinch-counters-position-double-underhooks",
+      "caption": "Clinch turn: pivot and spin the partner around (arrow). Different grip from the coach's head-on-shoulder turn",
+      "width": 557,
+      "height": 405
+    }
+  ],
+  "Pummeling (inside position)": [
+    {
+      "file": "images/techniques/pummeling-inside-position-1.jpg",
+      "page": "https://evolve-university.com/library/muay-thai/basics/video-clinch-drill/",
+      "caption": "Swimming one arm up inside the partner's arm to win the neck",
+      "width": 854,
+      "height": 480
+    },
+    {
+      "file": "images/techniques/pummeling-inside-position-2.jpg",
+      "page": "https://evolve-university.com/library/wrestling/basics/video-pummeling-drill/",
+      "caption": "Pummeling drill: chest to chest, each partner has one arm inside and one outside",
+      "width": 1200,
+      "height": 675
+    }
+  ],
+  "Breaking the clinch - push the face": [
+    {
+      "file": "images/techniques/breaking-the-clinch-push-the-face-1.jpg",
+      "page": "https://warriorcollective.co.uk/products/muay-thai-clinch-developing-world-class-fighters-with-damien-trainor",
+      "caption": "Held by the neck: palm on the holder's mouth and chin, pushing his head away",
+      "width": 1200,
+      "height": 800
+    },
+    {
+      "file": "images/techniques/breaking-the-clinch-push-the-face-2.jpg",
+      "page": "https://evolve-university.com/blog/4-essential-muay-thai-clinch-defence-techniques/",
+      "caption": "Palm under the jaw pushes the holder's head back and to the side",
+      "width": 1000,
+      "height": 563
+    }
   ]
 }
