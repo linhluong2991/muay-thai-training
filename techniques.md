@@ -65,6 +65,10 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
 | Single collar tie + rear knee | | Drilling | 2026-11-04 | 2026-11-04 | Left hand tight to the head as the guard; right hand grabs the neck and pulls forward; knee up hard, hips forward |
+| Plum (double collar tie) + step-back knee | | Drilling | 2026-11-06 | 2026-11-06 | Right hand on top of the left; pull the head onto my shoulder to block their view; step the same-side leg back, drag them in, knee with that leg |
+| Stopping the clinch entry + turn and knee | | Drilling | 2026-11-06 | 2026-11-06 | Both hands just above their elbows, push both arms down, my arms inside; grab the neck with one hand onto the same shoulder; head on my right shoulder -> right leg steps out 45 degrees, turn fast so the left leg ends up behind -> left knee (mirror: left shoulder -> right knee) |
+| Pummeling (inside position) | | Drilling | 2026-11-06 | 2026-11-06 | Keep my arms inside theirs; when they wrap around and push my arms down, swim back inside |
+| Breaking the clinch - push the face | | Drilling | 2026-11-06 | 2026-11-06 | Feel where their face is, push it away with my hand to break the grab |
 
 ## Combos
 | Combo | Status | First taught | Last updated | Key cue |

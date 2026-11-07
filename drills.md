@@ -22,6 +22,18 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   7. **Cool-down - 1 min.** Hip flexor lunge, 30 seconds each side.
   8. When the coach teaches something new, swap it into the matching block rather than adding a new one.
 
+## Clinch pull and swim
+- **Fixes:** Against a strong neck (like the coach's) I can't pull the head onto my shoulder, even with both hands. And pummeling makes my arms very tired.
+- **Coach's cue:** Plum: right hand on top of the left; pull the head onto my shoulder; step the same-side leg back, drag them in, knee. Pummeling: my arms inside their arms.
+- **Technique:** Plum (double collar tie) + step-back knee, Pummeling (inside position)
+- **From:** Day 10 (2026-11-06) - from my own notes
+- **Status:** Active
+- **Dose:** About 5 minutes - 2 rounds.
+- **How:**
+  1. **Towel plum - 2 min.** Loop a towel around something that won't move at chest height (a pole or a sturdy railing - not a door). Hold both ends, right hand on top of the left, elbows squeezed together. Step the right foot back and sit your weight back - arms stay bent and relaxed, the pull comes from the step and your body. Then a slow right knee. 8 each side (left foot back -> left knee).
+  2. **Shadow pummeling - 3 x 30 s, 15 s rest.** In front of a mirror: slide one hand in, up past your own chest, as if going inside their arm; then the other. One arm at a time, small circles close to the body, shoulders loose, breathe out on each swim.
+  3. If your arms burn early, you're squeezing too hard - relax the shoulders and keep the swims small.
+
 ## Double kick reset drill
 - **Fixes:** On the double right kick, my right foot comes back level with the left, so the second kick has no power. When I bring it behind the left foot instead, I lose my balance.
 - **Coach's cue:** After each kick, the right foot goes back behind the left foot; the left foot stays where it is.

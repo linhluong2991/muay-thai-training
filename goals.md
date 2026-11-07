@@ -10,7 +10,7 @@
 
 ## Milestones
 - [x] First class - 2026-10-09
-- [ ] 10 sessions
+- [x] 10 sessions - 2026-11-06
 - [ ] Full round on pads without stopping
 - [x] First sparring session - 2026-10-12
 - [ ] 50 sessions
