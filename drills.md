@@ -22,6 +22,20 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   7. **Cool-down - 1 min.** Hip flexor lunge, 30 seconds each side.
   8. When the coach teaches something new, swap it into the matching block rather than adding a new one.
 
+## Cover while you punch
+- **Fixes:** In sparring my face is open when I punch - no shoulder or other hand covering it (with the coach I do it right). On fast 1-2s my gloves tangle halfway.
+- **Coach's cue:** None - from my own notes. Related coach cue (Day 9): gloves tight to the head, no gaps.
+- **Technique:** 1 - Jab, 2 - Cross, 1-2 (jab-cross), Guard
+- **From:** Day 11 (2026-11-09) - from my own notes
+- **Status:** Active
+- **Dose:** 3 rounds of 1 minute, 30 seconds rest. Slow first.
+- **How:**
+  1. **Jab - 1 min.** Facing a mirror. Slow jab and freeze at full reach: left shoulder up to the chin, right glove touching the right cheek. Then back to guard.
+  2. **Cross - 1 min.** Slow cross and freeze: right shoulder up to the chin, left glove already back on the left cheek. Then back to guard.
+  3. **Straight-line 1-2 - 1 min.** Each fist goes out and back on its own line - the jab returns the way it went out, the cross leaves from the right cheek. Start slow, then speed up only as far as the gloves never touch.
+  4. Gloves still meeting? Check the elbows aren't flaring out (Elbow wall drill).
+  5. Take it into sparring as "attack - cover - out": one combo, hands home, then step out or cut the angle (Punch and pivot).
+
 ## Clinch pull and swim
 - **Fixes:** Against a strong neck (like the coach's) I can't pull the head onto my shoulder, even with both hands. And pummeling makes my arms very tired.
 - **Coach's cue:** Plum: right hand on top of the left; pull the head onto my shoulder; step the same-side leg back, drag them in, knee. Pummeling: my arms inside their arms.
