@@ -24,6 +24,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | 4 - Rear hook | | Drilling | 2026-10-09 | 2026-10-09 | Mirror of the lead hook |
 | 5 - Lead uppercut | | Drilling | 2026-10-09 | 2026-10-09 | Forearm vertical, fist one hand span from face |
 | 6 - Rear uppercut | | Drilling | 2026-10-09 | 2026-10-09 | Mirror of the lead uppercut |
+| 2 to the body (body cross) | | Drilling | 2026-11-13 | 2026-11-13 | The cross, aimed at the body |
 | Punching basics | | Drilling | 2026-10-09 | 2026-10-09 | Loose fist -> tight on impact, exhale |
 
 ## Kicks
@@ -58,6 +59,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Defence vs 3-4 (hooks) | | Drilling | 2026-10-14 | 2026-10-14 | Block left and right to cover the side of the head |
 | Defence vs 5-6 (uppercuts) | | Drilling | 2026-10-14 | 2026-10-14 | Protect the chin; eyes clear, gloves glued to the head, chin tucked |
 | Slip right (outside the jab) + counter cross | | Drilling | 2026-11-11 | 2026-11-11 | After the cross, stay on the ball of the right foot and move it a little right; tilt right, right shoulder lower, hips turn right, knees bent, left hand on the face; drive the cross off the right foot and hips |
+| Duck + counter cross | | Drilling | 2026-11-13 | 2026-11-13 | Bend the legs and lower the body under the punch; eyes stay on the opponent's collar; come back up and throw the cross |
 | Catching kicks | | Drilling | 2026-10-16 | 2026-10-16 | Catch the kick, step back, release, then kick back |
 | Teep counter vs kicks | Teep | Drilling | 2026-11-04 | 2026-11-04 | Kick to my left side -> left teep; kick to my right side -> right teep; teep them away instead of checking |
 | Catch and sweep | | Drilling | 2026-10-16 | 2026-10-16 | Catch and step back on the same side; sweep the ankle and push the head or collarbone with the other side (catch right, step right, sweep left, push left) |
