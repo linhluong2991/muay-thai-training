@@ -86,7 +86,7 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | 1-6-3-2 (jab-rear uppercut-lead hook-cross) | Drilling | 2026-11-11 | 2026-11-11 | Last punch strongest |
 | 1-2-3 + right body kick | Drilling | 2026-10-26 | 2026-11-16 | After the hook, step the lead foot out to the left a little, then kick to the body; turn the hips over |
 | 1-2-3 to the body + right kick | Drilling | 2026-11-16 | 2026-11-16 | Fast 1-2-3; drop the level on the cross, back straight, hook straight away, then the kick; don't tilt the face forward (open to the elbow) |
-| 1-2 + right knee | Drilling | 2026-11-16 | 2026-11-16 | Knee pointed, drive the hips forward, swing the right arm |
+| 1-2 + right knee | Drilling | 2026-11-16 | 2026-11-16 | Knee like an arrow, drive the hips forward, swing the right arm |
 | Cross + right kick (2 + right kick) | Drilling | 2026-10-26 | 2026-10-26 | The cross loads the hips for the kick |
 | Cross - dip - lead hook (2, dip, 3) | Drilling | 2026-11-04 | 2026-11-04 | Slow in three beats first - 2, dip, 3 - then faster |
 | 1-2 + step back | Drilling | 2026-11-04 | 2026-11-04 | One step back out of range after the cross |

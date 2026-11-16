@@ -324,8 +324,8 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   7. Round 6 (added Day 14) - 1-2-3 to the body -> right kick: side-on to a mirror, 5 slow reps, then 5 at speed. Drop with the knees on the cross, head no further forward than the front knee, chin tucked, eyes up. Rise straight into the kick.
 
 ## Knee checklist drill
-- **Fixes:** On the 1-2 + right knee I forget to point the knee, to drive the hips forward and to swing the right arm.
-- **Coach's cue:** Make the knee pointed, use the hips to push forward, swing the right arm when you knee.
+- **Fixes:** On the 1-2 + right knee I forget to make the knee like an arrow, to drive the hips forward and to swing the right arm.
+- **Coach's cue:** Make the knee like an arrow, use the hips to push forward, swing the right arm when you knee.
 - **Technique:** 1-2 + right knee, Straight knee - rear (right), Switch knee (left)
 - **From:** Day 14 (2026-11-16)
 - **Status:** Active
