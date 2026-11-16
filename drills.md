@@ -310,7 +310,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
 ## Combo shadowboxing
 - **Fixes:** In sparring I throw one punch, pause, then the next, instead of combos. In combos with punches and a kick, the kick is even slower (Day 8).
 - **Coach's cue:** Practise combos like 1-2 and 1-2-3.
-- **Technique:** 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook), 1-2-3 + right body kick, Cross + right kick (2 + right kick), Cross - dip - lead hook (2, dip, 3)
+- **Technique:** 1-2 (jab-cross), 1-2-3 (jab-cross-lead hook), 1-2-3 + right body kick, Cross + right kick (2 + right kick), Cross - dip - lead hook (2, dip, 3), 1-2-3 to the body + right kick
 - **From:** Day 2 (2026-10-12)
 - **Status:** Active
 - **Dose:** 4 rounds of 2 minutes, 30 seconds rest.
@@ -321,3 +321,17 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   4. Stay relaxed: shoulders down, breathe out on each punch ("tss-tss").
   5. Round 4 (added Day 8) - punch into kick: 1-2-3 -> right body kick, then 2 -> right kick. Throw the kick as the last punch comes back, not after you have reset. Punches at half power, so the kick flows straight on.
   6. Round 5 (added Day 9) - 2 - dip - 3: three slow beats, saying "two - dip - three" out loud, then blend it into one movement. Dip with the knees, not the waist.
+  7. Round 6 (added Day 14) - 1-2-3 to the body -> right kick: side-on to a mirror, 5 slow reps, then 5 at speed. Drop with the knees on the cross, head no further forward than the front knee, chin tucked, eyes up. Rise straight into the kick.
+
+## Knee checklist drill
+- **Fixes:** On the 1-2 + right knee I forget to point the knee, to drive the hips forward and to swing the right arm.
+- **Coach's cue:** Make the knee pointed, use the hips to push forward, swing the right arm when you knee.
+- **Technique:** 1-2 + right knee, Straight knee - rear (right), Switch knee (left)
+- **From:** Day 14 (2026-11-16)
+- **Status:** Active
+- **Dose:** 3 rounds of 1 minute, 30 seconds rest. Slow first.
+- **How:**
+  1. Round 1 - right knee only, slow, saying the checklist out loud: "fold - hips - swing". Fold the heel to the thigh, push the belt buckle forward, right arm swings down past the hip, left glove on the face.
+  2. Round 2 - 1-2 + right knee: the knee comes straight off the cross, no reset in between. Freeze at the end and check all three.
+  3. Round 3 - left side: switch knee, same checklist, left arm swings.
+  4. Hand on a wall for balance at first; take it away when the checklist feels automatic.

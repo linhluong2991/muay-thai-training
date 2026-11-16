@@ -24,7 +24,8 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | 4 - Rear hook | | Drilling | 2026-10-09 | 2026-10-09 | Mirror of the lead hook |
 | 5 - Lead uppercut | | Drilling | 2026-10-09 | 2026-10-09 | Forearm vertical, fist one hand span from face |
 | 6 - Rear uppercut | | Drilling | 2026-10-09 | 2026-10-09 | Mirror of the lead uppercut |
-| 2 to the body (body cross) | | Drilling | 2026-11-13 | 2026-11-13 | The cross, aimed at the body |
+| 2 to the body (body cross) | | Drilling | 2026-11-13 | 2026-11-16 | The cross, aimed at the body |
+| 3 to the body (lead body hook) | | Drilling | 2026-11-16 | 2026-11-16 | Drop the level with the knees, back straight; hook straight after the cross |
 | Punching basics | | Drilling | 2026-10-09 | 2026-10-09 | Loose fist -> tight on impact, exhale |
 
 ## Kicks
@@ -38,13 +39,14 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Thigh kick (low kick) | | Drilling | 2026-10-19 | 2026-10-19 | Roundhouse kick to the outside of the thigh, lower shin lands |
 | Body kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick to the ribs |
 | Head kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick to the head |
+| Continuous right kicks (10 in a row) | | Drilling | 2026-11-16 | 2026-11-16 | Left foot steps a little left; pivot the standing heel toward the opponent and turn the hips; bring the right leg back but the left foot stays in kicking position, then kick again |
 | Double roundhouse kick (right) | | Drilling | 2026-11-04 | 2026-11-04 | After each kick the right foot lands behind the left foot, back in stance - not level with it; the left foot stays put |
 | Slip and low kick vs the cross | | Drilling | 2026-11-04 | 2026-11-04 | Left foot steps out to the left, lean left to slip the cross; sink low on the left leg and dig in; right kick to the thigh of their standing leg |
 
 ## Knees
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
-| Straight knee - rear (right) | Khao trong | Drilling | 2026-10-28 | 2026-10-28 | Heel tight to the thigh, toes pointed, knee like an arrow; drive the hips forward; one arm swings, the other hand guards the head |
+| Straight knee - rear (right) | Khao trong | Drilling | 2026-10-28 | 2026-11-16 | Heel tight to the thigh, toes pointed, knee like an arrow; drive the hips forward; one arm swings, the other hand guards the head |
 | Switch knee (left) | | Drilling | 2026-10-28 | 2026-10-28 | Hop the right foot forward, left foot on the ball; knee like an arrow, drive the hips forward; return to stance two ways (left foot in front / behind) |
 
 ## Elbows
@@ -82,7 +84,9 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | 1-2-3-2 (jab-cross-lead hook-cross) | Drilling | 2026-11-11 | 2026-11-11 | Last punch strongest |
 | 5-6-3-4 (uppercuts, then hooks) | Drilling | 2026-11-11 | 2026-11-11 | Last punch strongest |
 | 1-6-3-2 (jab-rear uppercut-lead hook-cross) | Drilling | 2026-11-11 | 2026-11-11 | Last punch strongest |
-| 1-2-3 + right body kick | Drilling | 2026-10-26 | 2026-10-26 | After the hook, step the lead foot out to the left a little, then kick to the body; turn the hips over |
+| 1-2-3 + right body kick | Drilling | 2026-10-26 | 2026-11-16 | After the hook, step the lead foot out to the left a little, then kick to the body; turn the hips over |
+| 1-2-3 to the body + right kick | Drilling | 2026-11-16 | 2026-11-16 | Fast 1-2-3; drop the level on the cross, back straight, hook straight away, then the kick; don't tilt the face forward (open to the elbow) |
+| 1-2 + right knee | Drilling | 2026-11-16 | 2026-11-16 | Knee pointed, drive the hips forward, swing the right arm |
 | Cross + right kick (2 + right kick) | Drilling | 2026-10-26 | 2026-10-26 | The cross loads the hips for the kick |
 | Cross - dip - lead hook (2, dip, 3) | Drilling | 2026-11-04 | 2026-11-04 | Slow in three beats first - 2, dip, 3 - then faster |
 | 1-2 + step back | Drilling | 2026-11-04 | 2026-11-04 | One step back out of range after the cross |
