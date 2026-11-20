@@ -12,6 +12,7 @@ Add a row when a coach teaches something. Move status only when it actually chan
 | Footwork - forward / back / left / right | | Drilling | 2026-10-09 | 2026-10-09 | One arm's length range; on the balls of the feet, rear heel slightly up |
 | Cutting the angle (pivot step) | | Drilling | 2026-11-04 | 2026-11-04 | Rise onto the ball of the left foot, pivot by stepping the right foot across to the left |
 | Step back after punching | | Drilling | 2026-11-04 | 2026-11-04 | After the 1-2, one step back out of range of the counter |
+| Footwork rhythm + step jab | | Drilling | 2026-11-18 | 2026-11-18 | Both feet in rhythm, left-right-left-right; jab as the left foot steps forward a little |
 
 ## Punches
 Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear uppercut
@@ -33,10 +34,10 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 |---|---|---|---|---|---|
 | Lead teep (left) | Teep | Drilling | 2026-10-28 | 2026-11-04 | Contact with the ball of the foot; push the hips forward; left arm swings, right hand guards the head; teep hard to the sternum or upper stomach |
 | Rear teep (right) | Teep | Drilling | 2026-10-28 | 2026-11-04 | Contact with the whole foot (flat sole); push the hips forward; right arm swings, left hand guards the head; teep hard to the sternum or upper stomach |
-| Rear roundhouse kick (right) | | Drilling | 2026-10-14 | 2026-11-04 | Step the standing foot out at an angle, off the line of the bag; lean the upper body to the side; shin, foot pointed; turn the hips over; left foot stays on the ball and pivots - no hop; right arm swings out at shoulder height; don't lean back |
+| Rear roundhouse kick (right) | | Drilling | 2026-10-14 | 2026-11-18 | Step the standing foot out at an angle, off the line of the bag; lean the upper body to the side; shin, foot pointed; turn the hips over; left foot stays on the ball and pivots - no hop; right arm swings out at shoulder height; don't lean back; keep the back straight |
 | Lead roundhouse kick - switch kick (left) | | Drilling | 2026-10-14 | 2026-10-14 | Small hop to switch stance, then kick like the right kick |
 | Calf kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick below the knee |
-| Thigh kick (low kick) | | Drilling | 2026-10-19 | 2026-10-19 | Roundhouse kick to the outside of the thigh, lower shin lands |
+| Thigh kick (low kick) | | Drilling | 2026-10-19 | 2026-11-18 | Roundhouse kick to the outside of the thigh, lower shin lands; eyes on their eyes or collarbone, not the thigh |
 | Body kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick to the ribs |
 | Head kick | | Drilling | 2026-10-14 | 2026-10-14 | Roundhouse kick to the head |
 | Continuous right kicks (10 in a row) | | Drilling | 2026-11-16 | 2026-11-16 | Left foot steps a little left; pivot the standing heel toward the opponent and turn the hips; bring the right leg back but the left foot stays in kicking position, then kick again |
@@ -62,14 +63,14 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Defence vs 5-6 (uppercuts) | | Drilling | 2026-10-14 | 2026-10-14 | Protect the chin; eyes clear, gloves glued to the head, chin tucked |
 | Slip right (outside the jab) + counter cross | | Drilling | 2026-11-11 | 2026-11-11 | After the cross, stay on the ball of the right foot and move it a little right; tilt right, right shoulder lower, hips turn right, knees bent, left hand on the face; drive the cross off the right foot and hips |
 | Duck + counter cross | | Drilling | 2026-11-13 | 2026-11-13 | Bend the legs and lower the body under the punch; eyes stay on the opponent's collar; come back up and throw the cross |
-| Catching kicks | | Drilling | 2026-10-16 | 2026-10-16 | Catch the kick, step back, release, then kick back |
-| Teep counter vs kicks | Teep | Drilling | 2026-11-04 | 2026-11-04 | Kick to my left side -> left teep; kick to my right side -> right teep; teep them away instead of checking |
+| Catching kicks | | Drilling | 2026-10-16 | 2026-11-18 | Catch the kick, step back, release, then kick back; their right kick: catch with the left hand, step back, throw the leg away, then right hook or right kick |
+| Teep counter vs kicks | Teep | Drilling | 2026-11-04 | 2026-11-18 | Kick to my left side -> left teep; kick to my right side -> right teep; teep them away instead of checking; teep in the middle of their kick |
 | Catch and sweep | | Drilling | 2026-10-16 | 2026-10-16 | Catch and step back on the same side; sweep the ankle and push the head or collarbone with the other side (catch right, step right, sweep left, push left) |
 
 ## Clinch
 | Technique | Thai term | Status | First taught | Last updated | Key cue |
 |---|---|---|---|---|---|
-| Single collar tie + rear knee | | Drilling | 2026-11-04 | 2026-11-04 | Left hand tight to the head as the guard; right hand grabs the neck and pulls forward; knee up hard, hips forward |
+| Single collar tie + rear knee | | Drilling | 2026-11-04 | 2026-11-18 | Left hand tight to the head as the guard; right hand grabs the neck and pulls forward; knee up hard, hips forward |
 | Plum (double collar tie) + step-back knee | | Drilling | 2026-11-06 | 2026-11-06 | Right hand on top of the left; pull the head onto my shoulder to block their view; step the same-side leg back, drag them in, knee with that leg |
 | Stopping the clinch entry + turn and knee | | Drilling | 2026-11-06 | 2026-11-06 | Both hands just above their elbows, push both arms down, my arms inside; grab the neck with one hand onto the same shoulder; head on my right shoulder -> right leg steps out 45 degrees, turn fast so the left leg ends up behind -> left knee (mirror: left shoulder -> right knee) |
 | Pummeling (inside position) | | Drilling | 2026-11-06 | 2026-11-06 | Keep my arms inside theirs; when they wrap around and push my arms down, swim back inside |
@@ -93,7 +94,10 @@ Numbers: 1 jab - 2 cross - 3 lead hook - 4 rear hook - 5 lead uppercut - 6 rear 
 | Cutting the angle + right body kick | Drilling | 2026-11-04 | 2026-11-04 | Pivot on the ball of the left foot, right foot steps across, then right body kick |
 | Kick + teep | Drilling | 2026-11-04 | 2026-11-04 | Teep to the sternum or upper stomach |
 | Check + teep | Drilling | 2026-11-04 | 2026-11-04 | Teep to the sternum or upper stomach |
-| Check + kick (same leg) | Drilling | 2026-11-04 | 2026-11-04 | Check, then kick with the same leg |
+| Check + kick (same leg) | Drilling | 2026-11-04 | 2026-11-18 | Check, then kick with the same leg; both sides |
+| Check + kick (other leg) | Drilling | 2026-11-18 | 2026-11-18 | Check their right kick with the left leg, then right kick; mirror on the right side |
+| Check + land forward + right knee | Drilling | 2026-11-18 | 2026-11-18 | Check their right kick with the left leg; put the left leg down forward to load the right knee |
+| 1-2 + neck grab + right knee | Drilling | 2026-11-18 | 2026-11-18 | After the 1-2, right hand grabs their neck and pulls the head toward me, then right knee |
 
 ## Words to know
 - **Nak Muay** - Muay Thai practitioner

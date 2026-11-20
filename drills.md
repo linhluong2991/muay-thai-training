@@ -17,7 +17,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   2. **Hands - 2 min.** In stance, throw 1-2, then 1-2-3, then 1-2-1-2, and repeat (about 30 combos). Use the Combo caller if you like. After every combo: hands back to the glued guard, rear foot pivots on every cross, breathe out on each punch.
   3. **Defend, then answer - 2 min.** Imagine a partner. Block the straights -> answer 1-2. Cover the left hook, then the right hook -> answer 1-2-3. Close up for the uppercut -> answer 1-2. Eyes clear above the gloves, chin tucked. About 10 rounds of the three.
   4. **Check, then kick - 2 min.** Check with the left leg -> right kick at calf height. Check with the right leg -> switch kick with the left. Then 1-2 -> right kick. Slow: rise onto the ball of the standing foot, turn the hips over, land with the shin, foot pointed. About 10 of each chain. Day 9: add check -> left teep, and check -> right kick with the same leg.
-  5. **Catch and sweep - 2 min.** Walk through it in the air, 5 times each side, saying it out loud: "catch right, step back, step forward, sweep left, push left" - then the mirror. After each sweep, back to guard and finish with a 1-2.
+  5. **Catch and sweep - 2 min.** Walk through it in the air, 5 times each side, saying it out loud: "catch right, step back, step forward, sweep left, push left" - then the mirror. After each sweep, back to guard and finish with a 1-2. Day 15: add "catch with the left hand, step back, throw the leg, right kick" - 5 times.
   6. **Reflexes - 2 min.** Wall dot ball catch (below). No ball? Use the Combo caller and fire each call as fast as you can with good form.
   7. **Cool-down - 1 min.** Hip flexor lunge, 30 seconds each side.
   8. When the coach teaches something new, swap it into the matching block rather than adding a new one.
@@ -99,6 +99,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   1. Round 1 - speed: in stance, check left, foot down, check right. Up and straight back down, short and sharp, foot flexed, elbow meeting the knee.
   2. Round 2 - foot shape: check (flex) -> right knee (point) -> right kick (point). Say "flex - point - point" out loud. Defend = flex, attack = point.
   3. Round 3 - check and answer: check left -> left teep with the same leg; check right -> right kick with the same leg. Slow, guard up.
+  4. (Day 15) Check, land forward, knee: check with the left leg, put the left foot down a little forward, right knee straight away. Hands up the whole time.
 
 ## Standing-foot pivot drill
 - **Fixes:** On the right kick I hop on my standing (left) foot instead of pivoting.
@@ -128,8 +129,8 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   5. While the right little toe hurts: skip rear teeps, and don't rise onto the ball of the right foot - keep the right foot flat when it's the standing foot.
 
 ## Hip-turn kick drill
-- **Fixes:** I forget to turn my hips when I kick because I'm focused on footwork and the target; my left (switch) kick is weaker and the switch isn't smooth. (Day 9) Still forgetting to turn the hips and lean.
-- **Coach's cue:** Use the hips - turn the hips over when you kick. After 1-2-3, step the lead foot out to the left a little, then kick to the body. Day 9: lean, turn the hips over, and step the standing foot out off the line of the bag.
+- **Fixes:** I forget to turn my hips when I kick because I'm focused on footwork and the target; my left (switch) kick is weaker and the switch isn't smooth. (Day 9) Still forgetting to turn the hips and lean. (Day 15) The kick is still hard to do correctly without feeling uncomfortable.
+- **Coach's cue:** Use the hips - turn the hips over when you kick. After 1-2-3, step the lead foot out to the left a little, then kick to the body. Day 9: lean, turn the hips over, and step the standing foot out off the line of the bag. Day 15: turn the hips, point the foot, keep the back straight.
 - **Technique:** Rear roundhouse kick (right), Lead roundhouse kick - switch kick (left), 1-2-3 + right body kick
 - **From:** Day 6 (2026-10-26)
 - **Status:** Active
@@ -140,6 +141,7 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   3. Round 3 - combo: 1-2-3, small step out to the left with the lead foot, right kick to the body. Back to guard.
   4. Hand on a wall or chair if you lose balance; take it away when it feels steady.
   5. (Day 9) Before each kick, step the standing foot out off the line - then lean to the side and turn.
+  6. (Day 15) Freeze at the end of each kick and check the three cues: hips turned over, foot pointed, back in one straight line from head to hips (tilted, not folded).
 
 ## Side-step box drill
 - **Fixes:** In tag and sparring I keep circling instead of moving left and right, and it drains my stamina.
@@ -324,9 +326,9 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   7. Round 6 (added Day 14) - 1-2-3 to the body -> right kick: side-on to a mirror, 5 slow reps, then 5 at speed. Drop with the knees on the cross, head no further forward than the front knee, chin tucked, eyes up. Rise straight into the kick.
 
 ## Knee checklist drill
-- **Fixes:** On the 1-2 + right knee I forget to make the knee like an arrow, to drive the hips forward and to swing the right arm.
+- **Fixes:** On the 1-2 + right knee I forget to make the knee like an arrow, to drive the hips forward and to swing the right arm. (Day 15) Still forgetting the arm swing on teeps and knees.
 - **Coach's cue:** Make the knee like an arrow, use the hips to push forward, swing the right arm when you knee.
-- **Technique:** 1-2 + right knee, Straight knee - rear (right), Switch knee (left)
+- **Technique:** 1-2 + right knee, Straight knee - rear (right), Switch knee (left), Lead teep (left), Rear teep (right), 1-2 + neck grab + right knee, Single collar tie + rear knee
 - **From:** Day 14 (2026-11-16)
 - **Status:** Active
 - **Dose:** 3 rounds of 1 minute, 30 seconds rest. Slow first.
@@ -335,3 +337,18 @@ Status: **Active** (practise it) or **Fixed** (keep for reference).
   2. Round 2 - 1-2 + right knee: the knee comes straight off the cross, no reset in between. Freeze at the end and check all three.
   3. Round 3 - left side: switch knee, same checklist, left arm swings.
   4. Hand on a wall for balance at first; take it away when the checklist feels automatic.
+  5. (Day 15) Teeps: 5 slow teeps each leg with the same "swing" check - left arm swings on the lead teep, right arm on the rear teep, the other glove on the face.
+  6. (Day 15) 1-2 + neck grab: after the 1-2, the right hand goes straight to the back of an imaginary neck and pulls the head down as the right knee drives up. Left glove stays on the face.
+
+## Eyes-up low kick drill
+- **Fixes:** On the low kick I keep looking at the pad on the coach's thigh to make sure I kick correctly, instead of keeping my eyes on the opponent.
+- **Coach's cue:** Eyes on the opponent's eyes or collarbone; the right leg kicks the thigh.
+- **Technique:** Thigh kick (low kick), Rear roundhouse kick (right)
+- **From:** Day 15 (2026-11-18)
+- **Status:** Active
+- **Dose:** 3 rounds of 8 slow kicks, 30 seconds rest. No power.
+- **How:**
+  1. Put a pillow against a wall at thigh height as the target. Stick a small note on the wall above it, at your own collarbone height.
+  2. Round 1 - find the distance: eyes down, kick slowly until the lower shin lands on the pillow. Put a sock where your front foot stands.
+  3. Round 2 - eyes up: from the sock, eyes on the note only. Kick slowly and feel the shin land - don't look down. Check after the kick, not during it. If the shin missed, fix the step, not the eyes.
+  4. Round 3 - 1-2, then the low kick, eyes on the note the whole time, guard back up after.
